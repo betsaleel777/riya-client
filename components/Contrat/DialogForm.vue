@@ -1,17 +1,28 @@
 <script setup lang="ts">
 import { Field, useField } from "vee-validate";
 import { useVisiteStore } from "~/store/visite";
+import { useAchatStore } from "~/store/achat";
 import * as dayjs from "dayjs";
-const { visite } = useVisiteStore();
 const props = defineProps<{
   errors: any;
+  paiementId?: number;
+  type: string;
 }>();
-const { value: debut } = useField<string>("debut");
-const { value: fin } = useField<string>("fin");
 const { value: operationId } = useField("operation_id");
 const { value: type } = useField("operation_type");
-operationId.value = visite?.id;
-type.value = "Visite";
+const { value: paiement } = useField("paiement");
+paiement.value = props.paiementId;
+if (typeContrat.visite === props.type) {
+  const { visite } = useVisiteStore();
+  operationId.value = visite?.id;
+  type.value = "Visite";
+} else {
+  const { achat } = useAchatStore();
+  operationId.value = achat?.id;
+  type.value = "Achat";
+}
+const { value: debut } = useField<string>("debut");
+const { value: fin } = useField<string>("fin");
 const autocompleteField = () => {
   if (debut.value) fin.value = dayjs(debut.value).add(1, "year").format("YYYY-MM-DD");
 };
@@ -21,6 +32,7 @@ const autocompleteField = () => {
   <Field name="id" hidden />
   <Field name="operation_id" hidden />
   <Field name="operation_type" hidden />
+  <Field name="paiement" hidden />
   <el-form label-position="top">
     <div class="mb-3">
       <label for="commission" class="form-label">Commission propriétaire</label>

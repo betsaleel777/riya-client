@@ -6,8 +6,9 @@ interface Paiement extends Entity {
   montant: number;
   created_at: string;
   status: string;
-  achat?: Achat;
-  achat_id: number;
+  payable?: Achat;
+  payable_id: number;
+  payable_type: string;
 }
 
 type Paiements = Array<Paiement>;

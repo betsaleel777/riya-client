@@ -1,9 +1,13 @@
 import { defineStore } from "pinia";
 import { FetchError } from "ofetch";
 import { Contrat, Contrats } from "~/types/contrat";
+import { useVisiteStore } from "./visite";
+import { useAchatStore } from "./achat";
 
 export const useContratStore = defineStore("contrat", () => {
   const { $apiFetch } = useNuxtApp();
+  const { getAll: getVisites, getOne: getVisite } = useVisiteStore();
+  const { getOne: getAchat } = useAchatStore();
 
   let contrats = ref<Contrats>([]);
   let contrat = ref<Contrat>();
@@ -49,6 +53,20 @@ export const useContratStore = defineStore("contrat", () => {
     }
   };
 
+  const validerContrat = async (payload: Contrat) => {
+    const response = await $apiFetch<string>(`api/contrats/validate`, {
+      method: "post",
+      body: payload,
+    });
+    if (typeContrat.visite === payload.operation_type) {
+      await getVisites();
+      await getVisite(payload.operation_id);
+    } else {
+      await getAchat(payload.operation_id);
+    }
+    return response;
+  };
+
   return {
     contrat,
     contrats,
@@ -57,5 +75,6 @@ export const useContratStore = defineStore("contrat", () => {
     update,
     getOne,
     trash,
+    validerContrat,
   };
 });

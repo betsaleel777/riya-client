@@ -1,12 +1,14 @@
 <script lang="ts" setup>
-import { Paiements } from "~/types/paiements";
+import { Paiements, Paiement } from "~/types/paiements";
 import { usePaiementStore } from "~/store/paiement";
 import { statusValidable } from "~/utils/constante";
+import { useAchatStore } from "~/store/achat";
 
 const props = defineProps<{
   paiements: Paiements;
 }>();
-const { trash } = usePaiementStore();
+let contratForm = reactive({ modal: false, paiement: 0 });
+const { trash, valider } = usePaiementStore();
 const { filterTableData, setPage, search, total, pageSize } = usePaiementFilterPagination(
   props.paiements
 );
@@ -14,6 +16,31 @@ const { onPrint } = usePaiementPrinter(props.paiements);
 const { handleDelete, handleEdit, modal } = useHandleCrudButtons(trash);
 const classStatus = (state: string) => {
   return state === statusValidable.wait ? "warning" : "success";
+};
+const handleValidate = (paiement: Paiement) => {
+  ElMessageBox.confirm(
+    `Voulez vous réelement valider le paiement ${paiement.code}`,
+    "Confirmation de validation",
+    {
+      confirmButtonText: "confirmer",
+      cancelButtonText: "abandonner",
+      type: "warning",
+    }
+  ).then(() => {
+    if (props.paiements.length > 1) {
+      valider(paiement);
+    } else {
+      contratForm.modal = true;
+      contratForm.paiement = paiement.id || 0;
+    }
+  });
+};
+const printReceipt = async (paiement: Paiement) => {
+  const { getOne } = useAchatStore();
+  await getOne(paiement.payable_id);
+  const { achat } = useAchatStore();
+  // console.log(achat);
+  await usePaiementReceipt(paiement, achat!);
 };
 </script>
 
@@ -39,6 +66,17 @@ const classStatus = (state: string) => {
           <span>Option</span>
         </template>
         <template #default="scope">
+          <el-button
+            v-if="scope.row.status === statusValidable.wait"
+            type="success"
+            @click="handleValidate(scope.row)"
+            plain
+            circle
+            ><i class="bx bx-check-shield"
+          /></el-button>
+          <el-button v-else type="warning" @click="printReceipt(scope.row)" plain circle
+            ><i class="bx bx-printer"
+          /></el-button>
           <el-button type="primary" @click="handleEdit(scope.row)" plain circle
             ><i class="bx bx-edit"
           /></el-button>
@@ -74,6 +112,11 @@ const classStatus = (state: string) => {
     :id="modal.edit.id"
     v-if="modal.edit.dialog"
     v-model="modal.edit.dialog"
+  />
+  <ContratCreateModal
+    v-model="contratForm.modal"
+    :paiement-id="contratForm.paiement"
+    type="Achat"
   />
 </template>
 

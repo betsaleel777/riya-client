@@ -8,6 +8,7 @@ interface Contrat extends Entity {
   fin?: string;
   bien: string;
   operation_id: number;
+  operation_type: string;
   commission?: string;
   operation?: Achat | Visite;
   created_at: string;

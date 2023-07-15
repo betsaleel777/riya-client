@@ -1,7 +1,6 @@
 import { defineStore } from "pinia";
 import { FetchError } from "ofetch";
 import { Operation, Visite, Visites } from "~/types/visite";
-import { Contrat } from "~/types/contrat";
 
 export const useVisiteStore = defineStore("visite", () => {
   const { $apiFetch } = useNuxtApp();
@@ -59,16 +58,6 @@ export const useVisiteStore = defineStore("visite", () => {
     }
   };
 
-  const validerContrat = async (payload: Contrat) => {
-    const response = await $apiFetch<string>(`api/visites/contrat-validate`, {
-      method: "post",
-      body: payload,
-    });
-    await getAll();
-    await getOne(payload.operation_id);
-    return response;
-  };
-
   const validerDirectement = async (id: number) => {
     const response = await $apiFetch<string>(`api/visites/direct-validate/${id}`, {
       method: "PATCH",
@@ -108,7 +97,6 @@ export const useVisiteStore = defineStore("visite", () => {
     update,
     getOne,
     trash,
-    validerContrat,
     validerDirectement,
     getOperationAction,
   };

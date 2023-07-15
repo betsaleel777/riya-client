@@ -47,7 +47,7 @@ const activateDescriptionModal = (id: number, type: string) => {
               <StructurePageHeader
                 :breadcrumbs="links"
                 title="Contrats"
-                :extra="{ exist: true, create: true, print: true }"
+                :extra="{ exist: true, create: false, print: true }"
                 @print="onPrint"
                 @create="modal.create = true"
               >
@@ -70,9 +70,9 @@ const activateDescriptionModal = (id: number, type: string) => {
                     </template>
                   </el-table-column>
                   <el-table-column prop="bien" label="Bien" align="center" sortable />
-                  <el-table-column prop="debut" label="Debut" width="150" align="center" sortable />
-                  <el-table-column prop="fin" label="Fin" width="150" align="center" sortable />
-                  <el-table-column prop="status" label="Statut" width="100">
+                  <el-table-column prop="debut" label="Debut" width="130" align="center" sortable />
+                  <el-table-column prop="fin" label="Fin" width="130" align="center" sortable />
+                  <el-table-column prop="status" label="Statut" width="120">
                     <template #default="scope">
                       <el-tag :type="classTypeStatus(scope.row.status)">{{
                         scope.row.status
@@ -120,7 +120,6 @@ const activateDescriptionModal = (id: number, type: string) => {
                   hide-on-single-page
                 />
               </StructurePageHeader>
-              <ContratCreateModal v-model="modal.create" />
               <VisiteShowModal
                 :id="showDescription.visite.id"
                 v-if="showDescription.visite.modal"

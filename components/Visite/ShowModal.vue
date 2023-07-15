@@ -97,7 +97,7 @@ const handleValidate = () => {
         </el-collapse-item>
       </el-collapse>
       <VisiteTabOperation v-if="displayTab && !validated" />
-      <ContratCreateModal v-model="contratDialog" />
+      <ContratCreateModal v-model="contratDialog" type="Visite" />
     </div>
   </el-dialog>
 </template>

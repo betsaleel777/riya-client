@@ -26,7 +26,7 @@ export const usePaiementStore = defineStore("paiement", () => {
       method: "post",
       body: payload,
     });
-    await getAchat(payload.achat_id);
+    await getAchat(payload.payable_id);
     return response;
   };
 
@@ -35,7 +35,7 @@ export const usePaiementStore = defineStore("paiement", () => {
       method: "put",
       body: payload,
     });
-    await getAchat(payload.achat_id);
+    await getAchat(payload.payable_id);
     return response;
   };
 
@@ -55,6 +55,18 @@ export const usePaiementStore = defineStore("paiement", () => {
       });
       paiement.value = response;
       loading.edit = false;
+    } catch (error) {
+      if (error instanceof FetchError && error.statusCode === 401) navigateTo("/login");
+    }
+  };
+
+  const valider = async (payload: Paiement) => {
+    try {
+      const response = await $apiFetch<string>(`api/paiements/validate/${payload.id}`, {
+        method: "PATCH",
+      });
+      await getAchat(payload.payable_id);
+      return response;
     } catch (error) {
       if (error instanceof FetchError && error.statusCode === 401) navigateTo("/login");
     }
@@ -80,5 +92,6 @@ export const usePaiementStore = defineStore("paiement", () => {
     getOne,
     trash,
     getByAchat,
+    valider,
   };
 });

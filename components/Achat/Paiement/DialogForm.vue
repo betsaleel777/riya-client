@@ -6,13 +6,16 @@ const props = defineProps<{
   errors: any;
 }>();
 const { achat } = storeToRefs(useAchatStore());
-const { value: achatId } = useField("achat_id");
-achatId.value = achat.value?.id;
+const { value: payableId } = useField("payable_id");
+const { value: payableType } = useField("payable_type");
+payableId.value = achat.value?.id;
+payableType.value = "Achat";
 </script>
 
 <template>
   <Field name="id" hidden />
-  <Field name="achat_id" hidden />
+  <Field name="payable_id" hidden />
+  <Field name="payable_type" hidden />
   <div class="mb-3">
     <label for="montant" class="form-label">Montant</label>
     <Field

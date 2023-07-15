@@ -1,9 +1,11 @@
 <script lang="ts" setup>
 import { Form } from "vee-validate";
-import { useVisiteStore } from "~/store/visite";
-const { validerContrat } = useVisiteStore();
+import { useContratStore } from "~/store/contrat";
+const { validerContrat } = useContratStore();
 const props = defineProps<{
   modelValue: boolean;
+  paiementId?: number;
+  type: string;
 }>();
 const emit = defineEmits<{ (event: "update:modelValue", payload: boolean): void }>();
 const dialog = computed({
@@ -18,7 +20,7 @@ const { onSubmit } = useSubmitForm(validerContrat, dialog);
 </script>
 
 <template>
-  <Form class="form-horizontal" @submit="onSubmit" v-slot="{ isSubmitting, errors }">
+  <Form class="form-horizontal" @submit="onSubmit" v-slot="{ isSubmitting, errors, values }">
     <el-dialog
       v-model="dialog"
       title="Créer un contrat"
@@ -27,7 +29,8 @@ const { onSubmit } = useSubmitForm(validerContrat, dialog);
       center
       scrollable
     >
-      <ContratDialogForm :errors="errors" />
+      <ContratDialogForm :errors="errors" :paiement-id="paiementId" :type="props.type" />
+      <pre>{{ values }}</pre>
       <template #footer>
         <span class="dialog-footer">
           <el-button type="danger" @click="dialog = false" plain>Annuler</el-button>

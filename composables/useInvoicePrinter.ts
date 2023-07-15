@@ -1,4 +1,6 @@
 import { useSocieteStore } from "~/store/societe";
+import { Achat } from "~/types/achat";
+import { Paiement } from "~/types/paiements";
 import { Visite } from "~/types/visite";
 
 const useVisiteInvoice = (visite: Visite | undefined) => {
@@ -12,7 +14,6 @@ const useVisiteInvoice = (visite: Visite | undefined) => {
 };
 
 const useVisiteInvoiceProvisoire = (visite: Visite | undefined) => {
-  console.log(visite);
   const { getOne } = useSocieteStore();
   const { societe } = useSocieteStore();
   getOne();
@@ -22,4 +23,15 @@ const useVisiteInvoiceProvisoire = (visite: Visite | undefined) => {
   return { print };
 };
 
-export { useVisiteInvoice, useVisiteInvoiceProvisoire };
+const usePaiementReceipt = async (paiement: Paiement, achat: Achat) => {
+  const { getOne } = useSocieteStore();
+  const { societe } = useSocieteStore();
+  await getOne();
+  const print = () => {
+    if (societe !== undefined && paiement !== undefined)
+      paiementReceiptPdf(societe, paiement, achat);
+  };
+  print();
+};
+
+export { useVisiteInvoice, useVisiteInvoiceProvisoire, usePaiementReceipt };

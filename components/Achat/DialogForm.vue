@@ -92,7 +92,7 @@ watch(bien, (newBien) => {
       placeholder="montant"
       :class="{ 'is-invalid': props.errors.montant }"
       v-maska
-      data-maska="######"
+      data-maska="##########"
     />
     <div class="invalid-feedback" v-if="props.errors.montant">{{ props.errors.montant }}</div>
   </div>
