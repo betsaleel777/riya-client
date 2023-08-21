@@ -1,4 +1,5 @@
 import { useSocieteStore } from "~/store/societe";
+import { Loyer } from "~/types/Loyer";
 import { Achat } from "~/types/achat";
 import { Paiement } from "~/types/paiements";
 import { Visite } from "~/types/visite";
@@ -13,10 +14,10 @@ const useVisiteInvoice = (visite: Visite | undefined) => {
   return { print };
 };
 
-const useVisiteInvoiceProvisoire = (visite: Visite | undefined) => {
+const useVisiteInvoiceProvisoire = async (visite: Visite | undefined) => {
   const { getOne } = useSocieteStore();
   const { societe } = useSocieteStore();
-  getOne();
+  await getOne();
   const print = () => {
     if (societe !== undefined && visite !== undefined) invoicePdf(societe, visite, true);
   };
@@ -26,12 +27,24 @@ const useVisiteInvoiceProvisoire = (visite: Visite | undefined) => {
 const usePaiementReceipt = async (paiement: Paiement, achat: Achat) => {
   const { getOne } = useSocieteStore();
   const { societe } = useSocieteStore();
-  await getOne();
-  const print = () => {
-    if (societe !== undefined && paiement !== undefined)
-      paiementReceiptPdf(societe, paiement, achat);
-  };
-  print();
+  getOne().then(() => {
+    const print = () => {
+      if (societe !== undefined && paiement !== undefined)
+        paiementReceiptPdf(societe, paiement, achat);
+    };
+    print();
+  });
 };
 
-export { useVisiteInvoice, useVisiteInvoiceProvisoire, usePaiementReceipt };
+const useLoyerReceipt = async (loyer: Ref<Loyer | undefined>) => {
+  const { getOne } = useSocieteStore();
+  const { societe } = useSocieteStore();
+  getOne().then(() => {
+    const print = () => {
+      if (societe !== undefined && loyer !== undefined) rentReceiptPdf(societe, loyer.value!);
+    };
+    print();
+  });
+};
+
+export { useVisiteInvoice, useVisiteInvoiceProvisoire, usePaiementReceipt, useLoyerReceipt };

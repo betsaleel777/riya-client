@@ -92,10 +92,11 @@
             </a>
             <ul class="sub-menu" :aria-expanded="menu.operations">
               <li>
-                <nuxt-link to="/operation/visite" key="t-visite">Visites</nuxt-link>
+                <nuxt-link to="/operation/visite" key="t-visite">Locations</nuxt-link>
               </li>
               <li><nuxt-link to="/operation/purchase" key="t-purchase">Achats</nuxt-link></li>
               <li><nuxt-link to="/operation/contrat" key="t-contrat">Contrats</nuxt-link></li>
+              <li><nuxt-link to="/loyer" key="t-loyer">Loyers</nuxt-link></li>
             </ul>
           </li>
           <li>

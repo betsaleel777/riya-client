@@ -18,5 +18,24 @@ const typeContrat = Object.freeze({
   achat: "Achat",
   visite: "Visite",
 });
+const statusAvance = Object.freeze({
+  exhausted: "avance épuisée",
+  inuse: "avance en cours",
+  contratWithout: "simple visite",
+});
 
-export { statusBien, statusValidable, stateContrat, statusContrat, typeContrat };
+const statusLoyer = Object.freeze({
+  paid: "payé",
+  unpaid: "impayé",
+  pending: "en attente",
+});
+
+export {
+  statusBien,
+  statusValidable,
+  stateContrat,
+  statusContrat,
+  statusAvance,
+  typeContrat,
+  statusLoyer,
+};

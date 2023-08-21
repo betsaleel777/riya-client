@@ -20,7 +20,7 @@ const { onSubmit } = useSubmitForm(validerContrat, dialog);
 </script>
 
 <template>
-  <Form class="form-horizontal" @submit="onSubmit" v-slot="{ isSubmitting, errors, values }">
+  <Form class="form-horizontal" @submit="onSubmit" v-slot="{ isSubmitting, errors }">
     <el-dialog
       v-model="dialog"
       title="Créer un contrat"
@@ -30,7 +30,6 @@ const { onSubmit } = useSubmitForm(validerContrat, dialog);
       scrollable
     >
       <ContratDialogForm :errors="errors" :paiement-id="paiementId" :type="props.type" />
-      <pre>{{ values }}</pre>
       <template #footer>
         <span class="dialog-footer">
           <el-button type="danger" @click="dialog = false" plain>Annuler</el-button>

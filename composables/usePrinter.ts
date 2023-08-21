@@ -8,6 +8,7 @@ import { Clients } from "~/types/personne";
 import { Visites } from "~/types/visite";
 import { Achats } from "~/types/achat";
 import { Paiements } from "~/types/paiements";
+import { Loyers } from "~/types/Loyer";
 
 const useClientPrinter = (clients: Ref<Clients>) => {
   const records = computed(() =>
@@ -200,6 +201,26 @@ const usePaiementPrinter = (paiements: Paiements) => {
   return { onPrint };
 };
 
+const useLoyerPrinter = (loyers: Ref<Loyers>) => {
+  const records = computed(() =>
+    loyers.value.map((loyer) => {
+      return {
+        date: loyer.created_at,
+        code: loyer.code,
+        montant: loyer.montant,
+        client: loyer.client,
+        bien: loyer.bien,
+        status: loyer.status,
+      };
+    })
+  );
+  const onPrint = () => {
+    if (records.value !== undefined)
+      useArrayPrinter(["code", "montant", "status", "date"], records.value, "Paiements");
+  };
+  return { onPrint };
+};
+
 export {
   useClientPrinter,
   useAppartementPrinter,
@@ -211,4 +232,5 @@ export {
   useVisitePrinter,
   useAchatPrinter,
   usePaiementPrinter,
+  useLoyerPrinter,
 };

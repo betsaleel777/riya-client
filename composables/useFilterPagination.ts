@@ -1,3 +1,4 @@
+import { Loyer, Loyers } from "~/types/Loyer";
 import { Achat, Achats } from "~/types/achat";
 import { Appartement, Appartements } from "~/types/appartement";
 import { Contrat, Contrats } from "~/types/contrat";
@@ -235,6 +236,30 @@ const usePurchaseFilterPagination = (achats: Ref<Achats>) => {
   return { filterTableData, setPage, search, total, pageSize };
 };
 
+const useLoyerFilterPagination = (loyers: Ref<Loyers>) => {
+  const search = ref("");
+  let total = ref(0);
+  let currentPage = ref(1);
+  let pageSize = ref(8);
+  const filterTableData = computed(() => {
+    const filtered = Array.isArray(loyers.value)
+      ? loyers.value.filter((loyer: Loyer) => {
+          if (loyer.code !== undefined)
+            return !search.value || loyer.code.toLowerCase().includes(search.value.toLowerCase());
+        })
+      : [];
+    total.value = filtered.length;
+    return filtered.slice(
+      pageSize.value * currentPage.value - pageSize.value,
+      pageSize.value * currentPage.value
+    );
+  });
+  const setPage = (val: number) => {
+    currentPage.value = val;
+  };
+  return { filterTableData, setPage, search, total, pageSize };
+};
+
 const usePaiementFilterPagination = (paiements: Paiements) => {
   const search = ref("");
   let total = ref(0);
@@ -272,4 +297,5 @@ export {
   useContratFilterPagination,
   usePurchaseFilterPagination,
   usePaiementFilterPagination,
+  useLoyerFilterPagination,
 };

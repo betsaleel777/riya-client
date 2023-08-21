@@ -70,8 +70,8 @@ const activateDescriptionModal = (id: number, type: string) => {
                     </template>
                   </el-table-column>
                   <el-table-column prop="bien" label="Bien" align="center" sortable />
+                  <el-table-column prop="client" label="Client" align="center" sortable />
                   <el-table-column prop="debut" label="Debut" width="130" align="center" sortable />
-                  <el-table-column prop="fin" label="Fin" width="130" align="center" sortable />
                   <el-table-column prop="status" label="Statut" width="120">
                     <template #default="scope">
                       <el-tag :type="classTypeStatus(scope.row.status)">{{
@@ -84,7 +84,6 @@ const activateDescriptionModal = (id: number, type: string) => {
                       <el-tag :type="classTypeState(scope.row.etat)">{{ scope.row.etat }}</el-tag>
                     </template>
                   </el-table-column>
-                  <el-table-column prop="created_at" label="Date" width="110" sortable />
                   <el-table-column width="150" align="right">
                     <template #header>
                       <span>Option</span>

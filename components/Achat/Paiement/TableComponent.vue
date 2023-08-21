@@ -8,6 +8,7 @@ const props = defineProps<{
   paiements: Paiements;
 }>();
 let contratForm = reactive({ modal: false, paiement: 0 });
+const { achat } = useAchatStore();
 const { trash, valider } = usePaiementStore();
 const { filterTableData, setPage, search, total, pageSize } = usePaiementFilterPagination(
   props.paiements
@@ -35,11 +36,10 @@ const handleValidate = (paiement: Paiement) => {
     }
   });
 };
+const createPaiement = computed<boolean>(() => achat?.reste !== 0);
 const printReceipt = async (paiement: Paiement) => {
   const { getOne } = useAchatStore();
   await getOne(paiement.payable_id);
-  const { achat } = useAchatStore();
-  // console.log(achat);
   await usePaiementReceipt(paiement, achat!);
 };
 </script>
@@ -47,7 +47,7 @@ const printReceipt = async (paiement: Paiement) => {
 <template>
   <StructurePageHeader
     title="liste des paiements"
-    :extra="{ exist: true, create: true, print: true }"
+    :extra="{ exist: true, create: createPaiement, print: true }"
     @print="onPrint"
     @create="modal.create = true"
   >
@@ -77,7 +77,12 @@ const printReceipt = async (paiement: Paiement) => {
           <el-button v-else type="warning" @click="printReceipt(scope.row)" plain circle
             ><i class="bx bx-printer"
           /></el-button>
-          <el-button type="primary" @click="handleEdit(scope.row)" plain circle
+          <el-button
+            type="primary"
+            v-if="scope.row.status === statusValidable.wait"
+            @click="handleEdit(scope.row)"
+            plain
+            circle
             ><i class="bx bx-edit"
           /></el-button>
           <el-button

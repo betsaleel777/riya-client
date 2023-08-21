@@ -1,30 +1,62 @@
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
-import { useVisiteStore } from "~/store/visite";
-import { statusValidable, statusAvance } from "~/utils/constante";
+import { useLoyerStore } from "~/store/loyer";
+import { statusLoyer } from "~/utils/constante";
+import { Loyer } from "~/types/Loyer";
 
-useHead({ title: "Location" });
+useHead({ title: "Loyer" });
 definePageMeta({ middleware: "auth" });
 const links = [
   { path: "/", title: "Acceuil" },
-  { path: "#", title: "Location" },
+  { path: "#", title: "Loyers" },
 ];
-const { getAll, trash } = useVisiteStore();
-const { visites, loading } = storeToRefs(useVisiteStore());
+const { getAll, cashed, valider, trash } = useLoyerStore();
+const { loyers, loading } = storeToRefs(useLoyerStore());
 getAll();
-const { filterTableData, setPage, search, total, pageSize } = useVisiteFilterPagination(visites);
-const { onPrint } = useVisitePrinter(visites);
-const { handleDelete, handleEdit, handleShow, modal } = useHandleCrudButtons(trash);
-const classType = (status: string) => {
-  return status === statusValidable.wait ? "warning" : "success";
-};
+const { filterTableData, setPage, search, total, pageSize } = useLoyerFilterPagination(loyers);
+const { onPrint } = useLoyerPrinter(loyers);
+const { handleDelete, modal } = useHandleCrudButtons(trash);
 const classStatus = (status: string) => {
   const classes = {
-    [statusAvance.contratWithout as string]: "info",
-    [statusAvance.inuse as string]: "",
-    [statusAvance.exhausted as string]: "danger",
+    [statusLoyer.pending as string]: "warning",
+    [statusLoyer.paid as string]: "success",
+    [statusLoyer.unpaid as string]: "danger",
   };
   return classes[status];
+};
+const handleCashed = (loyer: Loyer) => {
+  ElMessageBox.confirm(
+    `Voulez vous confirmer l'encaissement du loyer ${loyer.code}`,
+    "Confirmation d'encaissement",
+    {
+      confirmButtonText: "confirmer",
+      cancelButtonText: "abandonner",
+      type: "warning",
+    }
+  ).then(async () => {
+    const message = await cashed(loyer.id!);
+    ElNotification.success({ title: "succès", message });
+  });
+};
+const handleValidate = (loyer: Loyer) => {
+  ElMessageBox.confirm(
+    `Voulez vous valider le paiement du ${loyer.code}`,
+    "Confirmation de validation",
+    {
+      confirmButtonText: "confirmer",
+      cancelButtonText: "abandonner",
+      type: "warning",
+    }
+  ).then(async () => {
+    const message = await valider(loyer.id!);
+    ElNotification.success({ title: "succès", message });
+  });
+};
+const printReceipt = async (id: number) => {
+  const { getOne } = useLoyerStore();
+  const { loyer } = storeToRefs(useLoyerStore());
+  await getOne(id);
+  await useLoyerReceipt(loyer);
 };
 </script>
 
@@ -38,8 +70,8 @@ const classStatus = (status: string) => {
             <div class="card-body">
               <StructurePageHeader
                 :breadcrumbs="links"
-                title="Locations"
-                :extra="{ exist: true, create: true, print: true }"
+                title="Loyers"
+                :extra="{ exist: true, create: false, print: true }"
                 @print="onPrint"
                 @create="modal.create = true"
               >
@@ -55,9 +87,9 @@ const classStatus = (status: string) => {
                       </span>
                       <template #dropdown>
                         <el-dropdown-menu>
-                          <el-dropdown-item>validée</el-dropdown-item>
-                          <el-dropdown-item>avance en cours</el-dropdown-item>
-                          <el-dropdown-item>simple visite</el-dropdown-item>
+                          <el-dropdown-item>payés</el-dropdown-item>
+                          <el-dropdown-item>impayés</el-dropdown-item>
+                          <el-dropdown-item>en attente</el-dropdown-item>
                         </el-dropdown-menu>
                       </template>
                     </el-dropdown>
@@ -67,75 +99,69 @@ const classStatus = (status: string) => {
                   v-loading="loading.index"
                   :data="filterTableData"
                   style="width: 100%"
-                  empty-text="aucune Location"
+                  empty-text="aucun Loyer"
                 >
                   <el-table-column prop="code" label="Code" width="100" />
-                  <el-table-column prop="personne" label="Client" sortable>
+                  <el-table-column prop="client" label="Client" sortable>
                     <template #default="scope">
-                      <el-text truncated>{{ scope.row.personne }}</el-text>
+                      <el-text truncated>{{ scope.row.client }}</el-text>
+                    </template>
+                  </el-table-column>
+                  <el-table-column prop="bien" label="Bien" sortable>
+                    <template #default="scope">
+                      <el-text truncated>{{ scope.row.bien }}</el-text>
                     </template>
                   </el-table-column>
                   <el-table-column
-                    prop="frais"
-                    label="Frais agence"
+                    prop="montant"
+                    label="Montant"
                     align="center"
                     width="150"
                     sortable
                   >
-                    <template #default="scope">
-                      {{ scope.row.frais * scope.row.loyer }} FCFA
-                    </template>
+                    <template #default="scope"> {{ scope.row.montant }} FCFA </template>
                   </el-table-column>
-                  <el-table-column
-                    prop="caution"
-                    label="Caution"
-                    align="center"
-                    width="150"
-                    sortable
-                  >
-                    <template #default="scope">
-                      {{ scope.row.caution * scope.row.loyer }} FCFA
-                    </template>
-                  </el-table-column>
-                  <el-table-column prop="avance" label="Avance" align="center" width="150" sortable>
-                    <template #default="scope">
-                      {{ scope.row.avance * scope.row.loyer }} FCFA
-                    </template>
-                  </el-table-column>
-                  <el-table-column prop="status" label="Statut" width="100">
-                    <template #default="scope">
-                      <el-tag :type="classType(scope.row.status)">{{ scope.row.status }}</el-tag>
-                    </template>
-                  </el-table-column>
-                  <el-table-column prop="avanceStatus" label="Status avance" width="150"
+                  <el-table-column prop="status" label="Statut" width="150"
                     ><template #default="scope">
-                      <el-tag :type="classStatus(scope.row.avanceStatus)">{{
-                        scope.row.avanceStatus
-                      }}</el-tag>
+                      <el-tag :type="classStatus(scope.row.status)">{{ scope.row.status }}</el-tag>
                     </template>
                   </el-table-column>
+                  <el-table-column prop="created_at" label="Date" width="150" />
                   <el-table-column width="100" align="right">
                     <template #header>
                       <span>Option</span>
                     </template>
                     <template #default="scope">
-                      <el-button type="info" @click="handleShow(scope.row)" plain circle
-                        ><i class="bx bx-show"
-                      /></el-button>
                       <el-button
-                        v-if="scope.row.status === statusValidable.wait"
-                        type="primary"
-                        @click="handleEdit(scope.row)"
+                        v-if="scope.row.status === statusLoyer.unpaid"
+                        type="info"
+                        @click="handleCashed(scope.row)"
                         plain
                         circle
-                        ><i class="bx bx-edit"
+                        ><i class="bx bx-dollar"
+                      /></el-button>
+                      <el-button
+                        v-else-if="scope.row.status === statusLoyer.pending"
+                        type="success"
+                        @click="handleValidate(scope.row)"
+                        plain
+                        circle
+                        ><i class="bx bx-check-shield"
+                      /></el-button>
+                      <el-button
+                        v-else
+                        type="warning"
+                        @click="printReceipt(scope.row.id)"
+                        plain
+                        circle
+                        ><i class="bx bx-printer"
                       /></el-button>
                       <el-button
                         type="danger"
                         @click="
                           handleDelete(
                             scope.row,
-                            `Voulez vous réelement supprimer la visite ${scope.row.code}`
+                            `Voulez vous réelement supprimer le loyer ${scope.row.code}`
                           )
                         "
                         plain
@@ -157,17 +183,6 @@ const classStatus = (status: string) => {
                   hide-on-single-page
                 />
               </StructurePageHeader>
-              <VisiteCreateModal v-model="modal.create" />
-              <VisiteEditModal
-                :id="modal.edit.id"
-                v-if="modal.edit.dialog"
-                v-model="modal.edit.dialog"
-              />
-              <VisiteShowModal
-                :id="modal.show.id"
-                v-if="modal.show.dialog"
-                v-model="modal.show.dialog"
-              />
             </div>
           </div>
         </div>

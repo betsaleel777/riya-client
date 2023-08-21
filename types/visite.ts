@@ -31,6 +31,7 @@ interface Visite extends Entity {
   cautionObject: Operation | null;
   avanceObject: Operation | null;
   fraisObject: Operation | null;
+  avanceStatus: string;
 }
 
 interface VisiteInfo extends Entity {
