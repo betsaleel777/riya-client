@@ -30,12 +30,30 @@ export const usePaiementStore = defineStore("paiement", () => {
     return response;
   };
 
+  const createDirect = async (payload: Paiement) => {
+    const response = await $apiFetch<string>("api/paiements/direct", {
+      method: "post",
+      body: payload,
+    });
+    await getAll();
+    return response;
+  };
+
   const update = async (payload: Paiement) => {
     const response = await $apiFetch<string>("api/paiements/" + payload.id, {
       method: "put",
       body: payload,
     });
     await getAchat(payload.payable_id);
+    return response;
+  };
+
+  const updateDirect = async (payload: Paiement) => {
+    const response = await $apiFetch<string>("api/paiements/" + payload.id, {
+      method: "put",
+      body: payload,
+    });
+    await getAll();
     return response;
   };
 
@@ -72,6 +90,18 @@ export const usePaiementStore = defineStore("paiement", () => {
     }
   };
 
+  const validerPaiement = async (payload: Paiement) => {
+    try {
+      const response = await $apiFetch<string>(`api/paiements/validate/${payload.id}`, {
+        method: "PATCH",
+      });
+      await getAll();
+      return response;
+    } catch (error) {
+      if (error instanceof FetchError && error.statusCode === 401) navigateTo("/login");
+    }
+  };
+
   const getByAchat = async (id: number) => {
     try {
       loading.index = true;
@@ -88,10 +118,13 @@ export const usePaiementStore = defineStore("paiement", () => {
     loading,
     getAll,
     create,
+    createDirect,
     update,
+    updateDirect,
     getOne,
     trash,
     getByAchat,
     valider,
+    validerPaiement,
   };
 });

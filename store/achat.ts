@@ -9,6 +9,8 @@ export const useAchatStore = defineStore("achat", () => {
   let achat = ref<Achat>();
   let loading = reactive({ index: false, edit: false });
 
+  const unsales = computed<Achats>(() => achats.value.filter((achat) => achat.reste > 0));
+
   const getAll = async () => {
     try {
       loading.index = true;
@@ -52,6 +54,7 @@ export const useAchatStore = defineStore("achat", () => {
   return {
     achat,
     achats,
+    unsales,
     loading,
     getAll,
     create,

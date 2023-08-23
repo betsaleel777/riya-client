@@ -103,6 +103,26 @@
             <a
               href="javascript: void(0);"
               class="has-arrow waves-effect"
+              @click="menu.caisse = true"
+            >
+              <i class="bx bx-dollar"></i>
+              <span key="t-caisse">Caisses</span>
+            </a>
+            <ul class="sub-menu" :aria-expanded="menu.caisse">
+              <li>
+                <nuxt-link to="/paiement" key="t-paiements">Paiements</nuxt-link>
+              </li>
+              <li><nuxt-link to="/dette" key="t-dettes">Dettes</nuxt-link></li>
+              <li><nuxt-link to="/depense" key="t-depense">Dépenses</nuxt-link></li>
+              <li>
+                <nuxt-link to="/rembourssement" key="t-rembourssements">Rembourssements</nuxt-link>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <a
+              href="javascript: void(0);"
+              class="has-arrow waves-effect"
               @click="menu.parametres = true"
             >
               <i class="bx bx-cog"></i>
@@ -142,6 +162,7 @@ const menu = ref({
   parametres: false,
   biens: false,
   operations: false,
+  caisse: false,
 });
 const side = ref<unknown>(null);
 onMounted(() => {

@@ -201,6 +201,24 @@ const usePaiementPrinter = (paiements: Paiements) => {
   return { onPrint };
 };
 
+const usePaiementRefPrinter = (paiements: Ref<Paiements>) => {
+  const records = computed(() =>
+    paiements.value.map((paiement) => {
+      return {
+        date: paiement.created_at,
+        code: paiement.code,
+        montant: paiement.montant,
+        status: paiement.status,
+      };
+    })
+  );
+  const onPrint = () => {
+    if (records.value !== undefined)
+      useArrayPrinter(["code", "montant", "status", "date"], records.value, "Paiements");
+  };
+  return { onPrint };
+};
+
 const useLoyerPrinter = (loyers: Ref<Loyers>) => {
   const records = computed(() =>
     loyers.value.map((loyer) => {
@@ -233,4 +251,5 @@ export {
   useAchatPrinter,
   usePaiementPrinter,
   useLoyerPrinter,
+  usePaiementRefPrinter,
 };

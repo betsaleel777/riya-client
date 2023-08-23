@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import { FetchError } from "ofetch";
 import { Loyer, Loyers } from "~/types/Loyer";
+import { statusLoyer } from "~/utils/constante";
 
 export const useLoyerStore = defineStore("loyer", () => {
   const { $apiFetch } = useNuxtApp();
@@ -8,6 +9,10 @@ export const useLoyerStore = defineStore("loyer", () => {
   let loyers = ref<Loyers>([]);
   let loyer = ref<Loyer>();
   let loading = reactive({ index: false, edit: false });
+
+  const impayes = computed<Loyers>(() =>
+    loyers.value.filter((loyer) => loyer.status === statusLoyer.unpaid)
+  );
 
   const getAll = async () => {
     try {
@@ -64,5 +69,5 @@ export const useLoyerStore = defineStore("loyer", () => {
     }
   };
 
-  return { loyers, loyer, loading, getAll, getOne, trash, cashed, valider };
+  return { loyers, loyer, impayes, loading, getAll, getOne, trash, cashed, valider };
 });
