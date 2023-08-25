@@ -102,7 +102,7 @@ const classStatus = (status: string) => {
                       {{ scope.row.avance * scope.row.loyer }} FCFA
                     </template>
                   </el-table-column>
-                  <el-table-column prop="status" label="Statut" width="100">
+                  <el-table-column prop="status" label="Statut" width="150">
                     <template #default="scope">
                       <el-tag :type="classType(scope.row.status)">{{ scope.row.status }}</el-tag>
                     </template>

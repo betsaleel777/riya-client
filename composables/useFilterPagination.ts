@@ -1,7 +1,8 @@
-import { Loyer, Loyers } from "~/types/Loyer";
+import { Loyer, Loyers } from "~/types/loyer";
 import { Achat, Achats } from "~/types/achat";
 import { Appartement, Appartements } from "~/types/appartement";
 import { Contrat, Contrats } from "~/types/contrat";
+import { Dette, Dettes } from "~/types/dette";
 import { Types, Type } from "~/types/global";
 import { Paiement, Paiements } from "~/types/paiements";
 import { Client, Clients } from "~/types/personne";
@@ -260,6 +261,30 @@ const useLoyerFilterPagination = (loyers: Ref<Loyers>) => {
   return { filterTableData, setPage, search, total, pageSize };
 };
 
+const useDetteFilterPagination = (dettes: Ref<Dettes>) => {
+  const search = ref("");
+  let total = ref(0);
+  let currentPage = ref(1);
+  let pageSize = ref(8);
+  const filterTableData = computed(() => {
+    const filtered = Array.isArray(dettes.value)
+      ? dettes.value.filter((dette: Dette) => {
+          if (dette.code !== undefined)
+            return !search.value || dette.code.toLowerCase().includes(search.value.toLowerCase());
+        })
+      : [];
+    total.value = filtered.length;
+    return filtered.slice(
+      pageSize.value * currentPage.value - pageSize.value,
+      pageSize.value * currentPage.value
+    );
+  });
+  const setPage = (val: number) => {
+    currentPage.value = val;
+  };
+  return { filterTableData, setPage, search, total, pageSize };
+};
+
 const usePaiementFilterPagination = (paiements: Paiements) => {
   const search = ref("");
   let total = ref(0);
@@ -286,6 +311,7 @@ const usePaiementFilterPagination = (paiements: Paiements) => {
   };
   return { filterTableData, setPage, search, total, pageSize };
 };
+
 const usePaiementRefFilterPagination = (paiements: Ref<Paiements>) => {
   const search = ref("");
   let total = ref(0);
@@ -325,4 +351,5 @@ export {
   usePaiementFilterPagination,
   useLoyerFilterPagination,
   usePaiementRefFilterPagination,
+  useDetteFilterPagination,
 };

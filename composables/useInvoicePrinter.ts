@@ -1,49 +1,40 @@
+import { storeToRefs } from "pinia";
 import { useSocieteStore } from "~/store/societe";
-import { Loyer } from "~/types/Loyer";
+import { Loyer } from "~/types/loyer";
 import { Achat } from "~/types/achat";
 import { Paiement } from "~/types/paiements";
 import { Visite } from "~/types/visite";
 
-const useVisiteInvoice = (visite: Visite | undefined) => {
+const useVisiteInvoice = (visite: Ref<Visite | undefined>) => {
   const { getOne } = useSocieteStore();
-  const { societe } = useSocieteStore();
-  getOne();
-  const print = () => {
+  const { societe } = storeToRefs(useSocieteStore());
+  getOne().then(() => {
     if (societe !== undefined && visite !== undefined) invoicePdf(societe, visite);
-  };
-  return { print };
+  });
 };
 
-const useVisiteInvoiceProvisoire = async (visite: Visite | undefined) => {
+const useVisiteInvoiceProvisoire = async (visite: Ref<Visite | undefined>) => {
   const { getOne } = useSocieteStore();
-  const { societe } = useSocieteStore();
-  await getOne();
-  const print = () => {
+  const { societe } = storeToRefs(useSocieteStore());
+  getOne().then(() => {
     if (societe !== undefined && visite !== undefined) invoicePdf(societe, visite, true);
-  };
-  return { print };
+  });
 };
 
 const usePaiementReceipt = async (paiement: Paiement, achat: Achat) => {
   const { getOne } = useSocieteStore();
   const { societe } = useSocieteStore();
   getOne().then(() => {
-    const print = () => {
-      if (societe !== undefined && paiement !== undefined)
-        paiementReceiptPdf(societe, paiement, achat);
-    };
-    print();
+    if (societe !== undefined && paiement !== undefined)
+      paiementReceiptPdf(societe, paiement, achat);
   });
 };
 
 const useLoyerReceipt = async (loyer: Ref<Loyer | undefined>) => {
   const { getOne } = useSocieteStore();
-  const { societe } = useSocieteStore();
+  const { societe } = storeToRefs(useSocieteStore());
   getOne().then(() => {
-    const print = () => {
-      if (societe !== undefined && loyer !== undefined) rentReceiptPdf(societe, loyer.value!);
-    };
-    print();
+    if (societe !== undefined && loyer !== undefined) rentReceiptPdf(societe, loyer);
   });
 };
 

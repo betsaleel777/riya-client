@@ -23,15 +23,9 @@ const contratDialog = ref(false);
 const { getOne, validerDirectement } = useVisiteStore();
 const { visite, loading } = storeToRefs(useVisiteStore());
 let displayTab = ref(false);
-const imprimer = ref();
-const provisoire = ref();
 onMounted(async () => {
   await getOne(props.id);
   displayTab.value = true;
-  const { print } = useVisiteInvoice(visite.value);
-  const { print: printProvisoire } = useVisiteInvoiceProvisoire(visite.value);
-  imprimer.value = print;
-  provisoire.value = printProvisoire;
 });
 const validated = computed(() => visite.value?.status === statusValidable.valid);
 const validatedProvisoire = computed(() => {
@@ -62,6 +56,12 @@ const handleValidate = () => {
     contratDialog.value = true;
   }
 };
+const imprimer = () => {
+  useVisiteInvoice(visite);
+};
+const imprimerProvisoire = () => {
+  useVisiteInvoiceProvisoire(visite);
+};
 </script>
 
 <template>
@@ -77,7 +77,7 @@ const handleValidate = () => {
       <el-button @click="imprimer" v-if="validated" type="primary" text
         >Imprimer reçu de visite</el-button
       >
-      <el-button @click="provisoire" v-if="validatedProvisoire" type="primary" text
+      <el-button @click="imprimerProvisoire" v-if="validatedProvisoire" type="primary" text
         >Imprimer reçu provisoire</el-button
       >
       <el-button @click="handleValidate" v-if="validable" type="success" text

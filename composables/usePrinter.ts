@@ -8,7 +8,8 @@ import { Clients } from "~/types/personne";
 import { Visites } from "~/types/visite";
 import { Achats } from "~/types/achat";
 import { Paiements } from "~/types/paiements";
-import { Loyers } from "~/types/Loyer";
+import { Loyers } from "~/types/loyer";
+import { Dettes } from "~/types/dette";
 
 const useClientPrinter = (clients: Ref<Clients>) => {
   const records = computed(() =>
@@ -239,6 +240,30 @@ const useLoyerPrinter = (loyers: Ref<Loyers>) => {
   return { onPrint };
 };
 
+const useDettePrinter = (dettes: Ref<Dettes>) => {
+  const records = computed(() =>
+    dettes.value.map((dette) => {
+      return {
+        date: dette.created_at,
+        code: dette.code,
+        montant: dette.montant,
+        status: dette.status,
+        type: dette.origine_type,
+        contrat: dette.origine_code,
+      };
+    })
+  );
+  const onPrint = () => {
+    if (records.value !== undefined)
+      useArrayPrinter(
+        ["code", "montant", "status", "type", "contrat", "date"],
+        records.value,
+        "Dettes"
+      );
+  };
+  return { onPrint };
+};
+
 export {
   useClientPrinter,
   useAppartementPrinter,
@@ -252,4 +277,5 @@ export {
   usePaiementPrinter,
   useLoyerPrinter,
   usePaiementRefPrinter,
+  useDettePrinter,
 };

@@ -5,8 +5,7 @@ import { Visite } from "~/types/visite";
 import * as dayjs from "dayjs";
 import { Paiement } from "~/types/paiements";
 import { Achat } from "~/types/achat";
-import { Loyer } from "~/types/Loyer";
-import { Personne } from "~/types/global";
+import { Loyer } from "~/types/loyer";
 import { Client } from "~/types/personne";
 import { Appartement } from "~/types/appartement";
 
@@ -35,13 +34,17 @@ const arrayPdf = (cols: header[], records: any[], filename: string) => {
   doc.save(filename + ".pdf");
 };
 
-const invoicePdf = (societe: Societe, visite: Visite, provisoire: boolean = false) => {
+const invoicePdf = (
+  societe: Ref<Societe>,
+  visite: Ref<Visite | undefined>,
+  provisoire: boolean = false
+) => {
   const doc = new JsPDF("p", "pt", "a4");
   autoTable(doc, {
     body: [
       [
         {
-          content: societe.raison_sociale,
+          content: societe.value.raison_sociale,
           styles: {
             halign: "left",
             fontSize: 20,
@@ -67,7 +70,7 @@ const invoicePdf = (societe: Societe, visite: Visite, provisoire: boolean = fals
     body: [
       [
         {
-          content: `Reference: ${visite.code} \nDate: ${dayjs().format("DD/MM/YYYY")}`,
+          content: `Reference: ${visite.value?.code} \nDate: ${dayjs().format("DD/MM/YYYY")}`,
           styles: {
             halign: "right",
           },
@@ -81,18 +84,18 @@ const invoicePdf = (societe: Societe, visite: Visite, provisoire: boolean = fals
       [
         {
           content: `Facturé à:
-            \n${visite.personne?.nom_complet}
-            \n${visite.personne?.ville} ${visite.personne?.quartier}
-            \n${visite.personne?.pays}`,
+            \n${visite.value?.personne?.nom_complet}
+            \n${visite.value?.personne?.ville} ${visite.value?.personne?.quartier}
+            \n${visite.value?.personne?.pays}`,
           styles: {
             halign: "left",
           },
         },
         {
           content: `De: 
-            \n${societe.raison_sociale} 
-            \n${societe.siege}
-            \n${societe.boite_postale}
+            \n${societe.value.raison_sociale} 
+            \n${societe.value.siege}
+            \n${societe.value.boite_postale}
             \nCôte d'voire`,
           styles: {
             halign: "right",
@@ -115,7 +118,7 @@ const invoicePdf = (societe: Societe, visite: Visite, provisoire: boolean = fals
       ],
       [
         {
-          content: visite.montant,
+          content: visite.value?.montant,
           styles: {
             halign: "right",
             fontSize: 20,
@@ -136,7 +139,14 @@ const invoicePdf = (societe: Societe, visite: Visite, provisoire: boolean = fals
   });
   autoTable(doc, {
     head: [["Description", "Quantité", "Prix", "Montant"]],
-    body: [["Visite du bien: " + visite.appartement?.nom, "1", visite.montant, visite.montant]],
+    body: [
+      [
+        "Visite du bien: " + visite.value?.appartement?.nom,
+        "1",
+        visite.value === undefined ? "" : visite.value.montant,
+        visite.value === undefined ? "" : visite.value.montant,
+      ],
+    ],
     theme: "striped",
     headStyles: {
       fillColor: "#343a40",
@@ -152,7 +162,7 @@ const invoicePdf = (societe: Societe, visite: Visite, provisoire: boolean = fals
           },
         },
         {
-          content: visite.montant,
+          content: visite.value?.montant,
           styles: {
             halign: "right",
           },
@@ -180,7 +190,7 @@ const invoicePdf = (societe: Societe, visite: Visite, provisoire: boolean = fals
           },
         },
         {
-          content: visite.montant,
+          content: visite.value?.montant,
           styles: {
             halign: "right",
           },
@@ -193,7 +203,7 @@ const invoicePdf = (societe: Societe, visite: Visite, provisoire: boolean = fals
     body: [
       [
         {
-          content: `${societe.raison_sociale} ${societe.forme_juridique}, registre de commerce: ${societe.registre}`,
+          content: `${societe.value.raison_sociale} ${societe.value.forme_juridique}, registre de commerce: ${societe.value.registre}`,
           styles: {
             halign: "center",
           },
@@ -361,15 +371,15 @@ const paiementReceiptPdf = (societe: Societe, paiement: Paiement, achat: Achat) 
   });
   return doc.save("invoice");
 };
-const rentReceiptPdf = (societe: Societe, loyer: Loyer) => {
+const rentReceiptPdf = (societe: Ref<Societe>, loyer: Ref<Loyer | undefined>) => {
   const doc = new JsPDF("p", "pt", "a4");
-  const client = loyer.client as Client;
-  const bien = loyer.bien as Appartement;
+  const client = loyer.value?.client as Client;
+  const bien = loyer.value?.bien as Appartement;
   autoTable(doc, {
     body: [
       [
         {
-          content: societe.raison_sociale,
+          content: societe.value.raison_sociale,
           styles: {
             halign: "left",
             fontSize: 20,
@@ -395,7 +405,7 @@ const rentReceiptPdf = (societe: Societe, loyer: Loyer) => {
     body: [
       [
         {
-          content: `Reference: ${loyer.code} \nDate: ${dayjs().format("DD/MM/YYYY")}`,
+          content: `Reference: ${loyer.value?.code} \nDate: ${dayjs().format("DD/MM/YYYY")}`,
           styles: {
             halign: "right",
           },
@@ -418,9 +428,9 @@ const rentReceiptPdf = (societe: Societe, loyer: Loyer) => {
         },
         {
           content: `De: 
-            \n${societe.raison_sociale} 
-            \n${societe.siege}
-            \n${societe.boite_postale}
+            \n${societe.value.raison_sociale} 
+            \n${societe.value.siege}
+            \n${societe.value.boite_postale}
             \nCôte d'voire`,
           styles: {
             halign: "right",
@@ -443,7 +453,7 @@ const rentReceiptPdf = (societe: Societe, loyer: Loyer) => {
       ],
       [
         {
-          content: loyer.montant,
+          content: loyer.value?.montant,
           styles: {
             halign: "right",
             fontSize: 20,
@@ -480,7 +490,7 @@ const rentReceiptPdf = (societe: Societe, loyer: Loyer) => {
           },
         },
         {
-          content: loyer.montant,
+          content: loyer.value?.montant,
           styles: {
             halign: "right",
           },
@@ -493,7 +503,7 @@ const rentReceiptPdf = (societe: Societe, loyer: Loyer) => {
     body: [
       [
         {
-          content: `${societe.raison_sociale} ${societe.forme_juridique}, registre de commerce: ${societe.registre}`,
+          content: `${societe.value.raison_sociale} ${societe.value.forme_juridique}, registre de commerce: ${societe.value.registre}`,
           styles: {
             halign: "center",
           },

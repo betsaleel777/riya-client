@@ -24,7 +24,7 @@ const statusAvance = Object.freeze({
   contratWithout: "simple visite",
 });
 
-const statusLoyer = Object.freeze({
+const statusPayable = Object.freeze({
   paid: "payé",
   unpaid: "impayé",
   pending: "en attente",
@@ -37,5 +37,5 @@ export {
   statusContrat,
   statusAvance,
   typeContrat,
-  statusLoyer,
+  statusPayable,
 };

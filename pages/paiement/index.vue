@@ -92,18 +92,18 @@ const printReceipt = async (paiement: Paiement) => {
                 >
                   <el-table-column prop="code" label="Code" width="100" />
                   <el-table-column prop="montant" label="Montant" sortable />
-                  <el-table-column prop="payable_type" label="Type" width="150" sortable>
+                  <el-table-column prop="payable_type" label="Type" sortable>
                     <template #default="scope">
                       <el-tag type="info">{{ scope.row.payable_type }}</el-tag>
                     </template>
                   </el-table-column>
-                  <el-table-column prop="status" label="Statut" width="150">
+                  <el-table-column prop="status" label="Statut">
                     <template #default="scope">
                       <el-tag :type="classStatus(scope.row.status)">{{ scope.row.status }}</el-tag>
                     </template>
                   </el-table-column>
-                  <el-table-column prop="created_at" label="Date" width="110" sortable />
-                  <el-table-column width="150" align="right">
+                  <el-table-column prop="created_at" label="Date" sortable />
+                  <el-table-column align="right">
                     <template #header>
                       <span>Option</span>
                     </template>

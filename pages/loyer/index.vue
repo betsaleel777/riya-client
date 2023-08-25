@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
 import { useLoyerStore } from "~/store/loyer";
-import { statusLoyer } from "~/utils/constante";
-import { Loyer } from "~/types/Loyer";
+import { statusPayable } from "~/utils/constante";
+import { Loyer } from "~/types/loyer";
 
 useHead({ title: "Loyer" });
 definePageMeta({ middleware: "auth" });
@@ -18,9 +18,9 @@ const { onPrint } = useLoyerPrinter(loyers);
 const { handleDelete, modal } = useHandleCrudButtons(trash);
 const classStatus = (status: string) => {
   const classes = {
-    [statusLoyer.pending as string]: "warning",
-    [statusLoyer.paid as string]: "success",
-    [statusLoyer.unpaid as string]: "danger",
+    [statusPayable.pending as string]: "warning",
+    [statusPayable.paid as string]: "success",
+    [statusPayable.unpaid as string]: "danger",
   };
   return classes[status];
 };
@@ -133,15 +133,15 @@ const printReceipt = async (id: number) => {
                     </template>
                     <template #default="scope">
                       <el-button
-                        v-if="scope.row.status === statusLoyer.unpaid"
-                        type="info"
+                        v-if="scope.row.status === statusPayable.unpaid"
+                        type="primary"
                         @click="handleCashed(scope.row)"
                         plain
                         circle
                         ><i class="bx bx-dollar"
                       /></el-button>
                       <el-button
-                        v-else-if="scope.row.status === statusLoyer.pending"
+                        v-else-if="scope.row.status === statusPayable.pending"
                         type="success"
                         @click="handleValidate(scope.row)"
                         plain

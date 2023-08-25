@@ -114,9 +114,6 @@
               </li>
               <li><nuxt-link to="/dette" key="t-dettes">Dettes</nuxt-link></li>
               <li><nuxt-link to="/depense" key="t-depense">Dépenses</nuxt-link></li>
-              <li>
-                <nuxt-link to="/rembourssement" key="t-rembourssements">Rembourssements</nuxt-link>
-              </li>
             </ul>
           </li>
           <li>

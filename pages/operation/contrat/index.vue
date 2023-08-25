@@ -58,7 +58,7 @@ const activateDescriptionModal = (id: number, type: string) => {
                   style="width: 100%"
                   empty-text="aucun contrat"
                 >
-                  <el-table-column prop="code" label="Code" width="100" align="left">
+                  <el-table-column prop="code" label="Code" width="150" align="left">
                     <template #default="scope">
                       <el-link
                         @click="
