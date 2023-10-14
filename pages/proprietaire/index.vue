@@ -14,7 +14,7 @@ getAll();
 const { filterTableData, setPage, search, total, pageSize } =
   useProprietaireFilterPagination(proprietaires);
 const { onPrint } = useProprietairePrinter(proprietaires);
-const { handleDelete, handleEdit, modal } = useHandleCrudButtons(trash);
+const { handleDelete, handleEdit, handleShow, modal } = useHandleCrudButtons(trash);
 </script>
 
 <template>
@@ -34,7 +34,7 @@ const { handleDelete, handleEdit, modal } = useHandleCrudButtons(trash);
               >
                 <el-input v-model="search" class="w-50 mt-1" placeholder="Rechercher" />
                 <el-table
-                  v-loading="loading"
+                  v-loading="loading.index"
                   :data="filterTableData"
                   style="width: 100%"
                   empty-text="aucun propriétaire"
@@ -58,6 +58,9 @@ const { handleDelete, handleEdit, modal } = useHandleCrudButtons(trash);
                       <span>Option</span>
                     </template>
                     <template #default="scope">
+                      <el-button type="info" @click="handleShow(scope.row)" plain circle
+                        ><i class="bx bx-show"
+                      /></el-button>
                       <el-button type="primary" @click="handleEdit(scope.row)" plain circle
                         ><i class="bx bx-edit"
                       /></el-button>
@@ -94,6 +97,7 @@ const { handleDelete, handleEdit, modal } = useHandleCrudButtons(trash);
                 v-if="modal.edit.dialog"
                 v-model="modal.edit.dialog"
               />
+              <ProprietaireShowModal :id="modal.show.id" v-if="modal.show.dialog" v-model="modal.show.dialog" />
             </div>
           </div>
         </div>

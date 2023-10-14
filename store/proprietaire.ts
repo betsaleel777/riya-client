@@ -1,73 +1,83 @@
-import { defineStore } from "pinia";
-import { FetchError } from "ofetch";
-import { Proprietaire, Proprietaires } from "~/types/proprietaire";
+import { defineStore } from 'pinia'
+import { FetchError } from 'ofetch'
+import { Proprietaire, Proprietaires } from '~/types/proprietaire'
 
-export const useProprietaireStore = defineStore("proprietaire", () => {
-  const { $apiFetch } = useNuxtApp();
+export const useProprietaireStore = defineStore('proprietaire', () => {
+  const { $apiFetch } = useNuxtApp()
 
-  let proprietaires = ref<Proprietaires>([]);
-  let proprietaire = ref<Proprietaire>();
-  let loading = ref(false);
-  let loadingEdit = ref(false);
+  let proprietaires = ref<Proprietaires>([])
+  let proprietaire = ref<Proprietaire>()
+  let loading = reactive({ index: false, edit: false })
 
   const getAll = async () => {
     try {
-      loading.value = true;
-      proprietaires.value = await $apiFetch<Proprietaires>("api/proprietaires");
-      loading.value = false;
+      loading.index = true
+      proprietaires.value = await $apiFetch<Proprietaires>('api/proprietaires')
+      loading.index = false
     } catch (error) {
-      if (error instanceof FetchError && error.statusCode === 401) navigateTo("/login");
+      if (error instanceof FetchError && error.statusCode === 401) navigateTo('/login')
     }
-  };
+  }
 
   const create = async (payload: Proprietaire) => {
-    const response = await $apiFetch<string>("api/proprietaires", {
-      method: "post",
-      body: payload,
-    });
-    await getAll();
-    return response;
-  };
+    try {
+      const response = await $apiFetch<string>('api/proprietaires', {
+        method: 'post',
+        body: payload,
+      })
+      await getAll()
+      return response
+    } catch (error) {
+      if (error instanceof FetchError && error.statusCode === 401) navigateTo('/login')
+    }
+  }
 
   const update = async (payload: Proprietaire) => {
-    const response = await $apiFetch<string>("api/proprietaires/" + payload.id, {
-      method: "put",
-      body: payload,
-    });
-    await getAll();
-    return response;
-  };
+    try {
+      const response = await $apiFetch<string>('api/proprietaires/' + payload.id, {
+        method: 'put',
+        body: payload,
+      })
+      await getAll()
+      return response
+    } catch (error) {
+      if (error instanceof FetchError && error.statusCode === 401) navigateTo('/login')
+    }
+  }
 
   const trash = async (id: number) => {
-    const response = await $apiFetch<string>("api/proprietaires/" + id, {
-      method: "delete",
-    });
-    await getAll();
-    return response;
-  };
+    try {
+      const response = await $apiFetch<string>('api/proprietaires/' + id, {
+        method: 'delete',
+      })
+      await getAll()
+      return response
+    } catch (error) {
+      if (error instanceof FetchError && error.statusCode === 401) navigateTo('/login')
+    }
+  }
 
   const getOne = async (id: number) => {
     try {
-      loadingEdit.value = true;
-      const response = await $apiFetch<Proprietaire>("api/proprietaires/" + id, {
-        method: "get",
-      });
-      proprietaire.value = response;
-      loadingEdit.value = false;
+      loading.edit = true
+      const response = await $apiFetch<Proprietaire>('api/proprietaires/' + id, {
+        method: 'get',
+      })
+      proprietaire.value = response
+      loading.edit = false
     } catch (error) {
-      if (error instanceof FetchError && error.statusCode === 401) navigateTo("/login");
+      if (error instanceof FetchError && error.statusCode === 401) navigateTo('/login')
     }
-  };
+  }
 
   return {
     proprietaire,
     proprietaires,
     loading,
-    loadingEdit,
     getAll,
     create,
     update,
     getOne,
     trash,
-  };
-});
+  }
+})
