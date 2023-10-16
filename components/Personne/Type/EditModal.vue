@@ -18,7 +18,7 @@ const dialog = computed({
 });
 
 const { update, getOne } = useTypePersonneStore();
-const { type, loadingEdit: loading } = storeToRefs(useTypePersonneStore());
+const { type, loading } = storeToRefs(useTypePersonneStore());
 onMounted(async () => {
   await getOne(props.id);
 });
@@ -39,7 +39,7 @@ const { onSubmit } = useSubmitForm(update, dialog);
       destroy-on-close
       center
     >
-      <div v-loading="loading">
+      <div v-loading="loading.edit">
         <StructureTypeForm :errors="errors" />
       </div>
       <template #footer>

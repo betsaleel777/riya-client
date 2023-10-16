@@ -34,7 +34,7 @@ const { handleDelete, handleEdit, modal } = useHandleCrudButtons(trash);
               >
                 <el-input v-model="search" class="w-50 mt-1" placeholder="Rechercher" />
                 <el-table
-                  v-loading="loading"
+                  v-loading="loading.index"
                   :data="filterTableData"
                   style="width: 100%"
                   empty-text="aucun client"

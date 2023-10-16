@@ -19,7 +19,7 @@ const dialog = computed({
 });
 
 const { update, getOne } = useTerrainStore();
-const { terrain, loadingEdit: loading } = storeToRefs(useTerrainStore());
+const { terrain, loading } = storeToRefs(useTerrainStore());
 onMounted(async () => {
   await getOne(props.id);
 });
@@ -34,7 +34,7 @@ const { onSubmit } = useSubmitForm(update, dialog);
     v-slot="{ isSubmitting, errors }"
   >
     <el-dialog v-model="dialog" title="Modifier l'apprtement" width="50%" destroy-on-close center>
-      <div v-loading="loading">
+      <div v-loading="loading.edit">
         <TerrainDialogForm :errors="errors" />
       </div>
       <template #footer>

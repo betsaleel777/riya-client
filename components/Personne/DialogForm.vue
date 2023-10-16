@@ -27,6 +27,7 @@ let dialog = ref(false);
 let urlPiece = ref("");
 let urlAvatar = ref("");
 const { types } = storeToRefs(useTypePersonneStore());
+//const isEdit = Boolean(props.client?.id);
 onMounted(async () => {
   const { data: countries } = await useFetch<Countrie[]>("/json/countries.json");
   const { data: towns } = await useFetch<Villes>(

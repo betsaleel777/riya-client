@@ -6,7 +6,9 @@ const props = defineProps<{
   modelValue: boolean;
   id: number;
 }>();
-const emit = defineEmits<{ (event: "update:modelValue", payload: boolean): void }>();
+const emit = defineEmits<{
+  (event: "update:modelValue", payload: boolean): void;
+}>();
 const dialog = computed({
   get() {
     return props.modelValue;
@@ -17,7 +19,7 @@ const dialog = computed({
 });
 
 const { update, getOne } = useTypeAppartementStore();
-const { type, loadingEdit: loading } = storeToRefs(useTypeAppartementStore());
+const { type, loading } = storeToRefs(useTypeAppartementStore());
 onMounted(async () => {
   await getOne(props.id);
 });
@@ -38,7 +40,7 @@ const { onSubmit } = useSubmitForm(update, dialog);
       destroy-on-close
       center
     >
-      <div v-loading="loading">
+      <div v-loading="loading.edit">
         <StructureTypeForm :errors="errors" />
       </div>
       <template #footer>

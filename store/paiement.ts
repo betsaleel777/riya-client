@@ -22,56 +22,59 @@ export const usePaiementStore = defineStore("paiement", () => {
   };
 
   const create = async (payload: Paiement) => {
-    const response = await $apiFetch<string>("api/paiements", {
-      method: "post",
-      body: payload,
-    });
-    await getAchat(payload.payable_id);
-    return response;
+    try {
+      const response = await $apiFetch<string>("api/paiements", { method: "post", body: payload });
+      await getAchat(payload.payable_id);
+      return response;
+    } catch (error) {
+      if (error instanceof FetchError && error.statusCode === 401) navigateTo("/login");
+    }
   };
 
   const createDirect = async (payload: Paiement) => {
-    const response = await $apiFetch<string>("api/paiements/direct", {
-      method: "post",
-      body: payload,
-    });
-    await getAll();
-    return response;
+    try {
+      const response = await $apiFetch<string>("api/paiements/direct", { method: "post", body: payload });
+      await getAll();
+      return response;
+    } catch (error) {
+      if (error instanceof FetchError && error.statusCode === 401) navigateTo("/login");
+    }
   };
 
   const update = async (payload: Paiement) => {
-    const response = await $apiFetch<string>("api/paiements/" + payload.id, {
-      method: "put",
-      body: payload,
-    });
-    await getAchat(payload.payable_id);
-    return response;
+    try {
+      const response = await $apiFetch<string>("api/paiements/" + payload.id, { method: "put", body: payload });
+      await getAchat(payload.payable_id);
+      return response;
+    } catch (error) {
+      if (error instanceof FetchError && error.statusCode === 401) navigateTo("/login");
+    }
   };
 
   const updateDirect = async (payload: Paiement) => {
-    const response = await $apiFetch<string>("api/paiements/" + payload.id, {
-      method: "put",
-      body: payload,
-    });
-    await getAll();
-    return response;
+    try {
+      const response = await $apiFetch<string>("api/paiements/" + payload.id, { method: "put", body: payload });
+      await getAll();
+      return response;
+    } catch (error) {
+      if (error instanceof FetchError && error.statusCode === 401) navigateTo("/login");
+    }
   };
 
   const trash = async (id: number) => {
-    const response = await $apiFetch<string>("api/paiements/" + id, {
-      method: "delete",
-    });
-    await getAll();
-    return response;
+    try {
+      const response = await $apiFetch<string>("api/paiements/" + id, { method: "delete" });
+      await getAll();
+      return response;
+    } catch (error) {
+      if (error instanceof FetchError && error.statusCode === 401) navigateTo("/login");
+    }
   };
 
   const getOne = async (id: number) => {
     try {
       loading.edit = true;
-      const response = await $apiFetch<Paiement>("api/paiements/" + id, {
-        method: "get",
-      });
-      paiement.value = response;
+      paiement.value = await $apiFetch<Paiement>("api/paiements/" + id, { method: "get" });
       loading.edit = false;
     } catch (error) {
       if (error instanceof FetchError && error.statusCode === 401) navigateTo("/login");
@@ -80,9 +83,7 @@ export const usePaiementStore = defineStore("paiement", () => {
 
   const valider = async (payload: Paiement) => {
     try {
-      const response = await $apiFetch<string>(`api/paiements/validate/${payload.id}`, {
-        method: "PATCH",
-      });
+      const response = await $apiFetch<string>(`api/paiements/validate/${payload.id}`, { method: "PATCH" });
       await getAchat(payload.payable_id);
       return response;
     } catch (error) {
@@ -92,9 +93,7 @@ export const usePaiementStore = defineStore("paiement", () => {
 
   const validerPaiement = async (payload: Paiement) => {
     try {
-      const response = await $apiFetch<string>(`api/paiements/validate/${payload.id}`, {
-        method: "PATCH",
-      });
+      const response = await $apiFetch<string>(`api/paiements/validate/${payload.id}`, { method: "PATCH" });
       await getAll();
       return response;
     } catch (error) {

@@ -19,7 +19,7 @@ const dialog = computed({
 });
 
 const { update, getOne } = useTypeTerrainStore();
-const { type, loadingEdit: loading } = storeToRefs(useTypeTerrainStore());
+const { type, loading } = storeToRefs(useTypeTerrainStore());
 onMounted(async () => {
   await getOne(props.id);
 });
@@ -40,7 +40,7 @@ const { onSubmit } = useSubmitForm(update, dialog);
       destroy-on-close
       center
     >
-      <div v-loading="loading">
+      <div v-loading="loading.edit">
         <StructureTypeForm :errors="errors" />
       </div>
       <template #footer>

@@ -22,28 +22,31 @@ export const useAchatStore = defineStore("achat", () => {
   };
 
   const create = async (payload: Achat) => {
-    const response = await $apiFetch<string>("api/achats", {
-      method: "post",
-      body: payload,
-    });
-    await getAll();
-    return response;
+    try {
+      const response = await $apiFetch<string>("api/achats", { method: "post", body: payload });
+      await getAll();
+      return response;
+    } catch (error) {
+      if (error instanceof FetchError && error.statusCode === 401) navigateTo("/login");
+    }
   };
 
   const trash = async (id: number) => {
-    const response = await $apiFetch<string>("api/achats/" + id, {
-      method: "delete",
-    });
-    await getAll();
-    return response;
+    try {
+      const response = await $apiFetch<string>("api/achats/" + id, {
+        method: "delete",
+      });
+      await getAll();
+      return response;
+    } catch (error) {
+      if (error instanceof FetchError && error.statusCode === 401) navigateTo("/login");
+    }
   };
 
   const getOne = async (id: number) => {
     try {
       loading.edit = true;
-      const response = await $apiFetch<Achat>("api/achats/" + id, {
-        method: "get",
-      });
+      const response = await $apiFetch<Achat>("api/achats/" + id, { method: "get" });
       achat.value = response;
       loading.edit = false;
     } catch (error) {

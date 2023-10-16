@@ -25,20 +25,19 @@ export const useLoyerStore = defineStore("loyer", () => {
   };
 
   const trash = async (id: number) => {
-    const response = await $apiFetch<string>("api/loyers/" + id, {
-      method: "delete",
-    });
-    await getAll();
-    return response;
+    try {
+      const response = await $apiFetch<string>("api/loyers/" + id, { method: "delete" });
+      await getAll();
+      return response;
+    } catch (error) {
+      if (error instanceof FetchError && error.statusCode === 401) navigateTo("/login");
+    }
   };
 
   const getOne = async (id: number) => {
     try {
       loading.edit = true;
-      const response = await $apiFetch<Loyer>("api/loyers/" + id, {
-        method: "get",
-      });
-      loyer.value = response;
+      loyer.value = await $apiFetch<Loyer>("api/loyers/" + id, { method: "get" });
       loading.edit = false;
     } catch (error) {
       if (error instanceof FetchError && error.statusCode === 401) navigateTo("/login");
@@ -47,9 +46,7 @@ export const useLoyerStore = defineStore("loyer", () => {
 
   const cashed = async (id: number) => {
     try {
-      const response = await $apiFetch<string>(`api/loyers/cashed/${id}`, {
-        method: "PATCH",
-      });
+      const response = await $apiFetch<string>(`api/loyers/cashed/${id}`, { method: "PATCH" });
       await getAll();
       return response;
     } catch (error) {
@@ -59,9 +56,7 @@ export const useLoyerStore = defineStore("loyer", () => {
 
   const valider = async (id: number) => {
     try {
-      const response = await $apiFetch<string>(`api/loyers/validate/${id}`, {
-        method: "PATCH",
-      });
+      const response = await $apiFetch<string>(`api/loyers/validate/${id}`, { method: "PATCH" });
       await getAll();
       return response;
     } catch (error) {

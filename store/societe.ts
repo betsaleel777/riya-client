@@ -47,22 +47,27 @@ export const useSocieteStore = defineStore("societe", () => {
 
   const create = async (payload: Societe) => {
     const formData = hydrateForm(payload);
-    const response = await $apiFetch<string>("api/societes", {
-      method: "post",
-      body: formData,
-    });
-    await getOne();
-    return response;
+    try {
+      const response = await $apiFetch<string>("api/societes", { method: "post", body: formData });
+      await getOne();
+      return response;
+    } catch (error) {
+      if (error instanceof FetchError && error.statusCode === 401) navigateTo("/login");
+    }
   };
 
   const update = async (payload: Societe) => {
     const formData = hydrateForm(payload);
-    const response = await $apiFetch<string>("api/societes/" + payload.id + "?_method=PUT", {
-      method: "post",
-      body: formData,
-    });
-    await getOne();
-    return response;
+    try {
+      const response = await $apiFetch<string>("api/societes/" + payload.id + "?_method=PUT", {
+        method: "post",
+        body: formData
+      });
+      await getOne();
+      return response;
+    } catch (error) {
+      if (error instanceof FetchError && error.statusCode === 401) navigateTo("/login");
+    }
   };
 
   const getAction = (payload: Societe) => {
@@ -70,10 +75,13 @@ export const useSocieteStore = defineStore("societe", () => {
   };
 
   const getCount = async () => {
-    loading.value = true;
-    const response = await $apiFetch<Count>("api/societe-count", { method: "get" });
-    count.value = response;
-    loading.value = false;
+    try {
+      loading.value = true;
+      count.value = await $apiFetch<Count>("api/societe-count", { method: "get" });
+      loading.value = false;
+    } catch (error) {
+      if (error instanceof FetchError && error.statusCode === 401) navigateTo("/login");
+    }
   };
 
   return { societe, loading, getAction, getOne, getCount, count };
