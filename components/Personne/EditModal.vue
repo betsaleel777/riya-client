@@ -35,7 +35,7 @@ const { onSubmit } = useSubmitForm(update, dialog);
   >
     <el-dialog v-model="dialog" title="Modifier le client" width="35%" destroy-on-close center>
       <div v-loading="loading.edit">
-        <PersonneDialogForm :client="client" :errors="errors" />
+        <PersonneDialogForm :errors="errors" />
       </div>
       <template #footer>
         <span class="dialog-footer">

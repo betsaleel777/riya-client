@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
-import { Field } from "vee-validate";
+import { Field, useField } from "vee-validate";
 import { useTypePersonneStore } from "~/store/personne";
-import { Client } from "~/types/personne";
 interface Countrie {
   name: string;
   code: string;
@@ -16,18 +15,14 @@ interface Villes {
   next: string;
   results: Result[];
 }
-const props = defineProps<{
-  errors: any;
-  client?: Client;
-}>();
+const props = defineProps<{ errors: any }>();
 let loading = ref(true);
 let villes = ref<Result[] | undefined>([]);
 let pays = ref<Countrie[] | null>([]);
 let dialog = ref(false);
-let urlPiece = ref("");
-let urlAvatar = ref("");
+const { value: urlPiece } = useField<string>("piece");
+const { value: urlAvatar } = useField<string>("avatar");
 const { types } = storeToRefs(useTypePersonneStore());
-//const isEdit = Boolean(props.client?.id);
 onMounted(async () => {
   const { data: countries } = await useFetch<Countrie[]>("/json/countries.json");
   const { data: towns } = await useFetch<Villes>(
@@ -36,9 +31,7 @@ onMounted(async () => {
   pays = countries;
   villes.value = towns.value?.results.filter((town) => town.COMMUNE);
   const { getAll } = useTypePersonneStore();
-  await getAll();
-  urlPiece.value = props.client?.piece!;
-  urlAvatar.value = props.client?.avatar!;
+  getAll();
   loading.value = false;
 });
 
@@ -310,6 +303,7 @@ const onInput = (type: string) => {
             format="DD-MM-YYYY"
             value-format="YYYY-MM-DD"
             :class="{ 'is-invalid': props.errors.date_naissance }"
+            style="width: 100%"
           />
         </Field>
         <div class="invalid-feedback" v-if="errors.date_naissance">

@@ -2,9 +2,7 @@
 import { Form } from "vee-validate";
 import { usePersonneStore } from "~/store/personne";
 const { create } = usePersonneStore();
-const props = defineProps<{
-  modelValue: boolean;
-}>();
+const props = defineProps<{ modelValue: boolean }>();
 const emit = defineEmits<{ (event: "update:modelValue", payload: boolean): void }>();
 const dialog = computed({
   get() {

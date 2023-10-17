@@ -16,9 +16,7 @@ interface Villes {
   next: string;
   results: Result[];
 }
-const props = defineProps<{
-  errors: any;
-}>();
+const props = defineProps<{ errors: any }>();
 let loading = ref(true);
 let pays = ref<Countrie[] | null>([]);
 let villes = ref<Result[] | undefined>([]);
@@ -34,8 +32,8 @@ onMounted(async () => {
   villes.value = towns.value?.results.filter((town) => town.COMMUNE);
   const { getAll } = useTypeAppartementStore();
   const { getAll: getProprietaires } = useProprietaireStore();
-  await getAll();
-  await getProprietaires();
+  getAll();
+  getProprietaires();
   loading.value = false;
 });
 </script>
@@ -210,6 +208,7 @@ onMounted(async () => {
             :model-value="value"
             @update:model-value="handleChange"
             :class="{ 'is-invalid': props.errors.fonctions }"
+            style="width: 100%"
           >
             <el-option
               v-for="(item, key) in villes"
@@ -230,6 +229,7 @@ onMounted(async () => {
             :model-value="value"
             @update:model-value="handleChange"
             :class="{ 'is-invalid': props.errors.pays }"
+            style="width: 100%"
           >
             <el-option
               v-for="(item, key) in pays"

@@ -123,8 +123,12 @@ const usePersonneStore = defineStore("personne", () => {
   };
 
   const update = async (payload: Client) => {
+    const formData = hydrateForm(payload);
     try {
-      const response = await $apiFetch<string>("api/personnes/" + payload.id, { method: "put", body: payload });
+      const response = await $apiFetch<string>("api/personnes/" + payload.id + "?_method=PUT", {
+        method: "post",
+        body: formData
+      });
       await getAll();
       return response;
     } catch (error) {

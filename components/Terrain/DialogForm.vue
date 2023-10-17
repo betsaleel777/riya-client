@@ -34,8 +34,8 @@ onMounted(async () => {
   villes.value = towns.value?.results.filter((town) => town.COMMUNE);
   const { getAll } = useTypeTerrainStore();
   const { getAll: getProprietaires } = useProprietaireStore();
-  await getAll();
-  await getProprietaires();
+  getAll();
+  getProprietaires();
   loading.value = false;
 });
 </script>
@@ -200,6 +200,7 @@ onMounted(async () => {
             :model-value="value"
             @update:model-value="handleChange"
             :class="{ 'is-invalid': props.errors.fonctions }"
+            style="width: 100%"
           >
             <el-option
               v-for="(item, key) in villes"
@@ -220,6 +221,7 @@ onMounted(async () => {
             :model-value="value"
             @update:model-value="handleChange"
             :class="{ 'is-invalid': props.errors.pays }"
+            style="width: 100%"
           >
             <el-option
               v-for="(item, key) in pays"
