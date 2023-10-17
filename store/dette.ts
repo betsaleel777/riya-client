@@ -30,23 +30,15 @@ export const useDetteStore = defineStore("dette", () => {
   };
 
   const repay = async (id: number) => {
-    try {
-      const response = await $apiFetch<string>(`api/dettes/repay/${id}`, { method: "PATCH" });
-      await getAll();
-      return response;
-    } catch (error) {
-      if (error instanceof FetchError && error.statusCode === 401) navigateTo("/login");
-    }
+    const response = await $apiFetch<string>(`api/dettes/repay/${ id }`, { method: "PATCH" });
+    await getAll();
+    return response;
   };
 
   const valider = async (id: number) => {
-    try {
-      const response = await $apiFetch<string>(`api/dettes/validate/${id}`, { method: "PATCH" });
-      await getAll();
-      return response;
-    } catch (error) {
-      if (error instanceof FetchError && error.statusCode === 401) navigateTo("/login");
-    }
+    const response = await $apiFetch<string>(`api/dettes/validate/${ id }`, { method: "PATCH" });
+    await getAll();
+    return response;
   };
 
   return { getAll, getOne, loading, dettes, valider, repay };

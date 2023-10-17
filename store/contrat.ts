@@ -24,35 +24,24 @@ export const useContratStore = defineStore("contrat", () => {
   };
 
   const update = async (payload: Contrat) => {
-    try {
-      const response = await $apiFetch<string>("api/contrats/" + payload.id, {
-        method: "put",
-        body: payload,
-      });
-      await getAll();
-      return response;
-    } catch (error) {
-      if (error instanceof FetchError && error.statusCode === 401) navigateTo("/login");
-    }
+    const response = await $apiFetch<string>("api/contrats/" + payload.id, {
+      method: "put",
+      body: payload,
+    });
+    await getAll();
+    return response;
   };
 
   const trash = async (id: number) => {
-    try {
-      const response = await $apiFetch<string>("api/contrats/" + id, { method: "delete" });
-      await getAll();
-      return response;
-    } catch (error) {
-      if (error instanceof FetchError && error.statusCode === 401) navigateTo("/login");
-    }
+    const response = await $apiFetch<string>("api/contrats/" + id, { method: "delete" });
+    await getAll();
+    return response;
   };
 
   const getOne = async (id: number) => {
     try {
       loading.edit = true;
-      const response = await $apiFetch<Contrat>("api/contrats/" + id, {
-        method: "get",
-      });
-      contrat.value = response;
+      contrat.value = await $apiFetch<Contrat>("api/contrats/" + id, { method: "get" });
       loading.edit = false;
     } catch (error) {
       if (error instanceof FetchError && error.statusCode === 401) navigateTo("/login");

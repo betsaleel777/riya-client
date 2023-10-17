@@ -21,50 +21,33 @@ const useTypeAppartementStore = defineStore('type-appartement', () => {
   }
 
   const create = async (payload: TypePostForm) => {
-    try {
-      const response = await $apiFetch<string>('api/appartements-types', {
-        method: 'post',
-        body: payload,
-      })
-      await getAll()
-      return response
-    } catch (error) {
-      if (error instanceof FetchError && error.statusCode === 401) navigateTo('/login')
-    }
+    const response = await $apiFetch<string>('api/appartements-types', {
+      method: 'post',
+      body: payload,
+    })
+    await getAll()
+    return response
   }
 
   const update = async (payload: TypePutForm) => {
-    try {
-      const response = await $apiFetch<string>('api/appartements-types/' + payload.id, {
-        method: 'put',
-        body: payload,
-      })
-      await getAll()
-      return response
-    } catch (error) {
-      if (error instanceof FetchError && error.statusCode === 401) navigateTo('/login')
-    }
+    const response = await $apiFetch<string>('api/appartements-types/' + payload.id, {
+      method: 'put',
+      body: payload,
+    })
+    await getAll()
+    return response
   }
 
   const trash = async (id: number) => {
-    try {
-      const response = await $apiFetch<string>('api/appartements-types/' + id, {
-        method: 'delete',
-      })
-      await getAll()
-      return response
-    } catch (error) {
-      if (error instanceof FetchError && error.statusCode === 401) navigateTo('/login')
-    }
+    const response = await $apiFetch<string>('api/appartements-types/' + id, { method: 'delete' })
+    await getAll()
+    return response
   }
 
   const getOne = async (id: number) => {
     try {
       loading.edit = true
-      const response = await $apiFetch<TypeAppartement>('api/appartements-types/' + id, {
-        method: 'get',
-      })
-      type.value = response
+      type.value = await $apiFetch<TypeAppartement>('api/appartements-types/' + id, { method: 'get' })
       loading.edit = false
     } catch (error) {
       if (error instanceof FetchError && error.statusCode === 401) navigateTo('/login')
@@ -95,41 +78,27 @@ const useAppartementStore = defineStore('appartement', () => {
   }
 
   const create = async (payload: Appartement) => {
-    try {
-      const response = await $apiFetch<string>('api/appartements', {
-        method: 'post',
-        body: payload,
-      })
-      await getAll()
-      return response
-    } catch (error) {
-      if (error instanceof FetchError && error.statusCode === 401) navigateTo('/login')
-    }
+    const response = await $apiFetch<string>('api/appartements', {
+      method: 'post',
+      body: payload,
+    })
+    await getAll()
+    return response
   }
 
   const update = async (payload: Appartement) => {
-    try {
-      const response = await $apiFetch<string>('api/appartements/' + payload.id, {
-        method: 'put',
-        body: payload,
-      })
-      await getAll()
-      return response
-    } catch (error) {
-      if (error instanceof FetchError && error.statusCode === 401) navigateTo('/login')
-    }
+    const response = await $apiFetch<string>('api/appartements/' + payload.id, {
+      method: 'put',
+      body: payload,
+    })
+    await getAll()
+    return response
   }
 
   const trash = async (id: number) => {
-    try {
-      const response = await $apiFetch<string>('api/appartements/' + id, {
-        method: 'delete',
-      })
-      await getAll()
-      return response
-    } catch (error) {
-      if (error instanceof FetchError && error.statusCode === 401) navigateTo('/login')
-    }
+    const response = await $apiFetch<string>('api/appartements/' + id, { method: 'delete' })
+    await getAll()
+    return response
   }
 
   const getOne = async (id: number) => {

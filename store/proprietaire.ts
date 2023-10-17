@@ -20,33 +20,21 @@ export const useProprietaireStore = defineStore('proprietaire', () => {
   }
 
   const create = async (payload: Proprietaire) => {
-    try {
-      const response = await $apiFetch<string>('api/proprietaires', { method: 'post', body: payload })
-      await getAll()
-      return response
-    } catch (error) {
-      if (error instanceof FetchError && error.statusCode === 401) navigateTo('/login')
-    }
+    const response = await $apiFetch<string>('api/proprietaires', { method: 'post', body: payload })
+    await getAll()
+    return response
   }
 
   const update = async (payload: Proprietaire) => {
-    try {
-      const response = await $apiFetch<string>('api/proprietaires/' + payload.id, { method: 'put', body: payload })
-      await getAll()
-      return response
-    } catch (error) {
-      if (error instanceof FetchError && error.statusCode === 401) navigateTo('/login')
-    }
+    const response = await $apiFetch<string>('api/proprietaires/' + payload.id, { method: 'put', body: payload })
+    await getAll()
+    return response
   }
 
   const trash = async (id: number) => {
-    try {
-      const response = await $apiFetch<string>('api/proprietaires/' + id, { method: 'delete' })
-      await getAll()
-      return response
-    } catch (error) {
-      if (error instanceof FetchError && error.statusCode === 401) navigateTo('/login')
-    }
+    const response = await $apiFetch<string>('api/proprietaires/' + id, { method: 'delete' })
+    await getAll()
+    return response
   }
 
   const getOne = async (id: number) => {

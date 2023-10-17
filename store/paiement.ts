@@ -22,53 +22,33 @@ export const usePaiementStore = defineStore("paiement", () => {
   };
 
   const create = async (payload: Paiement) => {
-    try {
-      const response = await $apiFetch<string>("api/paiements", { method: "post", body: payload });
-      await getAchat(payload.payable_id);
-      return response;
-    } catch (error) {
-      if (error instanceof FetchError && error.statusCode === 401) navigateTo("/login");
-    }
+    const response = await $apiFetch<string>("api/paiements", { method: "post", body: payload });
+    await getAchat(payload.payable_id);
+    return response;
   };
 
   const createDirect = async (payload: Paiement) => {
-    try {
-      const response = await $apiFetch<string>("api/paiements/direct", { method: "post", body: payload });
-      await getAll();
-      return response;
-    } catch (error) {
-      if (error instanceof FetchError && error.statusCode === 401) navigateTo("/login");
-    }
+    const response = await $apiFetch<string>("api/paiements/direct", { method: "post", body: payload });
+    await getAll();
+    return response;
   };
 
   const update = async (payload: Paiement) => {
-    try {
-      const response = await $apiFetch<string>("api/paiements/" + payload.id, { method: "put", body: payload });
-      await getAchat(payload.payable_id);
-      return response;
-    } catch (error) {
-      if (error instanceof FetchError && error.statusCode === 401) navigateTo("/login");
-    }
+    const response = await $apiFetch<string>("api/paiements/" + payload.id, { method: "put", body: payload });
+    await getAchat(payload.payable_id);
+    return response;
   };
 
   const updateDirect = async (payload: Paiement) => {
-    try {
-      const response = await $apiFetch<string>("api/paiements/" + payload.id, { method: "put", body: payload });
-      await getAll();
-      return response;
-    } catch (error) {
-      if (error instanceof FetchError && error.statusCode === 401) navigateTo("/login");
-    }
+    const response = await $apiFetch<string>("api/paiements/" + payload.id, { method: "put", body: payload });
+    await getAll();
+    return response;
   };
 
   const trash = async (id: number) => {
-    try {
-      const response = await $apiFetch<string>("api/paiements/" + id, { method: "delete" });
-      await getAll();
-      return response;
-    } catch (error) {
-      if (error instanceof FetchError && error.statusCode === 401) navigateTo("/login");
-    }
+    const response = await $apiFetch<string>("api/paiements/" + id, { method: "delete" });
+    await getAll();
+    return response;
   };
 
   const getOne = async (id: number) => {
@@ -82,33 +62,21 @@ export const usePaiementStore = defineStore("paiement", () => {
   };
 
   const valider = async (payload: Paiement) => {
-    try {
-      const response = await $apiFetch<string>(`api/paiements/validate/${payload.id}`, { method: "PATCH" });
-      await getAchat(payload.payable_id);
-      return response;
-    } catch (error) {
-      if (error instanceof FetchError && error.statusCode === 401) navigateTo("/login");
-    }
+    const response = await $apiFetch<string>(`api/paiements/validate/${ payload.id }`, { method: "PATCH" });
+    await getAchat(payload.payable_id);
+    return response;
   };
 
   const validerPaiement = async (payload: Paiement) => {
-    try {
-      const response = await $apiFetch<string>(`api/paiements/validate/${payload.id}`, { method: "PATCH" });
-      await getAll();
-      return response;
-    } catch (error) {
-      if (error instanceof FetchError && error.statusCode === 401) navigateTo("/login");
-    }
+    const response = await $apiFetch<string>(`api/paiements/validate/${ payload.id }`, { method: "PATCH" });
+    await getAll();
+    return response;
   };
 
   const getByAchat = async (id: number) => {
-    try {
-      loading.index = true;
-      paiements.value = await $apiFetch<Paiements>("api/paiements/achat/" + id);
-      loading.index = false;
-    } catch (error) {
-      if (error instanceof FetchError && error.statusCode === 401) navigateTo("/login");
-    }
+    loading.index = true;
+    paiements.value = await $apiFetch<Paiements>("api/paiements/achat/" + id);
+    loading.index = false;
   };
 
   return {

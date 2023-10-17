@@ -11,6 +11,7 @@ interface Societe {
   image?: Blob;
   registre: string;
   raison_sociale: string;
+  frais_dossier: number;
 }
 
 interface Count {

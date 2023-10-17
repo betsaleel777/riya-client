@@ -4,9 +4,7 @@ import { Societe } from "~/types/societe";
 import { useSocieteStore } from "@/store/societe";
 import { Field, Form } from "vee-validate";
 
-const props = defineProps<{
-  societe: Societe;
-}>();
+const props = defineProps<{ societe: Societe }>();
 const { getAction } = useSocieteStore();
 const { count } = storeToRefs(useSocieteStore());
 const action = getAction(props.societe);
@@ -183,6 +181,22 @@ const onInput = () => {
                   <div class="block">
                     <el-avatar :size="150" :src="url" />
                   </div>
+                </div>
+                <div class="col-md-7">
+                  <div class="mb-3">
+                    <label for="description" class="form-label">Description</label>
+                    <Field
+                      name="description"
+                      type="text"
+                      class="form-control"
+                      id="description"
+                      as="textarea"
+                      cols="30"
+                      rows="5"
+                    />
+                  </div>
+                </div>
+                <div class="col-md-5">
                   <Field name="image" v-slot="{ handleChange, handleBlur }">
                     <label for="formFile" class="form-label">Logo de la societe</label>
                     <input
@@ -201,17 +215,16 @@ const onInput = () => {
                   </Field>
                 </div>
                 <div class="col-md-7">
-                  <div class="mb-3">
-                    <label for="description" class="form-label">Description</label>
-                    <Field
-                      name="description"
-                      type="text"
-                      class="form-control"
-                      id="description"
-                      as="textarea"
-                      cols="30"
-                      rows="7"
-                    />
+                  <label for="frais_dossier" class="form-label">Frais de dossier</label>
+                  <Field
+                    name="frais_dossier"
+                    type="text"
+                    class="form-control"
+                    id="frais_dossier"
+                    :class="{ 'is-invalid': errors.frais_dossier }"
+                  />
+                  <div class="invalid-feedback" v-if="errors.frais_dossier">
+                    {{ errors.frais_dossier }}
                   </div>
                 </div>
               </div>

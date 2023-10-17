@@ -25,13 +25,9 @@ export const useLoyerStore = defineStore("loyer", () => {
   };
 
   const trash = async (id: number) => {
-    try {
-      const response = await $apiFetch<string>("api/loyers/" + id, { method: "delete" });
-      await getAll();
-      return response;
-    } catch (error) {
-      if (error instanceof FetchError && error.statusCode === 401) navigateTo("/login");
-    }
+    const response = await $apiFetch<string>("api/loyers/" + id, { method: "delete" });
+    await getAll();
+    return response;
   };
 
   const getOne = async (id: number) => {
@@ -45,23 +41,15 @@ export const useLoyerStore = defineStore("loyer", () => {
   };
 
   const cashed = async (id: number) => {
-    try {
-      const response = await $apiFetch<string>(`api/loyers/cashed/${id}`, { method: "PATCH" });
-      await getAll();
-      return response;
-    } catch (error) {
-      if (error instanceof FetchError && error.statusCode === 401) navigateTo("/login");
-    }
+    const response = await $apiFetch<string>(`api/loyers/cashed/${ id }`, { method: "PATCH" });
+    await getAll();
+    return response;
   };
 
   const valider = async (id: number) => {
-    try {
-      const response = await $apiFetch<string>(`api/loyers/validate/${id}`, { method: "PATCH" });
-      await getAll();
-      return response;
-    } catch (error) {
-      if (error instanceof FetchError && error.statusCode === 401) navigateTo("/login");
-    }
+    const response = await $apiFetch<string>(`api/loyers/validate/${ id }`, { method: "PATCH" });
+    await getAll();
+    return response;
   };
 
   return { loyers, loyer, impayes, loading, getAll, getOne, trash, cashed, valider };

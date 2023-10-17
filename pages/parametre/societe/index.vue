@@ -6,8 +6,8 @@ definePageMeta({ middleware: "auth" });
 const { getOne, getCount } = useSocieteStore();
 const { societe, loading } = storeToRefs(useSocieteStore());
 onMounted(async () => {
-  await getOne();
-  await getCount();
+  getOne();
+  getCount();
 });
 </script>
 

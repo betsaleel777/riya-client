@@ -21,39 +21,24 @@ const useTypePersonneStore = defineStore("type-personne", () => {
   };
 
   const create = async (payload: TypePostForm) => {
-    try {
-      const response = await $apiFetch<string>("api/typeClient", {
-        method: "post",
-        body: payload,
-      });
-      await getAll();
-      return response;
-    } catch (error) {
-      if (error instanceof FetchError && error.statusCode === 401) navigateTo("/login");
-    }
+    const response = await $apiFetch<string>("api/typeClient", { method: "post", body: payload });
+    await getAll();
+    return response;
   };
 
   const update = async (payload: TypePutForm) => {
-    try {
-      const response = await $apiFetch<string>("api/typeClient/" + payload.id, {
-        method: "put",
-        body: payload,
-      });
-      await getAll();
-      return response;
-    } catch (error) {
-      if (error instanceof FetchError && error.statusCode === 401) navigateTo("/login");
-    }
+    const response = await $apiFetch<string>("api/typeClient/" + payload.id, {
+      method: "put",
+      body: payload,
+    });
+    await getAll();
+    return response;
   };
 
   const trash = async (id: number) => {
-    try {
-      const response = await $apiFetch<string>("api/typeClient/" + id, { method: "delete" });
-      await getAll();
-      return response;
-    } catch (error) {
-      if (error instanceof FetchError && error.statusCode === 401) navigateTo("/login");
-    }
+    const response = await $apiFetch<string>("api/typeClient/" + id, { method: "delete" });
+    await getAll();
+    return response;
   };
 
   const getOne = async (id: number) => {
@@ -113,39 +98,27 @@ const usePersonneStore = defineStore("personne", () => {
 
   const create = async (payload: Client) => {
     const formData = hydrateForm(payload);
-    try {
-      const response = await $apiFetch<string>("api/personnes", { method: "post", body: formData });
-      await getAll();
-      return response;
-    } catch (error) {
-      if (error instanceof FetchError && error.statusCode === 401) navigateTo("/login");
-    }
+    const response = await $apiFetch<string>("api/personnes", { method: "post", body: formData });
+    await getAll();
+    return response;
   };
 
   const update = async (payload: Client) => {
     const formData = hydrateForm(payload);
-    try {
-      const response = await $apiFetch<string>("api/personnes/" + payload.id + "?_method=PUT", {
-        method: "post",
-        body: formData
-      });
-      await getAll();
-      return response;
-    } catch (error) {
-      if (error instanceof FetchError && error.statusCode === 401) navigateTo("/login");
-    }
+    const response = await $apiFetch<string>("api/personnes/" + payload.id + "?_method=PUT", {
+      method: "post",
+      body: formData
+    });
+    await getAll();
+    return response;
   };
 
   const trash = async (id: number) => {
-    try {
-      const response = await $apiFetch<string>("api/personnes/" + id, {
-        method: "delete",
-      });
-      await getAll();
-      return response;
-    } catch (error) {
-      if (error instanceof FetchError && error.statusCode === 401) navigateTo("/login");
-    }
+    const response = await $apiFetch<string>("api/personnes/" + id, {
+      method: "delete",
+    });
+    await getAll();
+    return response;
   };
 
   const getOne = async (id: number) => {

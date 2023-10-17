@@ -15,6 +15,7 @@ export const useSocieteStore = defineStore("societe", () => {
     registre: "",
     raison_sociale: "",
     description: "",
+    frais_dossier: 0,
   });
   let loading = ref(false);
   let count = ref<Count>();
@@ -30,6 +31,7 @@ export const useSocieteStore = defineStore("societe", () => {
     formData.append("registre", payload.registre ?? "");
     formData.append("raison_sociale", payload.raison_sociale ?? "");
     formData.append("description", payload.description ?? "");
+    formData.append("frais_dossier", String(payload.frais_dossier));
     if (payload.image !== undefined) formData.append("image", payload.image, payload.image.name);
     return formData;
   };
@@ -47,27 +49,19 @@ export const useSocieteStore = defineStore("societe", () => {
 
   const create = async (payload: Societe) => {
     const formData = hydrateForm(payload);
-    try {
-      const response = await $apiFetch<string>("api/societes", { method: "post", body: formData });
-      await getOne();
-      return response;
-    } catch (error) {
-      if (error instanceof FetchError && error.statusCode === 401) navigateTo("/login");
-    }
+    const response = await $apiFetch<string>("api/societes", { method: "post", body: formData });
+    await getOne();
+    return response;
   };
 
   const update = async (payload: Societe) => {
     const formData = hydrateForm(payload);
-    try {
-      const response = await $apiFetch<string>("api/societes/" + payload.id + "?_method=PUT", {
-        method: "post",
-        body: formData
-      });
-      await getOne();
-      return response;
-    } catch (error) {
-      if (error instanceof FetchError && error.statusCode === 401) navigateTo("/login");
-    }
+    const response = await $apiFetch<string>("api/societes/" + payload.id + "?_method=PUT", {
+      method: "post",
+      body: formData
+    });
+    await getOne();
+    return response;
   };
 
   const getAction = (payload: Societe) => {

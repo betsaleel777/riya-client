@@ -21,33 +21,21 @@ const useTypeTerrainStore = defineStore("type-terrain", () => {
   };
 
   const create = async (payload: TypePostForm) => {
-    try {
-      const response = await $apiFetch<string>("api/typeTerrain", { method: "post", body: payload });
-      await getAll();
-      return response;
-    } catch (error) {
-      if (error instanceof FetchError && error.statusCode === 401) navigateTo("/login");
-    }
+    const response = await $apiFetch<string>("api/typeTerrain", { method: "post", body: payload });
+    await getAll();
+    return response;
   };
 
   const update = async (payload: TypePutForm) => {
-    try {
-      const response = await $apiFetch<string>("api/typeTerrain/" + payload.id, { method: "put", body: payload });
-      await getAll();
-      return response;
-    } catch (error) {
-      if (error instanceof FetchError && error.statusCode === 401) navigateTo("/login");
-    }
+    const response = await $apiFetch<string>("api/typeTerrain/" + payload.id, { method: "put", body: payload });
+    await getAll();
+    return response;
   };
 
   const trash = async (id: number) => {
-    try {
-      const response = await $apiFetch<string>("api/typeTerrain/" + id, { method: "delete" });
-      await getAll();
-      return response;
-    } catch (error) {
-      if (error instanceof FetchError && error.statusCode === 401) navigateTo("/login");
-    }
+    const response = await $apiFetch<string>("api/typeTerrain/" + id, { method: "delete" });
+    await getAll();
+    return response;
   };
 
   const getOne = async (id: number) => {
@@ -82,36 +70,24 @@ const useTerrainStore = defineStore("terrain", () => {
   };
 
   const create = async (payload: Terrain) => {
-    try {
-      const response = await $apiFetch<string>("api/terrains", { method: "post", body: payload });
-      await getAll();
-      return response;
-    } catch (error) {
-      if (error instanceof FetchError && error.statusCode === 401) navigateTo("/login");
-    }
+    const response = await $apiFetch<string>("api/terrains", { method: "post", body: payload });
+    await getAll();
+    return response;
   };
 
   const update = async (payload: Terrain) => {
-    try {
-      const response = await $apiFetch<string>("api/terrains/" + payload.id, {
-        method: "put",
-        body: payload
-      });
-      await getAll();
-      return response;
-    } catch (error) {
-      if (error instanceof FetchError && error.statusCode === 401) navigateTo("/login");
-    }
+    const response = await $apiFetch<string>("api/terrains/" + payload.id, {
+      method: "put",
+      body: payload
+    });
+    await getAll();
+    return response;
   };
 
   const trash = async (id: number) => {
-    try {
-      const response = await $apiFetch<string>("api/terrains/" + id, { method: "delete" });
-      await getAll();
-      return response;
-    } catch (error) {
-      if (error instanceof FetchError && error.statusCode === 401) navigateTo("/login");
-    }
+    const response = await $apiFetch<string>("api/terrains/" + id, { method: "delete" });
+    await getAll();
+    return response;
   };
 
   const getOne = async (id: number) => {
