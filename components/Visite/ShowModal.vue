@@ -31,14 +31,23 @@ const validated = computed(() => visite.value?.status === statusValidable.valid)
 const validatedProvisoire = computed(() => {
   const first = visite.value?.status === statusValidable.wait;
   const second =
-    visite.value?.frais !== 0 && visite.value?.caution !== 0 && visite.value?.avance !== 0;
+    visite.value?.frais !== 0 ||
+    visite.value?.caution !== 0 ||
+    visite.value?.avance !== 0 ||
+    visite.value?.frais_dossier !== 0;
   return first && second;
 });
 const validable = computed(() => {
   const first =
-    visite.value?.frais === 0 && visite.value?.caution === 0 && visite.value.avance === 0;
+    visite.value?.frais === 0 &&
+    visite.value?.caution === 0 &&
+    visite.value.avance === 0 &&
+    visite.value?.frais_dossier === 0;
   const second =
-    visite.value?.frais !== 0 && visite.value?.caution !== 0 && visite.value?.avance !== 0;
+    visite.value?.frais !== 0 &&
+    visite.value?.caution !== 0 &&
+    visite.value?.avance !== 0 &&
+    visite.value?.frais_dossier !== 0;
   if (validated.value) return false;
   else return first || second;
 });
@@ -72,16 +81,15 @@ const imprimerProvisoire = () => {
     destroy-on-close
     center
   >
-    <div class="card-header">
-      <span></span>
+    <div class="d-flex flex-row-reverse">
+      <el-button @click="handleValidate" v-if="validable" type="success" text
+        >Valider la visite</el-button
+      >
       <el-button @click="imprimer" v-if="validated" type="primary" text
         >Imprimer reçu de visite</el-button
       >
       <el-button @click="imprimerProvisoire" v-if="validatedProvisoire" type="primary" text
         >Imprimer reçu provisoire</el-button
-      >
-      <el-button @click="handleValidate" v-if="validable" type="success" text
-        >Valider la visite</el-button
       >
     </div>
     <div v-loading="loading.edit">
@@ -102,12 +110,4 @@ const imprimerProvisoire = () => {
   </el-dialog>
 </template>
 
-<style scoped>
-.card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: transparent;
-  padding: 0;
-}
-</style>
+<style scoped></style>

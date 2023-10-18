@@ -27,14 +27,15 @@ onMounted(async () => {
   <div class="mb-3">
     <label for="client" class="form-label">Client</label>
     <Field name="personne_id" v-slot="{ value, handleChange }">
-      <el-row>
-        <el-col :span="20">
+      <el-row :gutter="5">
+        <el-col :span="21">
           <el-select
             id="client"
             filterable
             :model-value="value"
             @update:model-value="handleChange"
             :class="{ 'is-invalid': props.errors.personne_id }"
+            class="w-100"
           >
             <template #append><i class="bx bx-plus" /></template>
             <el-option
@@ -48,9 +49,11 @@ onMounted(async () => {
             {{ props.errors.personne_id }}
           </div>
         </el-col>
-        <el-col :span="4">
+        <el-col :span="3">
           <el-tooltip content="Créer un client" placement="bottom">
-            <el-button @click="dialog.personne = true" plain><i class="bx bx-plus" /></el-button>
+            <el-button class="w-100" @click="dialog.personne = true" plain
+              ><i class="bx bx-plus"
+            /></el-button>
           </el-tooltip>
         </el-col>
       </el-row>
@@ -75,14 +78,15 @@ onMounted(async () => {
   <div class="mb-3">
     <label for="appartement" class="form-label">Appartement</label>
     <Field name="appartement_id" v-slot="{ value, handleChange }">
-      <el-row>
-        <el-col :span="20">
+      <el-row :gutter="5">
+        <el-col :span="21">
           <el-select
             id="appartement"
             filterable
             :model-value="value"
             @update:model-value="handleChange"
             :class="{ 'is-invalid': props.errors.appartement_id }"
+            class="w-100"
           >
             <template #append><i class="bx bx-plus" /></template>
             <el-option
@@ -96,9 +100,11 @@ onMounted(async () => {
             {{ props.errors.appartement_id }}
           </div>
         </el-col>
-        <el-col :span="4">
+        <el-col :span="3">
           <el-tooltip content="Créer un appartement" placement="bottom">
-            <el-button @click="dialog.appartement = true" plain><i class="bx bx-plus" /></el-button>
+            <el-button class="w-100" @click="dialog.appartement = true" plain
+              ><i class="bx bx-plus"
+            /></el-button>
           </el-tooltip>
         </el-col>
       </el-row>

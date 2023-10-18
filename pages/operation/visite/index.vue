@@ -114,7 +114,7 @@ const classStatus = (status: string) => {
                       }}</el-tag>
                     </template>
                   </el-table-column>
-                  <el-table-column width="100" align="right">
+                  <el-table-column width="150" align="right">
                     <template #header>
                       <span>Option</span>
                     </template>

@@ -1,7 +1,6 @@
 import { Appartement } from "./appartement";
 import { Entity } from "./global";
 import { Client } from "./personne";
-import { Terrain } from "./terrain";
 
 const enum OperationName {
   FRAIS = "frais",
@@ -32,6 +31,7 @@ interface Visite extends Entity {
   avanceObject: Operation | null;
   fraisObject: Operation | null;
   avanceStatus: string;
+  frais_dossier: number;
 }
 
 interface VisiteInfo extends Entity {

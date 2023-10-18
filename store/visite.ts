@@ -59,28 +59,39 @@ export const useVisiteStore = defineStore("visite", () => {
   };
 
   const validerDirectement = async (id: number) => {
-    const response = await $apiFetch<string>(`api/visites/direct-validate/${id}`, {
+    const response = await $apiFetch<string>(`api/visites/direct-validate/${ id }`, {
       method: "PATCH",
     });
     await getAll();
     return response;
   };
 
+  const fraisPatch = async (payload: { id: number, frais_dossier: number }) => {
+    const response = await $apiFetch<string>(`api/visites/frais-dossier/${ payload.id }`, {
+      method: "PATCH",
+      body: payload
+    });
+    await getOne(payload.id);
+    return response;
+  };
+
   const createOperation = async (payload: Operation) => {
-    const response = await $apiFetch<string>(`api/${payload.type}`, {
+    const response = await $apiFetch<string>(`api/${ payload.type }`, {
       method: "post",
       body: payload,
     });
     await getOne(payload.visite_id);
+    await getAll()
     return response;
   };
 
   const updateOperation = async (payload: Operation) => {
-    const response = await $apiFetch<string>(`api/${payload.type}/${payload.id}`, {
+    const response = await $apiFetch<string>(`api/${ payload.type }/${ payload.id }`, {
       method: "put",
       body: payload,
     });
     await getOne(payload.visite_id);
+    await getAll()
     return response;
   };
 
@@ -99,5 +110,6 @@ export const useVisiteStore = defineStore("visite", () => {
     trash,
     validerDirectement,
     getOperationAction,
+    fraisPatch
   };
 });
