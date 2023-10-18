@@ -12,6 +12,9 @@ const props = defineProps<{
     <el-descriptions-item label="Montant de visite:"
       >{{ props.visite?.montant }} FCFA</el-descriptions-item
     >
+    <el-descriptions-item label="Frais de dossier:"
+      >{{ props.visite?.frais_dossier! }} FCFA</el-descriptions-item
+    >
     <el-descriptions-item label="Frais agence:"
       >{{
         props.visite?.appartement?.montant_location! * props.visite?.frais!

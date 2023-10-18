@@ -22,10 +22,10 @@ const activeName = ref("visite");
 const contratDialog = ref(false);
 const { getOne, validerDirectement } = useVisiteStore();
 const { visite, loading } = storeToRefs(useVisiteStore());
-let displayTab = ref(false);
+let dataPending = ref(false);
 onMounted(async () => {
   await getOne(props.id);
-  displayTab.value = true;
+  dataPending.value = true;
 });
 const validated = computed(() => visite.value?.status === statusValidable.valid);
 const validatedProvisoire = computed(() => {
@@ -104,7 +104,7 @@ const imprimerProvisoire = () => {
           <PersonneDescriptionComponent :personne="visite?.personne!" />
         </el-collapse-item>
       </el-collapse>
-      <VisiteTabOperation v-if="displayTab && !validated" />
+      <LazyVisiteTabOperation v-if="dataPending && !validated" />
       <ContratCreateModal v-model="contratDialog" type="Visite" />
     </div>
   </el-dialog>
