@@ -140,6 +140,11 @@
                 >
               </li>
               <li>
+                <nuxt-link to="/parametre/type/depense" key="t-type-depense"
+                  >Types de dépenses</nuxt-link
+                >
+              </li>
+              <li>
                 <nuxt-link to="/parametre/type/personne" key="t-client">Types de clients</nuxt-link>
               </li>
               <li><nuxt-link to="/parametre/societe" key="t-societe">Société</nuxt-link></li>

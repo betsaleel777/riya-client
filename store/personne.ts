@@ -114,9 +114,7 @@ const usePersonneStore = defineStore("personne", () => {
   };
 
   const trash = async (id: number) => {
-    const response = await $apiFetch<string>("api/personnes/" + id, {
-      method: "delete",
-    });
+    const response = await $apiFetch<string>("api/personnes/" + id, { method: "delete" });
     await getAll();
     return response;
   };
@@ -124,8 +122,7 @@ const usePersonneStore = defineStore("personne", () => {
   const getOne = async (id: number) => {
     try {
       loading.edit = true;
-      const response = await $apiFetch<Client>("api/personnes/" + id, { method: "get" });
-      client.value = response;
+      client.value = await $apiFetch<Client>("api/personnes/" + id, { method: "get" });
       loading.edit = false;
     } catch (error) {
       if (error instanceof FetchError && error.statusCode === 401) navigateTo("/login");

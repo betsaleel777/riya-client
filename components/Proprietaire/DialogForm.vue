@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { Field } from "vee-validate";
-const props = defineProps<{
-  errors: any;
-}>();
+const props = defineProps<{ errors: any }>();
 </script>
 
 <template>

@@ -1,21 +1,19 @@
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
-import { useDepenseStore } from "~/store/depense";
+import { useTypeDepenseStore } from "~/store/depense";
 
-useHead({ title: "Depenses" });
+useHead({ title: "Types dépenses" });
 definePageMeta({ middleware: "auth" });
 const links = [
   { path: "/", title: "Acceuil" },
-  { path: "#", title: "Dépenses" },
+  { path: "#", title: "Types d'appartements" },
 ];
-const { getAll, trash } = useDepenseStore();
-const { depenses, loading } = storeToRefs(useDepenseStore());
+const { getAll, trash } = useTypeDepenseStore();
+const { types, loading } = storeToRefs(useTypeDepenseStore());
 getAll();
-const { filterTableData, setPage, search, total, pageSize } = useDepenseFilterPagination(depenses);
-const { handleDelete, handleEdit, handleShow, modal } = useHandleCrudButtons(trash);
-const statusClass = (status: string) => {
-  return status === statusValidable.wait ? "warning" : "success";
-};
+const { filterTableData, setPage, search, total, pageSize } = useTypeFilterPagination(types);
+const { onPrint } = useTypePrinter(types);
+const { handleDelete, handleEdit, modal } = useHandleCrudButtons(trash);
 </script>
 
 <template>
@@ -28,8 +26,10 @@ const statusClass = (status: string) => {
             <div class="card-body">
               <StructurePageHeader
                 :breadcrumbs="links"
-                title="Dépenses"
-                :extra="{ exist: true, create: true }"
+                title="Types de dépenses"
+                subtitle="riya-immobiler"
+                :extra="{ exist: true, create: true, print: true }"
+                @print="onPrint"
                 @create="modal.create = true"
               >
                 <el-input v-model="search" class="w-50 mt-1" placeholder="Rechercher" />
@@ -37,31 +37,15 @@ const statusClass = (status: string) => {
                   v-loading="loading.index"
                   :data="filterTableData"
                   style="width: 100%"
-                  empty-text="aucune dépense"
+                  empty-text="aucune de dépense"
                 >
-                  <el-table-column prop="titre" label="Titre" sortable>
-                    <template #default="scope">
-                      {{ scope.row.titre }}
-                    </template>
-                  </el-table-column>
-                  <el-table-column prop="type" label="Type" width="150" />
-                  <el-table-column prop="montant" label="Montant" width="200">
-                    <template #default="scope"> {{ scope.row.montant }} FCFA </template>
-                  </el-table-column>
-                  <el-table-column prop="status" label="Statut" width="150">
-                    <template #default="scope">
-                      <el-tag :type="statusClass(scope.row.status)">{{ scope.row.status }}</el-tag>
-                    </template>
-                  </el-table-column>
-                  <el-table-column prop="created_at" label="Date" width="150" sortable />
-                  <el-table-column align="right" width="150">
+                  <el-table-column prop="nom" label="Nom" sortable />
+                  <el-table-column prop="created_at" label="Date" width="300" sortable />
+                  <el-table-column align="right" width="280">
                     <template #header>
                       <span>Option</span>
                     </template>
                     <template #default="scope">
-                      <el-button type="info" @click="handleShow(scope.row)" plain circle
-                        ><i class="bx bx-show"
-                      /></el-button>
                       <el-button type="primary" @click="handleEdit(scope.row)" plain circle
                         ><i class="bx bx-edit"
                       /></el-button>
@@ -70,7 +54,7 @@ const statusClass = (status: string) => {
                         @click="
                           handleDelete(
                             scope.row,
-                            `Voulez vous réelement supprimer ${scope.row.titre}`
+                            `Voulez vous réelement supprimer ${scope.row.nom}`
                           )
                         "
                         plain
@@ -92,8 +76,8 @@ const statusClass = (status: string) => {
                   hide-on-single-page
                 />
               </StructurePageHeader>
-              <DepenseCreateModal v-model="modal.create" />
-              <LazyDepenseEditModal
+              <DepenseTypeCreateModal v-model="modal.create" />
+              <DepenseTypeEditModal
                 :id="modal.edit.id"
                 v-if="modal.edit.dialog"
                 v-model="modal.edit.dialog"
