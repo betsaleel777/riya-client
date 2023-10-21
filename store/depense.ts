@@ -99,7 +99,17 @@ const useDepenseStore = defineStore("depense", () => {
       if (error instanceof FetchError && error.statusCode === 401) navigateTo("/login");
     }
   };
-  return { depenses, depense, loading, getAll, create, update, getOne, trash };
+
+  const validate = async (id: number) => {
+    try {
+      const response = await $apiFetch<string>('api/depenses/validate/' + id, { method: "PATCH" })
+      await getAll()
+      return response
+    } catch (error) {
+      if (error instanceof FetchError && error.statusCode === 401) navigateTo("/login");
+    }
+  }
+  return { depenses, depense, loading, getAll, create, update, getOne, trash, validate };
 });
 
 export { useTypeDepenseStore, useDepenseStore };

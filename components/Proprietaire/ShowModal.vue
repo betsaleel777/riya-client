@@ -19,7 +19,7 @@ const dialog = computed({
 });
 const { proprietaire, loading } = storeToRefs(useProprietaireStore());
 const { getOne } = useProprietaireStore();
-getOne(props.id)
+getOne(props.id);
 </script>
 
 <template>

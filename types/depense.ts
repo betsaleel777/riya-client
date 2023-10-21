@@ -1,13 +1,13 @@
 import { Entity, Type } from "./global";
 
-
-
 interface Depense extends Entity {
-  code: string;
-  type_id: number;
-  type: TypeDepense | string
+  type_depense_id: number;
+  type: TypeDepense & String;
   titre: string;
   description: string;
+  created_at: string;
+  montant: number;
+  status: string
 }
 
 interface TypeDepense extends Type { }

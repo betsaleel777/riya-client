@@ -1,34 +1,34 @@
-const statusBien = Object.freeze({
+const statusBien = {
   busy: "occupé",
   free: "disponible",
-});
-const statusValidable = Object.freeze({
+} as const
+const statusValidable = {
   wait: "en attente",
   valid: "validée",
-});
-const statusContrat = Object.freeze({
+} as const
+const statusContrat = {
   uptodate: "à jours",
   notuptodate: "non à jours",
-});
-const stateContrat = Object.freeze({
+} as const
+const stateContrat = {
   using: "en cours",
   aborted: "résilié",
-});
-const typeContrat = Object.freeze({
+} as const
+const typeContrat = {
   achat: "Achat",
   visite: "Visite",
-});
-const statusAvance = Object.freeze({
+} as const
+const statusAvance = {
   exhausted: "avance épuisée",
   inuse: "avance en cours",
   contratWithout: "simple visite",
-});
+} as const
 
-const statusPayable = Object.freeze({
+const statusPayable = {
   paid: "payé",
   unpaid: "impayé",
   pending: "en attente",
-});
+} as const
 
 export {
   statusBien,

@@ -59,9 +59,7 @@ export const useVisiteStore = defineStore("visite", () => {
   };
 
   const validerDirectement = async (id: number) => {
-    const response = await $apiFetch<string>(`api/visites/direct-validate/${ id }`, {
-      method: "PATCH",
-    });
+    const response = await $apiFetch<string>(`api/visites/direct-validate/${ id }`, { method: "PATCH" });
     await getAll();
     return response;
   };

@@ -62,7 +62,12 @@ const statusClass = (status: string) => {
                       <el-button type="info" @click="handleShow(scope.row)" plain circle
                         ><i class="bx bx-show"
                       /></el-button>
-                      <el-button type="primary" @click="handleEdit(scope.row)" plain circle
+                      <el-button
+                        type="primary"
+                        v-if="scope.row.status === statusValidable.wait"
+                        @click="handleEdit(scope.row)"
+                        plain
+                        circle
                         ><i class="bx bx-edit"
                       /></el-button>
                       <el-button
@@ -97,6 +102,11 @@ const statusClass = (status: string) => {
                 :id="modal.edit.id"
                 v-if="modal.edit.dialog"
                 v-model="modal.edit.dialog"
+              />
+              <LazyDepenseShowModal
+                :id="modal.show.id"
+                v-if="modal.show.dialog"
+                v-model="modal.show.dialog"
               />
             </div>
           </div>
