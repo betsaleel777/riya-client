@@ -2,26 +2,13 @@
 import { storeToRefs } from "pinia";
 import { useAchatStore } from "~/store/achat";
 
-const props = defineProps<{
-  modelValue: boolean;
-  id: number;
-}>();
-const emit = defineEmits<{
-  (event: "update:modelValue", payload: boolean): void;
-}>();
-const dialog = computed({
-  get() {
-    return props.modelValue;
-  },
-  set(newValue: boolean): void {
-    emit("update:modelValue", newValue);
-  },
-});
+const props = defineProps<{ modelValue: boolean; id: number }>();
+const emit = defineEmits<{ (event: "update:modelValue", payload: boolean): void }>();
+const { dialog } = useDialogModelValue(props, emit);
+
 const { getOne } = useAchatStore();
 const { achat, loading } = storeToRefs(useAchatStore());
-onMounted(async () => {
-  await getOne(props.id);
-});
+getOne(props.id);
 </script>
 
 <template>
@@ -39,12 +26,4 @@ onMounted(async () => {
   </el-dialog>
 </template>
 
-<style scoped>
-.card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: transparent;
-  padding: 0;
-}
-</style>
+<style scoped></style>

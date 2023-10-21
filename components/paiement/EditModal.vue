@@ -3,25 +3,13 @@ import { storeToRefs } from "pinia";
 import { Form } from "vee-validate";
 import { usePaiementStore } from "~/store/paiement";
 
-const props = defineProps<{
-  modelValue: boolean;
-  id: number;
-}>();
+const props = defineProps<{ modelValue: boolean; id: number }>();
 const emit = defineEmits<{ (event: "update:modelValue", payload: boolean): void }>();
-const dialog = computed({
-  get() {
-    return props.modelValue;
-  },
-  set(newValue: boolean): void {
-    emit("update:modelValue", newValue);
-  },
-});
+const { dialog } = useDialogModelValue(props, emit);
 
 const { updateDirect, getOne } = usePaiementStore();
 const { paiement, loading } = storeToRefs(usePaiementStore());
-onMounted(async () => {
-  await getOne(props.id);
-});
+getOne(props.id);
 const { onSubmit } = useSubmitForm(updateDirect, dialog);
 </script>
 

@@ -2,27 +2,14 @@
 import { storeToRefs } from "pinia";
 import { Form } from "vee-validate";
 import { useTerrainStore } from "~/store/terrain";
-const props = defineProps<{
-  modelValue: boolean;
-  id: number;
-}>();
-const emit = defineEmits<{
-  (event: "update:modelValue", payload: boolean): void;
-}>();
-const dialog = computed({
-  get() {
-    return props.modelValue;
-  },
-  set(newValue: boolean): void {
-    emit("update:modelValue", newValue);
-  },
-});
+
+const props = defineProps<{ modelValue: boolean; id: number }>();
+const emit = defineEmits<{ (event: "update:modelValue", payload: boolean): void }>();
+const { dialog } = useDialogModelValue(props, emit);
 
 const { update, getOne } = useTerrainStore();
 const { terrain, loading } = storeToRefs(useTerrainStore());
-onMounted(async () => {
-  await getOne(props.id);
-});
+getOne(props.id);
 const { onSubmit } = useSubmitForm(update, dialog);
 </script>
 

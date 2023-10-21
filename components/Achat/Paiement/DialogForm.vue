@@ -2,9 +2,8 @@
 import { storeToRefs } from "pinia";
 import { Field, useField } from "vee-validate";
 import { useAchatStore } from "~/store/achat";
-const props = defineProps<{
-  errors: any;
-}>();
+
+const props = defineProps<{ errors: any }>();
 const { achat } = storeToRefs(useAchatStore());
 const { value: payableId } = useField("payable_id");
 const { value: payableType } = useField("payable_type");

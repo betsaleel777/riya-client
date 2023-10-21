@@ -3,18 +3,9 @@ import { Form } from "vee-validate";
 import { useTypeAppartementStore } from "@/store/appartement";
 
 const { create } = useTypeAppartementStore();
-const props = defineProps<{
-  modelValue: boolean;
-}>();
+const props = defineProps<{ modelValue: boolean }>();
 const emit = defineEmits<{ (event: "update:modelValue", payload: boolean): void }>();
-const dialog = computed({
-  get() {
-    return props.modelValue;
-  },
-  set(newValue: boolean): void {
-    emit("update:modelValue", newValue);
-  },
-});
+const { dialog } = useDialogModelValue(props, emit);
 const { onSubmit } = useSubmitForm(create, dialog);
 </script>
 

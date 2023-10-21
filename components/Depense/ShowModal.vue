@@ -4,8 +4,8 @@ import { useDepenseStore } from "~/store/depense";
 
 const props = defineProps<{ modelValue: boolean; id: number }>();
 const emit = defineEmits<{ (event: "update:modelValue", payload: boolean): void }>();
-
 const { dialog } = useDialogModelValue(props, emit);
+
 const { depense, loading } = storeToRefs(useDepenseStore());
 const { getOne, validate } = useDepenseStore();
 

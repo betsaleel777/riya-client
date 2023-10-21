@@ -1,10 +1,7 @@
 <script lang="ts" setup>
 import { Paiements } from "~/types/paiements";
-import { statusValidable } from "~/utils/constante";
 
-const props = defineProps<{
-  paiements?: Paiements;
-}>();
+const props = defineProps<{ paiements?: Paiements }>();
 const classType = (status: string) => {
   return status === statusValidable.wait ? "warning" : "success";
 };

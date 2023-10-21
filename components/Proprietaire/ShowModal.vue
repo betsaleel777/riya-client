@@ -2,21 +2,10 @@
 import { storeToRefs } from "pinia";
 import { useProprietaireStore } from "~/store/proprietaire";
 
-const props = defineProps<{
-  modelValue: boolean;
-  id: number;
-}>();
-const emit = defineEmits<{
-  (event: "update:modelValue", payload: boolean): void;
-}>();
-const dialog = computed({
-  get() {
-    return props.modelValue;
-  },
-  set(newValue: boolean): void {
-    emit("update:modelValue", newValue);
-  },
-});
+const props = defineProps<{ modelValue: boolean; id: number }>();
+const emit = defineEmits<{ (event: "update:modelValue", payload: boolean): void }>();
+const { dialog } = useDialogModelValue(props, emit);
+
 const { proprietaire, loading } = storeToRefs(useProprietaireStore());
 const { getOne } = useProprietaireStore();
 getOne(props.id);

@@ -2,27 +2,14 @@
 import { storeToRefs } from "pinia";
 import { Form } from "vee-validate";
 import { useTypeAppartementStore } from "@/store/appartement";
-const props = defineProps<{
-  modelValue: boolean;
-  id: number;
-}>();
-const emit = defineEmits<{
-  (event: "update:modelValue", payload: boolean): void;
-}>();
-const dialog = computed({
-  get() {
-    return props.modelValue;
-  },
-  set(newValue: boolean): void {
-    emit("update:modelValue", newValue);
-  },
-});
+
+const props = defineProps<{ modelValue: boolean; id: number }>();
+const emit = defineEmits<{ (event: "update:modelValue", payload: boolean): void }>();
+const { dialog } = useDialogModelValue(props, emit);
 
 const { update, getOne } = useTypeAppartementStore();
 const { type, loading } = storeToRefs(useTypeAppartementStore());
-onMounted(async () => {
-  await getOne(props.id);
-});
+await getOne(props.id);
 const { onSubmit } = useSubmitForm(update, dialog);
 </script>
 

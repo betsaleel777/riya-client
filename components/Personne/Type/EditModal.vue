@@ -3,19 +3,9 @@ import { storeToRefs } from "pinia";
 import { Form } from "vee-validate";
 import { useTypePersonneStore } from "~/store/personne";
 
-const props = defineProps<{
-  modelValue: boolean;
-  id: number;
-}>();
+const props = defineProps<{ modelValue: boolean; id: number }>();
 const emit = defineEmits<{ (event: "update:modelValue", payload: boolean): void }>();
-const dialog = computed({
-  get() {
-    return props.modelValue;
-  },
-  set(newValue: boolean): void {
-    emit("update:modelValue", newValue);
-  },
-});
+const { dialog } = useDialogModelValue(props, emit);
 
 const { update, getOne } = useTypePersonneStore();
 const { type, loading } = storeToRefs(useTypePersonneStore());

@@ -3,21 +3,10 @@ import { storeToRefs } from "pinia";
 import { useVisiteStore } from "~/store/visite";
 import { statusValidable } from "~/utils/constante";
 
-const props = defineProps<{
-  modelValue: boolean;
-  id: number;
-}>();
-const emit = defineEmits<{
-  (event: "update:modelValue", payload: boolean): void;
-}>();
-const dialog = computed({
-  get() {
-    return props.modelValue;
-  },
-  set(newValue: boolean): void {
-    emit("update:modelValue", newValue);
-  },
-});
+const props = defineProps<{ modelValue: boolean; id: number }>();
+const emit = defineEmits<{ (event: "update:modelValue", payload: boolean): void }>();
+const { dialog } = useDialogModelValue(props, emit);
+
 const activeName = ref("visite");
 const contratDialog = ref(false);
 const { getOne, validerDirectement } = useVisiteStore();

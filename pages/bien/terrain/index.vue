@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
 import { useTerrainStore } from "~/store/terrain";
-import { statusBien } from "~/utils/constante";
 
 useHead({ title: "Terrain" });
 definePageMeta({ middleware: "auth" });

@@ -5,14 +5,8 @@ import { useDepenseStore } from "~/store/depense";
 const { create } = useDepenseStore();
 const props = defineProps<{ modelValue: boolean }>();
 const emit = defineEmits<{ (event: "update:modelValue", payload: boolean): void }>();
-const dialog = computed({
-  get() {
-    return props.modelValue;
-  },
-  set(newValue: boolean): void {
-    emit("update:modelValue", newValue);
-  },
-});
+const { dialog } = useDialogModelValue(props, emit);
+
 const { onSubmit } = useSubmitForm(create, dialog);
 </script>
 

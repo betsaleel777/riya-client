@@ -2,21 +2,10 @@
 import { storeToRefs } from "pinia";
 import { Form } from "vee-validate";
 import { useAppartementStore } from "~/store/appartement";
-const props = defineProps<{
-  modelValue: boolean;
-  id: number;
-}>();
-const emit = defineEmits<{
-  (event: "update:modelValue", payload: boolean): void;
-}>();
-const dialog = computed({
-  get() {
-    return props.modelValue;
-  },
-  set(newValue: boolean): void {
-    emit("update:modelValue", newValue);
-  },
-});
+
+const props = defineProps<{ modelValue: boolean; id: number }>();
+const emit = defineEmits<{ (event: "update:modelValue", payload: boolean): void }>();
+const { dialog } = useDialogModelValue(props, emit);
 
 const { update, getOne } = useAppartementStore();
 const { appartement, loading } = storeToRefs(useAppartementStore());

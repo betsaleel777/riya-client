@@ -1,9 +1,7 @@
 <script lang="ts" setup>
 import { Client } from "~/types/personne";
 
-const props = defineProps<{
-  personne: Client;
-}>();
+const props = defineProps<{ personne: Client }>();
 </script>
 
 <template>

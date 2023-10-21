@@ -3,21 +3,11 @@ import { Form } from "vee-validate";
 import { useTypeTerrainStore } from "~/store/terrain";
 
 const { create } = useTypeTerrainStore();
-const props = defineProps<{
-  modelValue: boolean;
-}>();
-const emit = defineEmits<{
-  (event: "update:modelValue", payload: boolean): void;
-  (event: "added"): void;
-}>();
-const dialog = computed({
-  get() {
-    return props.modelValue;
-  },
-  set(newValue: boolean): void {
-    emit("update:modelValue", newValue);
-  },
-});
+
+const props = defineProps<{ modelValue: boolean }>();
+const emit = defineEmits<{ (event: "update:modelValue", payload: boolean): void }>();
+const { dialog } = useDialogModelValue(props, emit);
+
 const { onSubmit } = useSubmitForm(create, dialog);
 </script>
 

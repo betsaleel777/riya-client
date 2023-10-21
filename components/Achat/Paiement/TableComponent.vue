@@ -1,14 +1,12 @@
 <script lang="ts" setup>
+import { storeToRefs } from "pinia";
 import { Paiements, Paiement } from "~/types/paiements";
 import { usePaiementStore } from "~/store/paiement";
-import { statusValidable } from "~/utils/constante";
 import { useAchatStore } from "~/store/achat";
 
-const props = defineProps<{
-  paiements: Paiements;
-}>();
+const props = defineProps<{ paiements: Paiements }>();
 let contratForm = reactive({ modal: false, paiement: 0 });
-const { achat } = useAchatStore();
+const { achat } = storeToRefs(useAchatStore());
 const { trash, valider } = usePaiementStore();
 const { filterTableData, setPage, search, total, pageSize } = usePaiementFilterPagination(
   props.paiements
@@ -36,11 +34,11 @@ const handleValidate = (paiement: Paiement) => {
     }
   });
 };
-const createPaiement = computed<boolean>(() => achat?.reste !== 0);
+const createPaiement = computed<boolean>(() => achat.value?.reste !== 0);
 const printReceipt = async (paiement: Paiement) => {
   const { getOne } = useAchatStore();
   await getOne(paiement.payable_id);
-  await usePaiementReceipt(paiement, achat!);
+  await usePaiementReceipt(paiement, achat.value!);
 };
 </script>
 
