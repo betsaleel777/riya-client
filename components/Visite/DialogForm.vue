@@ -14,12 +14,10 @@ const dialog = reactive({ personne: false, appartement: false });
 const { personnes } = storeToRefs(usePersonneStore());
 const { libres: appartements } = storeToRefs(useAppartementStore());
 
-onMounted(async () => {
-  const { getAll: getPersonnes } = usePersonneStore();
-  await getPersonnes();
-  const { getAll: getAppartements } = useAppartementStore();
-  await getAppartements();
-});
+const { getAll: getPersonnes } = usePersonneStore();
+getPersonnes();
+const { getAll: getAppartements } = useAppartementStore();
+getAppartements();
 </script>
 
 <template>

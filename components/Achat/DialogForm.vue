@@ -5,9 +5,7 @@ import { useAppartementStore } from "~/store/appartement";
 import { useTerrainStore } from "~/store/terrain";
 import { storeToRefs } from "pinia";
 
-const props = defineProps<{
-  errors: any;
-}>();
+const props = defineProps<{ errors: any }>();
 
 let type = reactive({ appartement: "Appartement", terrain: "Terrain" });
 let showSelect = reactive({ appartement: false, terrain: false });
@@ -18,14 +16,12 @@ const { libres: terrains } = storeToRefs(useTerrainStore());
 const { value: bien } = useField<string>("bien_type");
 const { value: bienId } = useField("bien_id");
 
-onMounted(async () => {
-  const { getAll: getPersonnes } = usePersonneStore();
-  await getPersonnes();
-  const { getAll: getAppartements } = useAppartementStore();
-  await getAppartements();
-  const { getAll: getTerrains } = useTerrainStore();
-  await getTerrains();
-});
+const { getAll: getPersonnes } = usePersonneStore();
+getPersonnes();
+const { getAll: getAppartements } = useAppartementStore();
+getAppartements();
+const { getAll: getTerrains } = useTerrainStore();
+getTerrains();
 
 const onChangeSelect = () => {
   bienId.value = null;
@@ -51,14 +47,15 @@ watch(bien, (newBien) => {
   <div class="mb-3">
     <label for="client" class="form-label">Client</label>
     <Field name="personne_id" v-slot="{ value, handleChange }">
-      <el-row>
-        <el-col :span="20">
+      <el-row :gutter="5">
+        <el-col :span="22">
           <el-select
             id="client"
             filterable
             :model-value="value"
             @update:model-value="handleChange"
             :class="{ 'is-invalid': props.errors.personne_id }"
+            class="w-100"
           >
             <template #append><i class="bx bx-plus" /></template>
             <el-option
@@ -72,9 +69,11 @@ watch(bien, (newBien) => {
             {{ props.errors.personne_id }}
           </div>
         </el-col>
-        <el-col :span="4">
+        <el-col :span="2">
           <el-tooltip content="Créer un client" placement="bottom">
-            <el-button @click="dialog.personne = true" plain><i class="bx bx-plus" /></el-button>
+            <el-button @click="dialog.personne = true" class="w-100" plain
+              ><i class="bx bx-plus"
+            /></el-button>
           </el-tooltip>
         </el-col>
       </el-row>
