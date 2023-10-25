@@ -44,7 +44,13 @@ const statusClass = (status: string) => {
                       {{ scope.row.titre }}
                     </template>
                   </el-table-column>
-                  <el-table-column prop="type" label="Type" width="150" />
+                  <el-table-column prop="type" label="Type" width="200">
+                    <template #default="scope">
+                      <el-tooltip :content="scope.row.type" placement="right">
+                        <el-text type="primary" truncated>{{ scope.row.type }}</el-text>
+                      </el-tooltip>
+                    </template>
+                  </el-table-column>
                   <el-table-column prop="montant" label="Montant" width="200">
                     <template #default="scope"> {{ scope.row.montant }} FCFA </template>
                   </el-table-column>

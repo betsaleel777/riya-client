@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { FetchError } from "ofetch";
 import { TypePostForm, TypePutForm } from "~/types/global";
-import { Depense, Depenses, TypeDepense, TypeDepenses } from "~/types/depense";
+import { Depense, DepenseValidations, Depenses, TypeDepense, TypeDepenses } from "~/types/depense";
 
 
 const useTypeDepenseStore = defineStore("type-depense", () => {
@@ -59,6 +59,7 @@ const useDepenseStore = defineStore("depense", () => {
 
   let depenses = ref<Depenses>([]);
   let depense = ref<Depense>();
+  let pending = ref<DepenseValidations>([])
   let loading = reactive({ index: false, edit: false })
 
 
@@ -66,6 +67,16 @@ const useDepenseStore = defineStore("depense", () => {
     try {
       loading.index = true;
       depenses.value = await $apiFetch<Depenses>("api/depenses");
+      loading.index = false;
+    } catch (error) {
+      if (error instanceof FetchError && error.statusCode === 401) navigateTo("/login");
+    }
+  };
+
+  const getPending = async () => {
+    try {
+      loading.index = true;
+      pending.value = await $apiFetch<DepenseValidations>("api/depenses/pending");
       loading.index = false;
     } catch (error) {
       if (error instanceof FetchError && error.statusCode === 401) navigateTo("/login");
@@ -100,16 +111,16 @@ const useDepenseStore = defineStore("depense", () => {
     }
   };
 
-  const validate = async (id: number) => {
+  const validate = async (id: number, fromValidationPage: boolean) => {
     try {
       const response = await $apiFetch<string>('api/depenses/validate/' + id, { method: "PATCH" })
-      await getAll()
+      fromValidationPage ? await getPending() : await getAll()
       return response
     } catch (error) {
       if (error instanceof FetchError && error.statusCode === 401) navigateTo("/login");
     }
   }
-  return { depenses, depense, loading, getAll, create, update, getOne, trash, validate };
+  return { depenses, depense, loading, getAll, create, update, getOne, trash, validate, getPending, pending };
 });
 
 export { useTypeDepenseStore, useDepenseStore };

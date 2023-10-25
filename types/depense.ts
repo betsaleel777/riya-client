@@ -10,9 +10,18 @@ interface Depense extends Entity {
   status: string
 }
 
+interface DepenseValidation extends Entity {
+  titre: string,
+  created_at: string;
+  montant: number;
+  type: string;
+  responsable: string,
+}
+
 interface TypeDepense extends Type { }
 
 type Depenses = Array<Depense>
 type TypeDepenses = Array<TypeDepense>
+type DepenseValidations = Array<DepenseValidation>
 
-export { Depenses, Depense, TypeDepense, TypeDepenses }
+export { Depenses, Depense, TypeDepense, TypeDepenses, DepenseValidation, DepenseValidations }

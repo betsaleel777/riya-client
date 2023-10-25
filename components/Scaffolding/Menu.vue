@@ -17,54 +17,12 @@
               <span key="t-starter-page">Clients</span>
             </nuxt-link>
           </li>
-          <!-- <li :class="{ 'mm-active': menu.layouts.root }">
-            <a
-              href="javascript: void(0);"
-              class="has-arrow waves-effect"
-              @click="menu.layouts.root = !menu.layouts.root"
-              :aria-expanded="menu.layouts.root"
-            >
-              <i class="bx bx-layout"></i>
-              <span key="t-layouts">Layouts</span>
-            </a>
-            <ul
-              class="sub-menu mm-collapse"
-              :class="{ 'mm-show': menu.layouts.root }"
-              :aria-expanded="menu.layouts.root"
-            >
-              <li :class="{ 'mm-active': menu.layouts.horizontal }">
-                <a
-                  href="javascript: void(0);"
-                  class="has-arrow mm-collapse"
-                  key="t-horizontal"
-                  @click="menu.layouts.horizontal = !menu.layouts.horizontal"
-                  >Horizontal</a
-                >
-                <ul class="sub-menu mm-collapse" :aria-expanded="menu.layouts.root">
-                  <li>
-                    <a href="layouts-horizontal.html" key="t-horizontal">Horizontal</a>
-                  </li>
-                  <li>
-                    <a href="layouts-hori-topbar-light.html" key="t-topbar-light">Topbar light</a>
-                  </li>
-                  <li>
-                    <a href="layouts-hori-boxed-width.html" key="t-boxed-width">Boxed width</a>
-                  </li>
-                  <li>
-                    <a href="layouts-hori-preloader.html" key="t-preloader">Preloader</a>
-                  </li>
-                  <li>
-                    <a href="layouts-hori-colored-header.html" key="t-colored-topbar"
-                      >Colored Header</a
-                    >
-                  </li>
-                  <li>
-                    <a href="layouts-hori-scrollable.html" key="t-scrollable">Scrollable</a>
-                  </li>
-                </ul>
-              </li>
-            </ul>
-          </li> -->
+          <li class="">
+            <nuxt-link to="/approval" class="waves-effect">
+              <i class="bx bx-id-card"></i>
+              <span key="t-starter-page">Validations</span>
+            </nuxt-link>
+          </li>
           <li>
             <a
               href="javascript: void(0);"

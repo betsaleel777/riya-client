@@ -2,7 +2,15 @@
 import { storeToRefs } from "pinia";
 import { useDepenseStore } from "~/store/depense";
 
-const props = defineProps<{ modelValue: boolean; id: number }>();
+const props = withDefaults(
+  defineProps<{
+    modelValue: boolean;
+    id: number;
+    fromValidationPage?: boolean;
+  }>(),
+  { fromValidationPage: false }
+);
+
 const emit = defineEmits<{ (event: "update:modelValue", payload: boolean): void }>();
 const { dialog } = useDialogModelValue(props, emit);
 
@@ -11,9 +19,19 @@ const { getOne, validate } = useDepenseStore();
 
 getOne(props.id);
 const handleValidate = () => {
-  validate(depense.value?.id!).then((message) => {
-    ElNotification.success({ title: "succès", message });
-    dialog.value = false;
+  ElMessageBox.confirm(
+    "Cette action est irréversible, voulez réelement valider cette dépense ?",
+    "Attention",
+    {
+      confirmButtonText: "Confirmer",
+      cancelButtonText: "Abandonner",
+      type: "warning",
+    }
+  ).then(() => {
+    validate(depense.value?.id!, props.fromValidationPage).then((message) => {
+      ElNotification.success({ title: "succès", message });
+      dialog.value = false;
+    });
   });
 };
 </script>
