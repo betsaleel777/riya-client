@@ -1,4 +1,5 @@
 import { DepenseValidation, DepenseValidations } from "~/types/depense";
+import { VisiteValidation, VisiteValidations } from "~/types/visite";
 
 const useDepenseValidationFilter = (depenses: Ref<DepenseValidations>) => {
   const search = ref("");
@@ -13,4 +14,17 @@ const useDepenseValidationFilter = (depenses: Ref<DepenseValidations>) => {
   return { filterCardData, search };
 }
 
-export { useDepenseValidationFilter }
+const useVisiteValidationFilter = (visites: Ref<VisiteValidations>) => {
+  const search = ref("");
+  const filterCardData = computed(() => {
+    return Array.isArray(visites.value)
+      ? visites.value.filter((visite: VisiteValidation) => {
+        if (visite.code !== undefined)
+          return !search.value || visite.code.toLowerCase().includes(search.value.toLowerCase());
+      })
+      : [];
+  });
+  return { filterCardData, search };
+}
+
+export { useDepenseValidationFilter, useVisiteValidationFilter }

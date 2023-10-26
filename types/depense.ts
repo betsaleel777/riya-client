@@ -16,6 +16,7 @@ interface DepenseValidation extends Entity {
   montant: number;
   type: string;
   responsable: string,
+  avatar: string;
 }
 
 interface TypeDepense extends Type { }

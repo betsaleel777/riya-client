@@ -3,7 +3,10 @@ import { storeToRefs } from "pinia";
 import { useVisiteStore } from "~/store/visite";
 import { statusValidable } from "~/utils/constante";
 
-const props = defineProps<{ modelValue: boolean; id: number }>();
+const props = withDefaults(
+  defineProps<{ modelValue: boolean; id: number; fromValidationPage?: boolean }>(),
+  { fromValidationPage: false }
+);
 const emit = defineEmits<{ (event: "update:modelValue", payload: boolean): void }>();
 const { dialog } = useDialogModelValue(props, emit);
 
@@ -38,7 +41,7 @@ const validable = computed(() => {
 });
 const handleValidate = () => {
   if (visite.value?.frais === 0 && visite.value?.caution === 0 && visite.value.avance === 0) {
-    validerDirectement(visite.value.id!)
+    validerDirectement(visite.value.id!, props.fromValidationPage)
       .then((message) => {
         ElNotification.success({ title: "succès", message });
         dialog.value = false;
@@ -90,7 +93,11 @@ const imprimerProvisoire = () => {
         </el-collapse-item>
       </el-collapse>
       <LazyVisiteTabOperation v-if="!loading.edit && !validated" />
-      <ContratCreateModal v-model="contratDialog" type="Visite" />
+      <ContratCreateModal
+        v-model="contratDialog"
+        type="Visite"
+        :from-validation-page="props.fromValidationPage"
+      />
     </div>
   </el-dialog>
 </template>

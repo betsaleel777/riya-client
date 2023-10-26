@@ -6,7 +6,7 @@ import { useAchatStore } from "./achat";
 
 export const useContratStore = defineStore("contrat", () => {
   const { $apiFetch } = useNuxtApp();
-  const { getAll: getVisites, getOne: getVisite } = useVisiteStore();
+  const { getAll: getVisites, getOne: getVisite, getPending } = useVisiteStore();
   const { getOne: getAchat } = useAchatStore();
 
   let contrats = ref<Contrats>([]);
@@ -48,11 +48,12 @@ export const useContratStore = defineStore("contrat", () => {
     }
   };
 
-  const validerContrat = async (payload: Contrat) => {
+  const validerContrat = async (payload: Contrat, fromValidationPage: boolean) => {
     const response = await $apiFetch<string>(`api/contrats/validate`, {
       method: "post",
       body: payload,
     });
+    if (fromValidationPage) await getPending()
     if (typeContrat.visite === payload.operation_type) {
       await getVisites();
       await getVisite(payload.operation_id);

@@ -6,8 +6,7 @@ definePageMeta({ middleware: "auth" });
 const { getOne } = useAchatStore();
 const { achat, loading } = storeToRefs(useAchatStore());
 onMounted(async () => {
-  const id = Number(useRoute().params.id);
-  await getOne(id);
+  await getOne(Number(useRoute().params.id));
   useHead({ title: "Achat " + achat?.value?.code });
 });
 </script>

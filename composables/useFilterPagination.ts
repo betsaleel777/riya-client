@@ -330,7 +330,6 @@ const usePaiementFilterPagination = (paiements: Paiements) => {
       pageSize.value * currentPage.value
     );
   });
-  console.log(filterTableData.value);
   const setPage = (val: number) => {
     currentPage.value = val;
   };

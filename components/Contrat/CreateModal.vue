@@ -2,11 +2,15 @@
 import { Form } from "vee-validate";
 import { useContratStore } from "~/store/contrat";
 const { validerContrat } = useContratStore();
-const props = defineProps<{
-  modelValue: boolean;
-  paiementId?: number;
-  type: string;
-}>();
+const props = withDefaults(
+  defineProps<{
+    modelValue: boolean;
+    paiementId?: number;
+    type: string;
+    fromValidationPage?: boolean;
+  }>(),
+  { fromValidationPage: false }
+);
 const emit = defineEmits<{ (event: "update:modelValue", payload: boolean): void }>();
 const dialog = computed({
   get() {
@@ -16,7 +20,17 @@ const dialog = computed({
     emit("update:modelValue", newValue);
   },
 });
-const { onSubmit } = useSubmitForm(validerContrat, dialog);
+const onSubmit = (values: any, actions: any) => {
+  validerContrat(values, props.fromValidationPage)
+    .then((message) => {
+      ElNotification.success({ title: "succès", message });
+      if (dialog !== undefined) dialog.value = false;
+    })
+    .catch((err) => {
+      if (err.data.errors) actions.setErrors(err.data.errors);
+      if (err.response.status === 419) navigateTo("/login");
+    });
+};
 </script>
 
 <template>

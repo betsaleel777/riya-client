@@ -184,7 +184,7 @@ onMounted(async () => {
               <el-tooltip content="Créer un type" placement="bottom">
                 <el-button @click="dialog.type = true" plain><i class="bx bx-plus" /></el-button>
               </el-tooltip>
-              <AppartementTypeCreateModal v-model="dialog.type" />
+              <TerrainTypeCreateModal v-model="dialog.type" />
             </el-col>
           </el-row>
         </Field>

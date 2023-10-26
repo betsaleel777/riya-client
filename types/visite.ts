@@ -34,10 +34,20 @@ interface Visite extends Entity {
   frais_dossier: number;
 }
 
+interface VisiteValidation extends Entity {
+  code: string;
+  montant: number;
+  created_at: string;
+  personne: string;
+  avatar: string;
+  bien: string;
+}
+
 interface VisiteInfo extends Entity {
   loyer: number;
 }
 
 type Visites = Array<Visite>;
+type VisiteValidations = Array<VisiteValidation>
 
-export { Visite, Visites, VisiteInfo, Operation, OperationName };
+export { Visite, Visites, VisiteInfo, Operation, OperationName, VisiteValidation, VisiteValidations };

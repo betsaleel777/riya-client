@@ -2,6 +2,7 @@
 import { storeToRefs } from "pinia";
 import { usePaiementStore } from "~/store/paiement";
 import { Paiement } from "~/types/paiements";
+import { useAchatStore } from "~/store/achat";
 
 useHead({ title: "Paiements" });
 definePageMeta({ middleware: "auth" });
@@ -44,9 +45,10 @@ const classStatus = (state: string) => {
   return state === statusValidable.wait ? "warning" : "success";
 };
 const printReceipt = async (paiement: Paiement) => {
-  // const { getOne } = useAchatStore();
-  // await getOne(paiement.payable_id);
-  // await usePaiementReceipt(paiement, achat!);
+  const { getOne } = useAchatStore();
+  const { achat } = storeToRefs(useAchatStore());
+  await getOne(paiement.payable_id);
+  await usePaiementReceipt(paiement, achat.value!);
 };
 </script>
 

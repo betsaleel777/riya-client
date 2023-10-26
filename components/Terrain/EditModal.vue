@@ -20,7 +20,7 @@ const { onSubmit } = useSubmitForm(update, dialog);
     :initial-values="terrain"
     v-slot="{ isSubmitting, errors }"
   >
-    <el-dialog v-model="dialog" title="Modifier l'apprtement" width="50%" destroy-on-close center>
+    <el-dialog v-model="dialog" title="Modifier le terrain" width="50%" destroy-on-close center>
       <div v-loading="loading.edit">
         <TerrainDialogForm :errors="errors" />
       </div>

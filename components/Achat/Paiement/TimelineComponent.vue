@@ -17,10 +17,12 @@ const classType = (status: string) => {
       :timestamp="paiement.created_at"
       placement="top"
     >
-      <span class="mr-5"
-        ><b>{{ paiement.code }}</b> -- {{ paiement.montant }} FCFA</span
-      >
-      <el-tag :type="classType(paiement.status)">{{ paiement.status }}</el-tag>
+      <div class="d-flex justify-content-between">
+        <span
+          ><b>{{ paiement.code }}</b> -- {{ paiement.montant }} FCFA</span
+        >
+        <el-tag :type="classType(paiement.status)">{{ paiement.status }}</el-tag>
+      </div>
     </el-timeline-item>
   </el-timeline>
 </template>

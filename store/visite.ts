@@ -1,18 +1,29 @@
 import { defineStore } from "pinia";
 import { FetchError } from "ofetch";
-import { Operation, Visite, Visites } from "~/types/visite";
+import { Operation, Visite, VisiteValidations, Visites } from "~/types/visite";
 
 export const useVisiteStore = defineStore("visite", () => {
   const { $apiFetch } = useNuxtApp();
 
   let visites = ref<Visites>([]);
   let visite = ref<Visite>();
+  let pending = ref<VisiteValidations>([]);
   let loading = reactive({ index: false, edit: false });
 
   const getAll = async () => {
     try {
       loading.index = true;
       visites.value = await $apiFetch<Visites>("api/visites");
+      loading.index = false;
+    } catch (error) {
+      if (error instanceof FetchError && error.statusCode === 401) navigateTo("/login");
+    }
+  };
+
+  const getPending = async () => {
+    try {
+      loading.index = true;
+      pending.value = await $apiFetch<VisiteValidations>("api/visites/pending");
       loading.index = false;
     } catch (error) {
       if (error instanceof FetchError && error.statusCode === 401) navigateTo("/login");
@@ -58,9 +69,9 @@ export const useVisiteStore = defineStore("visite", () => {
     }
   };
 
-  const validerDirectement = async (id: number) => {
+  const validerDirectement = async (id: number, fromValidationPage: boolean) => {
     const response = await $apiFetch<string>(`api/visites/direct-validate/${ id }`, { method: "PATCH" });
-    await getAll();
+    fromValidationPage ? await getPending() : await getAll();
     return response;
   };
 
@@ -108,6 +119,8 @@ export const useVisiteStore = defineStore("visite", () => {
     trash,
     validerDirectement,
     getOperationAction,
-    fraisPatch
+    fraisPatch,
+    getPending,
+    pending
   };
 });
