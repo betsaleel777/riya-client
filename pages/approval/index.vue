@@ -22,6 +22,7 @@ definePageMeta({ middleware: "auth" });
       <div class="d-flex flex-column validations">
         <ApprovalDepenseValidationComponent />
         <ApprovalVisiteValidationComponent />
+        <ApprovalDetteValidationComponent />
       </div>
     </div>
   </div>

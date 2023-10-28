@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import { storeToRefs } from "pinia";
 import { useVisiteStore } from "~/store/visite";
-import { statusValidable } from "~/utils/constante";
 
 const props = withDefaults(
   defineProps<{ modelValue: boolean; id: number; fromValidationPage?: boolean }>(),

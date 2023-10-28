@@ -14,7 +14,17 @@ interface Dette extends Entity {
   contrat: Contrat;
   created_at: string;
 }
+interface DetteValidation extends Entity {
+  code: string;
+  montant: number;
+  created_at: string
+  bien: string;
+  proprietaire: string;
+  telephone: string;
+  responsable: string
+}
 
 type Dettes = Array<Dette>;
+type DetteValidations = Array<DetteValidation>
 
-export { Dettes, Dette };
+export { Dettes, Dette, DetteValidation, DetteValidations };

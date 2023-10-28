@@ -15,7 +15,6 @@ const { dettes, loading } = storeToRefs(useDetteStore());
 getAll();
 const { filterTableData, setPage, search, total, pageSize } = useDetteFilterPagination(dettes);
 const { onPrint } = useDettePrinter(dettes);
-// const { handleDelete, modal } = useHandleCrudButtons(trash);
 const classStatus = (status: string) => {
   const classes = {
     [statusPayable.pending as string]: "warning",

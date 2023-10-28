@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { FetchError } from "ofetch";
-import { Dette, Dettes } from "~/types/dette";
+import { Dette, DetteValidations, Dettes } from "~/types/dette";
 
 export const useDetteStore = defineStore("dette", () => {
   const { $apiFetch } = useNuxtApp();
@@ -8,6 +8,7 @@ export const useDetteStore = defineStore("dette", () => {
   let dettes = ref<Dettes>([]);
   let dette = ref<Dette>();
   let loading = reactive({ index: false, edit: false });
+  let pendingValidation = ref<DetteValidations>([])
 
   const getAll = async () => {
     try {
@@ -18,6 +19,16 @@ export const useDetteStore = defineStore("dette", () => {
       if (error instanceof FetchError && error.statusCode === 401) navigateTo("/login");
     }
   };
+
+  const getPending = async () => {
+    try {
+      loading.index = true;
+      pendingValidation.value = await $apiFetch<DetteValidations>("api/dettes/pending");
+      loading.index = false;
+    } catch (error) {
+      if (error instanceof FetchError && error.statusCode === 401) navigateTo("/login");
+    }
+  }
 
   const getOne = async (id: number) => {
     try {
@@ -41,5 +52,5 @@ export const useDetteStore = defineStore("dette", () => {
     return response;
   };
 
-  return { getAll, getOne, loading, dettes, valider, repay };
+  return { getAll, getOne, loading, dettes, valider, repay, getPending, pendingValidation };
 });
