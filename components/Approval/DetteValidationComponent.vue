@@ -37,16 +37,9 @@ const { runShowModal, show } = useShowModal();
                   </div>
                   <div class="flex-grow-1 overflow-hidden">
                     <h5 class="text-truncate font-size-15 text-dark">{{ dette?.montant }} FCFA</h5>
-                    <el-tooltip :content="dette?.bien" placement="right">
-                      <span class="text-muted text-truncate mb-0">{{ dette?.bien }}</span
-                      ><br />
-                    </el-tooltip>
-                    <el-tooltip :content="dette?.proprietaire" placement="right">
-                      <span class="text-muted text-truncate mb-0">{{ dette?.proprietaire }}</span
-                      ><br />
-                    </el-tooltip>
-                    <p class="text-muted mb-0">{{ dette?.telephone }}</p>
-                    <p class="headline mb-0">{{ dette?.created_at }}</p>
+                    <p class="text-muted mb-0">{{ dette?.code }}</p>
+                    <p class="headline mb-2">{{ dette?.created_at }}</p>
+                    <el-tag size="small">{{ dette?.origine }}</el-tag>
                   </div>
                 </div>
               </div>
@@ -57,7 +50,7 @@ const { runShowModal, show } = useShowModal();
               </div>
             </div>
           </div>
-          <!-- here put show dette modal -->
+          <LazyDetteShowModal :id="show.id" v-model="show.enable" v-if="show.enable" />
         </div>
       </el-scrollbar>
       <el-empty v-else class="bg-white" :image-size="80">

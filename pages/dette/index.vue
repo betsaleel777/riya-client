@@ -3,6 +3,7 @@ import { storeToRefs } from "pinia";
 import { useDetteStore } from "~/store/dette";
 import { statusPayable } from "~/utils/constante";
 import { Dette } from "~/types/dette";
+import { useModal } from "element-plus";
 
 useHead({ title: "Dette" });
 definePageMeta({ middleware: "auth" });
@@ -51,6 +52,7 @@ const handleValidate = (dette: Dette) => {
     ElNotification.success({ title: "succès", message });
   });
 };
+const { runShowModal, show } = useShowModal();
 </script>
 
 <template>
@@ -119,6 +121,12 @@ const handleValidate = (dette: Dette) => {
                     </template>
                     <template #default="scope">
                       <el-button
+                        type="info"
+                        plain
+                        circle
+                        @click="runShowModal(scope.row.id)"
+                      ></el-button>
+                      <el-button
                         v-if="scope.row.status === statusPayable.unpaid"
                         type="primary"
                         @click="handleRepay(scope.row)"
@@ -149,6 +157,7 @@ const handleValidate = (dette: Dette) => {
                   hide-on-single-page
                 />
               </StructurePageHeader>
+              <LazyDetteShowModal :id="show.id" v-model="show.enable" v-if="show.enable" />
             </div>
           </div>
         </div>

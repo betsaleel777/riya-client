@@ -15,7 +15,7 @@ getAll();
 const { filterTableData, setPage, search, total, pageSize } =
   useAppartementFilterPagination(appartements);
 const { onPrint } = useAppartementPrinter(appartements);
-const { handleDelete, handleEdit, modal } = useHandleCrudButtons(trash);
+const { handleDelete, handleEdit, handleShow, modal } = useHandleCrudButtons(trash);
 const classType = (status: string) => {
   return status === statusBien.busy ? "danger" : "success";
 };
@@ -67,7 +67,9 @@ const classType = (status: string) => {
                       <span>Option</span>
                     </template>
                     <template #default="scope">
-                      <el-button type="info" plain circle><i class="bx bx-show" /></el-button>
+                      <el-button type="info" @click="handleShow(scope.row)" plain circle
+                        ><i class="bx bx-show"
+                      /></el-button>
                       <el-button type="primary" @click="handleEdit(scope.row)" plain circle
                         ><i class="bx bx-edit"
                       /></el-button>
@@ -99,10 +101,15 @@ const classType = (status: string) => {
                 />
               </StructurePageHeader>
               <AppartementCreateModal v-model="modal.create" />
-              <AppartementEditModal
+              <LazyAppartementEditModal
                 :id="modal.edit.id"
                 v-if="modal.edit.dialog"
                 v-model="modal.edit.dialog"
+              />
+              <LazyAppartementShowModal
+                :id="modal.show.id"
+                v-if="modal.show.dialog"
+                v-model="modal.show.dialog"
               />
             </div>
           </div>

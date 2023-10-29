@@ -1,20 +1,20 @@
 <script lang="ts" setup>
 import { storeToRefs } from "pinia";
-import { useDetteStore } from "~/store/dette";
+import { useTerrainStore } from "~/store/terrain";
 
 const props = defineProps<{ modelValue: boolean; id: number }>();
 const emit = defineEmits<{ (event: "update:modelValue", payload: boolean): void }>();
 const { dialog } = useDialogModelValue(props, emit);
 
-const { dette, loading } = storeToRefs(useDetteStore());
-const { getOne } = useDetteStore();
+const { terrain, loading } = storeToRefs(useTerrainStore());
+const { getOne } = useTerrainStore();
 getOne(props.id);
 </script>
 
 <template>
-  <el-dialog v-model="dialog" title="Détails de dette" width="50%" destroy-on-close center>
+  <el-dialog v-model="dialog" title="Détails du terrain" width="50%" destroy-on-close center>
     <div v-loading="loading.edit">
-      <DetteDescriptionComponent :dette="dette" />
+      <TerrainDescriptionComponent :terrain="terrain" />
     </div>
   </el-dialog>
 </template>

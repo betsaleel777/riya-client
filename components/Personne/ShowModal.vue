@@ -1,20 +1,20 @@
 <script lang="ts" setup>
 import { storeToRefs } from "pinia";
-import { useDetteStore } from "~/store/dette";
+import { usePersonneStore } from "~/store/personne";
 
 const props = defineProps<{ modelValue: boolean; id: number }>();
 const emit = defineEmits<{ (event: "update:modelValue", payload: boolean): void }>();
 const { dialog } = useDialogModelValue(props, emit);
 
-const { dette, loading } = storeToRefs(useDetteStore());
-const { getOne } = useDetteStore();
+const { client, loading } = storeToRefs(usePersonneStore());
+const { getOne } = usePersonneStore();
 getOne(props.id);
 </script>
 
 <template>
-  <el-dialog v-model="dialog" title="Détails de dette" width="50%" destroy-on-close center>
+  <el-dialog v-model="dialog" title="Détails du client" width="50%" destroy-on-close center>
     <div v-loading="loading.edit">
-      <DetteDescriptionComponent :dette="dette" />
+      <PersonneDescriptionComponent :personne="client" />
     </div>
   </el-dialog>
 </template>

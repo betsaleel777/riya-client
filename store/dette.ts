@@ -52,5 +52,5 @@ export const useDetteStore = defineStore("dette", () => {
     return response;
   };
 
-  return { getAll, getOne, loading, dettes, valider, repay, getPending, pendingValidation };
+  return { getAll, getOne, loading, dettes, dette, valider, repay, getPending, pendingValidation };
 });

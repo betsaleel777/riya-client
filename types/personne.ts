@@ -15,9 +15,10 @@ interface Client extends Personne {
   image_piece?: Blob;
   image_avatar?: Blob;
   type_client_id?: number;
+  type: string;
 }
 
-interface TypePersonne extends Type {}
+interface TypePersonne extends Type { }
 
 type Clients = Array<Client>;
 type TypePersonnes = Array<TypePersonne>;

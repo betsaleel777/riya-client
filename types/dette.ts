@@ -18,9 +18,7 @@ interface DetteValidation extends Entity {
   code: string;
   montant: number;
   created_at: string
-  bien: string;
-  proprietaire: string;
-  telephone: string;
+  origine: string;
   responsable: string
 }
 

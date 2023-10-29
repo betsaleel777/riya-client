@@ -14,7 +14,7 @@ getAll();
 const { filterTableData, setPage, search, total, pageSize } =
   usePersonneFilterPagination(personnes);
 const { onPrint } = useClientPrinter(personnes);
-const { handleDelete, handleEdit, modal } = useHandleCrudButtons(trash);
+const { handleDelete, handleEdit, handleShow, modal } = useHandleCrudButtons(trash);
 </script>
 
 <template>
@@ -58,7 +58,9 @@ const { handleDelete, handleEdit, modal } = useHandleCrudButtons(trash);
                       <span>Option</span>
                     </template>
                     <template #default="scope">
-                      <el-button type="info" plain circle><i class="bx bx-show" /></el-button>
+                      <el-button type="info" @click="handleShow(scope.row)" plain circle
+                        ><i class="bx bx-show"
+                      /></el-button>
                       <el-button type="primary" @click="handleEdit(scope.row)" plain circle
                         ><i class="bx bx-edit"
                       /></el-button>
@@ -90,10 +92,15 @@ const { handleDelete, handleEdit, modal } = useHandleCrudButtons(trash);
                 />
               </StructurePageHeader>
               <PersonneCreateModal v-model="modal.create" />
-              <PersonneEditModal
+              <LazyPersonneEditModal
                 :id="modal.edit.id"
                 v-if="modal.edit.dialog"
                 v-model="modal.edit.dialog"
+              />
+              <LazyPersonneShowModal
+                :id="modal.show.id"
+                v-if="modal.show.dialog"
+                v-model="modal.show.dialog"
               />
             </div>
           </div>
