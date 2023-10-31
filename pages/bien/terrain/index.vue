@@ -38,7 +38,7 @@ const classType = (status: string) => {
                 <el-table v-loading="loading.index" :data="filterTableData" style="width: 100%">
                   <el-table-column prop="nom" label="Nom" sortable>
                     <template #default="scope">
-                      {{ scope.row.nom.toUpperCase() }}
+                      <el-text truncated>{{ scope.row.nom.toUpperCase() }}</el-text>
                     </template>
                   </el-table-column>
                   <el-table-column prop="quartier" label="Quartier" width="200" sortable />

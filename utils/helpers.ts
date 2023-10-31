@@ -392,7 +392,7 @@ const paiementReceiptPdf = (societe: Societe, paiement: Paiement, achat: Achat) 
 };
 const rentReceiptPdf = (societe: Ref<Societe>, loyer: Ref<Loyer | undefined>) => {
   const doc = new JsPDF("p", "pt", "a4");
-  const client = loyer.value?.client as Client;
+  const client = loyer.value?.personne as Client;
   const bien = loyer.value?.bien as Appartement;
   autoTable(doc, {
     body: [

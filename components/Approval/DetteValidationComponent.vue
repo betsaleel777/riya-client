@@ -50,7 +50,12 @@ const { runShowModal, show } = useShowModal();
               </div>
             </div>
           </div>
-          <LazyDetteShowModal :id="show.id" v-model="show.enable" v-if="show.enable" />
+          <LazyDetteShowModal
+            :id="show.id"
+            v-model="show.enable"
+            v-if="show.enable"
+            :from-validation-page="true"
+          />
         </div>
       </el-scrollbar>
       <el-empty v-else class="bg-white" :image-size="80">

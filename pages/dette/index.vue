@@ -38,20 +38,6 @@ const handleRepay = (dette: Dette) => {
     ElNotification.success({ title: "succès", message });
   });
 };
-const handleValidate = (dette: Dette) => {
-  ElMessageBox.confirm(
-    `Voulez vous valider le remboursement de la dette: ${dette.code}`,
-    "Confirmation de validation",
-    {
-      confirmButtonText: "confirmer",
-      cancelButtonText: "abandonner",
-      type: "warning",
-    }
-  ).then(async () => {
-    const message = await valider(dette.id!);
-    ElNotification.success({ title: "succès", message });
-  });
-};
 const { runShowModal, show } = useShowModal();
 </script>
 
@@ -120,12 +106,9 @@ const { runShowModal, show } = useShowModal();
                       <span>Option</span>
                     </template>
                     <template #default="scope">
-                      <el-button
-                        type="info"
-                        plain
-                        circle
-                        @click="runShowModal(scope.row.id)"
-                      ></el-button>
+                      <el-button type="info" plain circle @click="runShowModal(scope.row.id)"
+                        ><i class="bx bx-show"
+                      /></el-button>
                       <el-button
                         v-if="scope.row.status === statusPayable.unpaid"
                         type="primary"
@@ -133,14 +116,6 @@ const { runShowModal, show } = useShowModal();
                         plain
                         circle
                         ><i class="bx bx-dollar"
-                      /></el-button>
-                      <el-button
-                        v-else-if="scope.row.status === statusPayable.pending"
-                        type="success"
-                        @click="handleValidate(scope.row)"
-                        plain
-                        circle
-                        ><i class="bx bx-check-shield"
                       /></el-button>
                     </template>
                   </el-table-column>

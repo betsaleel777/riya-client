@@ -46,9 +46,9 @@ export const useDetteStore = defineStore("dette", () => {
     return response;
   };
 
-  const valider = async (id: number) => {
+  const valider = async (id: number, fromValidationPage: boolean) => {
     const response = await $apiFetch<string>(`api/dettes/validate/${ id }`, { method: "PATCH" });
-    await getAll();
+    fromValidationPage ? await getPending() : await getAll();
     return response;
   };
 

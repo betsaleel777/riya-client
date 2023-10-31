@@ -227,7 +227,7 @@ const useLoyerPrinter = (loyers: Ref<Loyers>) => {
         date: loyer.created_at,
         code: loyer.code,
         montant: loyer.montant,
-        client: loyer.client,
+        client: loyer.personne,
         bien: loyer.bien,
         status: loyer.status,
       };
