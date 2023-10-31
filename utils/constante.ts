@@ -30,6 +30,11 @@ const statusPayable = {
   pending: "en attente",
 } as const
 
+const typePaiement = {
+  rent: "Loyer",
+  purchase: "Achat",
+} as const
+
 export {
   statusBien,
   statusValidable,
@@ -38,4 +43,5 @@ export {
   statusAvance,
   typeContrat,
   statusPayable,
+  typePaiement
 };

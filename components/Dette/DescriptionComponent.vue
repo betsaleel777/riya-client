@@ -1,18 +1,6 @@
 <script lang="ts" setup>
 import { Dette } from "~/types/dette";
-import { useVisiteStore } from "~/store/visite";
-import { usePaiementStore } from "~/store/paiement";
-import { storeToRefs } from "pinia";
-
 const props = defineProps<{ dette: Dette }>();
-const { getOne: getVisite } = useVisiteStore();
-const { visite, loading: visiteLoading } = storeToRefs(useVisiteStore());
-const { getOne: getPaiement } = usePaiementStore();
-const { paiement, loading: paiementLoading } = storeToRefs(usePaiementStore());
-const isOrigineVisite = computed<boolean>(() => props.dette?.origine_type === "Visite");
-isOrigineVisite.value
-  ? getVisite(props.dette?.origine?.id!)
-  : getPaiement(props.dette?.origine?.id!);
 </script>
 
 <template>
@@ -36,22 +24,7 @@ isOrigineVisite.value
       >{{ props.dette?.contrat?.commission }} %
     </el-descriptions-item>
   </el-descriptions>
-  <div v-if="isOrigineVisite" v-loading="visiteLoading.edit">
-    <el-collapse accordion class="my-4">
-      <el-collapse-item title="Informations de la visite" name="visite">
-        <VisiteDescriptionComponent :visite="visite!" />
-      </el-collapse-item>
-      <el-collapse-item title="Informations sur le bien" name="bien">
-        <BienDescriptionComponent :bien="visite?.appartement!" />
-      </el-collapse-item>
-      <!-- <el-collapse-item title="Informations sur le client" name="client">
-        <PersonneDescriptionComponent :personne="visite?.personne!" />
-      </el-collapse-item> -->
-    </el-collapse>
-  </div>
-  <div v-else v-loading="paiementLoading.edit">
-    <PaiementDescriptionComponent :paiement="paiement" />
-  </div>
+  <DetteInformationsComplementaire :type="dette?.origine_type" :origine="dette.origine?.id" />
 </template>
 
 <style scoped></style>

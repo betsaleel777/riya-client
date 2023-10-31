@@ -49,9 +49,7 @@ export const useVisiteStore = defineStore("visite", () => {
   };
 
   const trash = async (id: number) => {
-    const response = await $apiFetch<string>("api/visites/" + id, {
-      method: "delete",
-    });
+    const response = await $apiFetch<string>("api/visites/" + id, { method: "delete" });
     await getAll();
     return response;
   };
@@ -59,10 +57,7 @@ export const useVisiteStore = defineStore("visite", () => {
   const getOne = async (id: number) => {
     try {
       loading.edit = true;
-      const response = await $apiFetch<Visite>("api/visites/" + id, {
-        method: "get",
-      });
-      visite.value = response;
+      visite.value = await $apiFetch<Visite>("api/visites/" + id, { method: "get" });
       loading.edit = false;
     } catch (error) {
       if (error instanceof FetchError && error.statusCode === 401) navigateTo("/login");
@@ -121,6 +116,6 @@ export const useVisiteStore = defineStore("visite", () => {
     getOperationAction,
     fraisPatch,
     getPending,
-    pending
+    pending,
   };
 });

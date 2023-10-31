@@ -1,4 +1,5 @@
 import { Appartement } from "./appartement";
+import { Contrat } from "./contrat";
 import { Entity } from "./global";
 import { Paiement } from "./paiements";
 import { Client } from "./personne";
@@ -11,7 +12,7 @@ interface Loyer extends Entity {
   bien: string | Appartement;
   created_at: string;
   contrat_id: number;
-  paiement?: Paiement;
+  contrat: Contrat
 }
 
 type Loyers = Array<Loyer>;

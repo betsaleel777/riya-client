@@ -17,7 +17,7 @@ getAll();
 const { filterTableData, setPage, search, total, pageSize } =
   usePaiementRefFilterPagination(paiements);
 const { onPrint } = usePaiementRefPrinter(paiements);
-const { handleDelete, handleEdit, modal } = useHandleCrudButtons(trash);
+const { handleDelete, handleEdit, handleShow, modal } = useHandleCrudButtons(trash);
 const existOnePaiement = (paiement: Paiement): boolean => {
   const payableIds = paiements.value.map((paiement) => paiement.payable_id);
   return !payableIds.includes(paiement.payable_id);
@@ -110,6 +110,9 @@ const printReceipt = async (paiement: Paiement) => {
                       <span>Option</span>
                     </template>
                     <template #default="scope">
+                      <el-button type="info" @click="handleShow(scope.row)" plain circle
+                        ><i class="bx bx-show"
+                      /></el-button>
                       <el-button
                         v-if="scope.row.status === statusValidable.wait"
                         type="success"
@@ -157,10 +160,15 @@ const printReceipt = async (paiement: Paiement) => {
                 />
               </StructurePageHeader>
               <PaiementCreateModal v-model="modal.create" />
-              <PaiementEditModal
+              <LazyPaiementEditModal
                 :id="modal.edit.id"
                 v-if="modal.edit.dialog"
                 v-model="modal.edit.dialog"
+              />
+              <LazyPaiementShowModal
+                v-model="modal.show.dialog"
+                v-if="modal.show.dialog"
+                :id="modal.show.id"
               />
               <ContratCreateModal
                 v-model="contratForm.modal"
