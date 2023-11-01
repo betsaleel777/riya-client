@@ -12,7 +12,7 @@ const { runShowModal, show } = useShowModal();
   <div class="container-fluid">
     <div v-loading="loading.index">
       <div class="d-flex align-items-baseline mb-2">
-        <h5 class="w-75">Dettes</h5>
+        <h5 class="w-75">Remboursements</h5>
         <el-input
           v-model="search"
           class="25"
@@ -60,7 +60,7 @@ const { runShowModal, show } = useShowModal();
       </el-scrollbar>
       <el-empty v-else class="bg-white" :image-size="80">
         <template #description>
-          <el-text class="text-dark headline">aucune visite à valider</el-text>
+          <el-text class="text-dark headline">aucun remboursement à valider</el-text>
         </template>
       </el-empty>
     </div>

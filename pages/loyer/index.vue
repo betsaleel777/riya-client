@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
 import { useLoyerStore } from "~/store/loyer";
-import { statusPayable } from "~/utils/constante";
 import { Loyer } from "~/types/loyer";
 
 useHead({ title: "Loyer" });
@@ -15,7 +14,7 @@ const { loyers, loading } = storeToRefs(useLoyerStore());
 getAll();
 const { filterTableData, setPage, search, total, pageSize } = useLoyerFilterPagination(loyers);
 const { onPrint } = useLoyerPrinter(loyers);
-const { handleDelete, modal } = useHandleCrudButtons(trash);
+const { handleDelete, handleShow, modal } = useHandleCrudButtons(trash);
 const classStatus = (status: string) => {
   const classes = {
     [statusPayable.pending as string]: "warning",
@@ -35,20 +34,6 @@ const handleCashed = (loyer: Loyer) => {
     }
   ).then(async () => {
     const message = await cashed(loyer.id!);
-    ElNotification.success({ title: "succès", message });
-  });
-};
-const handleValidate = (loyer: Loyer) => {
-  ElMessageBox.confirm(
-    `Voulez vous valider le paiement du ${loyer.code}`,
-    "Confirmation de validation",
-    {
-      confirmButtonText: "confirmer",
-      cancelButtonText: "abandonner",
-      type: "warning",
-    }
-  ).then(async () => {
-    const message = await valider(loyer.id!);
     ElNotification.success({ title: "succès", message });
   });
 };
@@ -127,11 +112,14 @@ const printReceipt = async (id: number) => {
                     </template>
                   </el-table-column>
                   <el-table-column prop="created_at" label="Date" width="150" />
-                  <el-table-column width="100" align="right">
+                  <el-table-column align="right">
                     <template #header>
                       <span>Option</span>
                     </template>
                     <template #default="scope">
+                      <el-button type="info" @click="handleShow(scope.row)" plain circle
+                        ><i class="bx bx-show"
+                      /></el-button>
                       <el-button
                         v-if="scope.row.status === statusPayable.unpaid"
                         type="primary"
@@ -139,14 +127,6 @@ const printReceipt = async (id: number) => {
                         plain
                         circle
                         ><i class="bx bx-dollar"
-                      /></el-button>
-                      <el-button
-                        v-else-if="scope.row.status === statusPayable.pending"
-                        type="success"
-                        @click="handleValidate(scope.row)"
-                        plain
-                        circle
-                        ><i class="bx bx-check-shield"
                       /></el-button>
                       <el-button
                         v-else
@@ -183,6 +163,11 @@ const printReceipt = async (id: number) => {
                   hide-on-single-page
                 />
               </StructurePageHeader>
+              <LazyLoyerShowModal
+                :id="modal.show.id"
+                v-if="modal.show.dialog"
+                v-model="modal.show.dialog"
+              />
             </div>
           </div>
         </div>

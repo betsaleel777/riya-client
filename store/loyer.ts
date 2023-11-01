@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { FetchError } from "ofetch";
-import { Loyer, Loyers } from "~/types/loyer";
+import { Loyer, LoyerValidations, Loyers } from "~/types/loyer";
 import { statusPayable } from "~/utils/constante";
 
 export const useLoyerStore = defineStore("loyer", () => {
@@ -8,16 +8,25 @@ export const useLoyerStore = defineStore("loyer", () => {
 
   let loyers = ref<Loyers>([]);
   let loyer = ref<Loyer>();
+  let pendingValidations = ref<LoyerValidations>([])
   let loading = reactive({ index: false, edit: false });
 
-  const impayes = computed<Loyers>(() =>
-    loyers.value.filter((loyer) => loyer.status === statusPayable.unpaid)
-  );
+  const impayes = computed<Loyers>(() => loyers.value.filter((loyer) => loyer.status === statusPayable.unpaid));
 
   const getAll = async () => {
     try {
       loading.index = true;
       loyers.value = await $apiFetch<Loyers>("api/loyers");
+      loading.index = false;
+    } catch (error) {
+      if (error instanceof FetchError && error.statusCode === 401) navigateTo("/login");
+    }
+  };
+
+  const getPending = async () => {
+    try {
+      loading.index = true;
+      pendingValidations.value = await $apiFetch<LoyerValidations>("api/loyers/pending");
       loading.index = false;
     } catch (error) {
       if (error instanceof FetchError && error.statusCode === 401) navigateTo("/login");
@@ -46,11 +55,11 @@ export const useLoyerStore = defineStore("loyer", () => {
     return response;
   };
 
-  const valider = async (id: number) => {
+  const valider = async (id: number, fromValidationPage: boolean) => {
     const response = await $apiFetch<string>(`api/loyers/validate/${ id }`, { method: "PATCH" });
-    await getAll();
+    fromValidationPage ? await getPending() : await getAll();
     return response;
   };
 
-  return { loyers, loyer, impayes, loading, getAll, getOne, trash, cashed, valider };
+  return { loyers, loyer, impayes, loading, getAll, getOne, trash, cashed, valider, getPending, pendingValidations };
 });

@@ -32,7 +32,12 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {},
   },
-  modules: ["@pinia/nuxt", "nuxt-sanctum-auth", "@element-plus/nuxt"],
+  modules: ["@pinia/nuxt", "nuxt-sanctum-auth", "@element-plus/nuxt", 'dayjs-nuxt'],
+  dayjs: {
+    locales: ['fr'],
+    plugins: ['relativeTime', 'utc', 'timezone'],
+    defaultLocale: 'fr',
+  },
   nuxtSanctumAuth: {
     token: false,
     baseUrl: process.env.API_URL,

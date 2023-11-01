@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import { storeToRefs } from "pinia";
-import { useDetteStore } from "~/store/dette";
-
+import { useLoyerStore } from "~/store/loyer";
 const props = withDefaults(
   defineProps<{
     modelValue: boolean;
@@ -12,13 +11,12 @@ const props = withDefaults(
 );
 const emit = defineEmits<{ (event: "update:modelValue", payload: boolean): void }>();
 const { dialog } = useDialogModelValue(props, emit);
-
-const { dette, loading } = storeToRefs(useDetteStore());
-const { getOne, valider } = useDetteStore();
-await getOne(props.id);
+const { loyer, loading } = storeToRefs(useLoyerStore());
+const { getOne, valider } = useLoyerStore();
+getOne(props.id);
 const handleValidate = () => {
   ElMessageBox.confirm(
-    `Cette action est irréversible, voulez réelement valider le remboursement de la dette ${dette.value?.code}?`,
+    `Cette action est irréversible, voulez réelement valider cette ${loyer.value?.code}?`,
     "Attention",
     {
       confirmButtonText: "Confirmer",
@@ -26,33 +24,28 @@ const handleValidate = () => {
       type: "warning",
     }
   ).then(() => {
-    valider(dette.value?.id!, props.fromValidationPage).then((message) => {
+    valider(loyer.value?.id!, props.fromValidationPage).then((message) => {
       ElNotification.success({ title: "succès", message });
       dialog.value = false;
     });
   });
 };
-const title = computed(() =>
-  props.fromValidationPage ? "Détails de remboursement" : "Détails de dette"
-);
 </script>
 
 <template>
-  <el-dialog v-model="dialog" :title="title" width="40%" destroy-on-close center>
+  <el-dialog v-model="dialog" title="Détails du loyer" width="40%" destroy-on-close center>
     <div v-loading="loading.edit">
       <div class="d-flex flex-row-reverse">
         <el-button
-          v-if="dette?.status === statusValidable.wait"
+          v-if="loyer?.status === statusPayable.pending"
           @click="handleValidate"
           type="primary"
           text
-          >valider cette dette</el-button
+          >valider ce loyer</el-button
         >
       </div>
-      <el-scrollbar :max-height="400">
-        <el-divider class="mt-0" />
-        <DetteDescriptionComponent :dette="dette" />
-      </el-scrollbar>
+      <el-divider class="mt-0" />
+      <LoyerDescriptionComponent :loyer="loyer" />
     </div>
   </el-dialog>
 </template>

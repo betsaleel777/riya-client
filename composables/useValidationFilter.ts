@@ -1,5 +1,6 @@
 import { DepenseValidation, DepenseValidations } from "~/types/depense";
 import { DetteValidation, DetteValidations } from "~/types/dette";
+import { LoyerValidation, LoyerValidations } from "~/types/loyer";
 import { VisiteValidation, VisiteValidations } from "~/types/visite";
 
 const useDepenseValidationFilter = (depenses: Ref<DepenseValidations>) => {
@@ -41,4 +42,17 @@ const useDetteValidationFilter = (dettes: Ref<DetteValidations>) => {
   return { filterCardData, search };
 }
 
-export { useDepenseValidationFilter, useVisiteValidationFilter, useDetteValidationFilter }
+const useLoyerValidationFilter = (loyers: Ref<LoyerValidations>) => {
+  const search = ref("");
+  const filterCardData = computed(() => {
+    return Array.isArray(loyers.value)
+      ? loyers.value.filter((loyer: LoyerValidation) => {
+        if (loyer.code !== undefined && loyer.bien !== undefined)
+          return !search.value || loyer.code.toLowerCase().includes(search.value.toLowerCase()) || loyer.bien.toLowerCase().includes(search.value.toLowerCase());
+      })
+      : [];
+  });
+  return { filterCardData, search };
+}
+
+export { useDepenseValidationFilter, useVisiteValidationFilter, useDetteValidationFilter, useLoyerValidationFilter }

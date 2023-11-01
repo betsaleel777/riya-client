@@ -14,6 +14,14 @@ interface Loyer extends Entity {
   contrat: Contrat
 }
 
-type Loyers = Array<Loyer>;
+interface LoyerValidation extends Entity {
+  code: string;
+  montant: string;
+  personne: string
+  bien: string;
+  created_at: string;
+}
 
-export { Loyers, Loyer };
+type Loyers = Array<Loyer>;
+type LoyerValidations = Array<LoyerValidation>
+export { Loyers, Loyer, LoyerValidation, LoyerValidations };

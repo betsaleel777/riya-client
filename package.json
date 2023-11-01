@@ -11,12 +11,12 @@
   "devDependencies": {
     "@element-plus/nuxt": "^1.0.4",
     "@types/node": "^18",
+    "dayjs-nuxt": "^2.1.9",
     "element-plus": "^2.4.1",
     "nuxt": "^3.4.2"
   },
   "dependencies": {
     "@pinia/nuxt": "^0.4.9",
-    "dayjs": "^1.11.8",
     "jspdf": "^2.5.1",
     "jspdf-autotable": "^3.5.28",
     "maska": "^2.1.9",

@@ -43,11 +43,14 @@ const props = defineProps<{ personne: Client }>();
     <el-descriptions-item v-if="props.personne?.email" label="Email:"
       >{{ props.personne?.email }}
     </el-descriptions-item>
+    <el-descriptions-item v-if="props.personne?.telephone" label="Téléphone:"
+      >{{ props.personne?.telephone }}
+    </el-descriptions-item>
     <el-descriptions-item v-if="props.personne?.fonctions" label="Fonctions:">{{
       props.personne?.fonctions
     }}</el-descriptions-item>
     <el-descriptions-item v-if="props.personne?.date_naissance" label="Date de naissance:"
-      >{{ props.personne?.date_naissance }}
+      >{{ $dayjs(props.personne?.date_naissance).format("DD-MM-YYYY") }}
     </el-descriptions-item>
     <el-descriptions-item v-if="props.personne?.lieu_naissance" label="Lieu de naissance:"
       >{{ props.personne?.lieu_naissance }}

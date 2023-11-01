@@ -80,7 +80,7 @@ const { handleDelete, modal } = useHandleCrudButtons(trash);
                 />
               </StructurePageHeader>
               <AchatCreateModal v-model="modal.create" />
-              <AchatShowModal
+              <LazyAchatShowModal
                 :id="modal.show.id"
                 v-if="modal.show.dialog"
                 v-model="modal.show.dialog"
