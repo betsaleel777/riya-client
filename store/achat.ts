@@ -1,12 +1,13 @@
 import { defineStore } from "pinia";
 import { FetchError } from "ofetch";
-import { Achat, Achats } from "~/types/achat";
+import { Achat, AchatValidations, Achats } from "~/types/achat";
 
 export const useAchatStore = defineStore("achat", () => {
   const { $apiFetch } = useNuxtApp();
 
   let achats = ref<Achats>([]);
   let achat = ref<Achat>();
+  let pendingValidations = ref<AchatValidations>([])
   let loading = reactive({ index: false, edit: false });
 
   const unsales = computed<Achats>(() => achats.value.filter((achat) => achat.reste > 0));
@@ -15,6 +16,16 @@ export const useAchatStore = defineStore("achat", () => {
     try {
       loading.index = true;
       achats.value = await $apiFetch<Achats>("api/achats");
+      loading.index = false;
+    } catch (error) {
+      if (error instanceof FetchError && error.statusCode === 401) navigateTo("/login");
+    }
+  };
+
+  const getPending = async () => {
+    try {
+      loading.index = true;
+      pendingValidations.value = await $apiFetch<AchatValidations>("api/achats/pending");
       loading.index = false;
     } catch (error) {
       if (error instanceof FetchError && error.statusCode === 401) navigateTo("/login");
@@ -46,6 +57,16 @@ export const useAchatStore = defineStore("achat", () => {
     }
   };
 
+  const valider = async (id: number) => {
+    try {
+      const response = await $apiFetch<string>('api/achats/validate/' + id, { method: "PATCH" })
+      await getPending()
+      return response
+    } catch (error) {
+      if (error instanceof FetchError && error.statusCode === 401) navigateTo("/login");
+    }
+  }
+
   return {
     achat,
     achats,
@@ -55,5 +76,8 @@ export const useAchatStore = defineStore("achat", () => {
     create,
     getOne,
     trash,
+    getPending,
+    pendingValidations,
+    valider
   };
 });

@@ -1,3 +1,4 @@
+import { AchatValidation, AchatValidations } from "~/types/achat";
 import { DepenseValidation, DepenseValidations } from "~/types/depense";
 import { DetteValidation, DetteValidations } from "~/types/dette";
 import { LoyerValidation, LoyerValidations } from "~/types/loyer";
@@ -55,4 +56,17 @@ const useLoyerValidationFilter = (loyers: Ref<LoyerValidations>) => {
   return { filterCardData, search };
 }
 
-export { useDepenseValidationFilter, useVisiteValidationFilter, useDetteValidationFilter, useLoyerValidationFilter }
+const useAchatValidationFilter = (achats: Ref<AchatValidations>) => {
+  const search = ref("");
+  const filterCardData = computed(() => {
+    return Array.isArray(achats.value)
+      ? achats.value.filter((achat: AchatValidation) => {
+        if (achat.code !== undefined && achat.bien !== undefined)
+          return !search.value || achat.code.toLowerCase().includes(search.value.toLowerCase()) || achat.bien.toLowerCase().includes(search.value.toLowerCase());
+      })
+      : [];
+  });
+  return { filterCardData, search };
+}
+
+export { useDepenseValidationFilter, useVisiteValidationFilter, useDetteValidationFilter, useLoyerValidationFilter, useAchatValidationFilter }

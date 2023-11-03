@@ -20,6 +20,7 @@ interface LoyerValidation extends Entity {
   personne: string
   bien: string;
   created_at: string;
+  avatar: string;
 }
 
 type Loyers = Array<Loyer>;

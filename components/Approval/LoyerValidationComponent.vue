@@ -31,10 +31,21 @@ const { runShowModal, show } = useShowModal();
                       <span
                         class="avatar-title badge-primary-subtle rounded-circle text-danger font-size-16"
                       >
-                        <el-tooltip :content="loyer.personne" placement="top">
-                          <el-avatar class="bg-transparent" size="large">{{
-                            loyer.personne.substring(0, 2).toUpperCase()
-                          }}</el-avatar>
+                        <el-tooltip
+                          v-if="loyer?.avatar"
+                          :content="`Le client: ${loyer.personne}`"
+                          placement="top"
+                        >
+                          <el-avatar
+                            class="bg-transparent"
+                            :src="loyer?.avatar"
+                            :size="70"
+                          ></el-avatar>
+                        </el-tooltip>
+                        <el-tooltip :content="`Le client: ${loyer.personne}`" placement="top">
+                          <el-avatar class="bg-transparent" size="large">
+                            {{ loyer.personne.substring(0, 2).toUpperCase() }}</el-avatar
+                          >
                         </el-tooltip>
                       </span>
                     </div>

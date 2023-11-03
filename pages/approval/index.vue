@@ -24,6 +24,7 @@ definePageMeta({ middleware: "auth" });
         <ApprovalVisiteValidationComponent />
         <ApprovalDetteValidationComponent />
         <ApprovalLoyerValidationComponent />
+        <ApprovalAchatValidationComponent />
       </div>
     </div>
   </div>

@@ -18,6 +18,17 @@ interface Achat extends Entity {
   paiements?: Paiements;
 }
 
-type Achats = Array<Achat>;
+interface AchatValidation extends Entity {
+  code: string;
+  created_at: string;
+  personne: string;
+  bien: string;
+  cout: number;
+  montant: number;
+  avatar: string
+}
 
-export { Achats, Achat };
+type Achats = Array<Achat>;
+type AchatValidations = Array<AchatValidation>
+
+export { Achats, Achat, AchatValidation, AchatValidations };

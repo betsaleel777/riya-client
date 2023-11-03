@@ -18,11 +18,7 @@ const handleValidate = () => {
   ElMessageBox.confirm(
     `Cette action est irréversible, voulez réelement valider cette ${loyer.value?.code}?`,
     "Attention",
-    {
-      confirmButtonText: "Confirmer",
-      cancelButtonText: "Abandonner",
-      type: "warning",
-    }
+    { confirmButtonText: "Confirmer", cancelButtonText: "Abandonner", type: "warning" }
   ).then(() => {
     valider(loyer.value?.id!, props.fromValidationPage).then((message) => {
       ElNotification.success({ title: "succès", message });
