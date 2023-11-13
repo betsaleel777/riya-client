@@ -20,7 +20,7 @@ const { getOne, validate } = useDepenseStore();
 getOne(props.id);
 const handleValidate = () => {
   ElMessageBox.confirm(
-    `Cette action est irréversible, voulez réelement valider la dépense ${depense.value?.titre}?`,
+    `Cette action est irréversible, voulez réelement valider la dépense ${depense.value?.titre} ?`,
     "Attention",
     {
       confirmButtonText: "Confirmer",
