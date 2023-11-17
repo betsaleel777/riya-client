@@ -1,54 +1,24 @@
 <script lang="ts" setup>
 import { use } from "echarts/core";
 import { CanvasRenderer } from "echarts/renderers";
-import { BarChart } from "echarts/charts";
-import {
-  TitleComponent,
-  TooltipComponent,
-  LegendComponent,
-  GridComponent,
-} from "echarts/components";
+import { SunburstChart } from "echarts/charts";
+import type { SunburstSeriesOption } from "echarts/types/dist/shared";
+import { TitleComponent, TooltipComponent, LegendComponent } from "echarts/components";
 import VChart, { THEME_KEY } from "vue-echarts";
 
-use([CanvasRenderer, BarChart, TitleComponent, TooltipComponent, LegendComponent, GridComponent]);
-
+const props = defineProps<{
+  titre: string;
+  colors: Array<string>;
+  seriesOption: SunburstSeriesOption;
+}>();
+use([CanvasRenderer, SunburstChart, TitleComponent, TooltipComponent, LegendComponent]);
 provide(THEME_KEY, "light");
 
 const option = ref({
-  title: { left: "center" },
+  color: props.colors,
   legend: {},
   tooltip: {},
-  yAxis: { type: "value" },
-  xAxis: { type: "category", data: ["09-2023", "10-2023", "11-2023", "12-2023"] },
-  series: [
-    {
-      type: "bar",
-      name: "ventes",
-      data: [89.3, 92.1, 94.4, 85.4],
-      emphasis: {
-        focus: "series",
-      },
-      barWidth: 10,
-    },
-    {
-      type: "bar",
-      name: "locations",
-      data: [97.7, 83.1, 92.5, 78.1],
-      emphasis: {
-        focus: "series",
-      },
-      barWidth: 10,
-    },
-    {
-      type: "bar",
-      name: "loyers",
-      data: [95.8, 89.4, 91.2, 76.9],
-      emphasis: {
-        focus: "series",
-      },
-      barWidth: 10,
-    },
-  ],
+  series: props.seriesOption,
 });
 </script>
 
@@ -56,7 +26,7 @@ const option = ref({
   <div class="card">
     <div class="card-body">
       <div class="d-sm-flex flex-wrap">
-        <h4 class="card-title mb-4">Statistiques d'applications</h4>
+        <h4 class="card-title mb-4">{{ props.titre }}</h4>
         <div class="ms-auto">
           <div class="dropdown ms-auto">
             <a
@@ -85,6 +55,6 @@ const option = ref({
 
 <style scoped>
 .chart {
-  height: 350px;
+  height: 200px;
 }
 </style>
