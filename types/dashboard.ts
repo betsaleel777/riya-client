@@ -5,4 +5,7 @@ export type Dashboard = {
    visites:number
    taux:number
    depenses:number
+   remboursements:number
+   terrains:number;
+   appartements:number;
 }

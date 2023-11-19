@@ -1,7 +1,7 @@
 <template>
-  <div class="page-content" v-loading="loading">
+  <div class="page-content">
     <div class="container-fluid">
-      <div class="row">
+      <div class="row" v-loading="loading">
         <div class="col-lg-12">
           <div class="row">
             <div class="col-lg-2">
@@ -93,7 +93,11 @@
             :montant="dashboard?.depenses"
             icon="bx bx-group"
           />
-          <DashboardAmountCardComponent titre="Remboursement" :montant="7.568" icon="bx bx-group" />
+          <DashboardAmountCardComponent
+            titre="Remboursement"
+            :montant="dashboard?.remboursements"
+            icon="bx bx-group"
+          />
         </div>
       </div>
     </div>
@@ -105,6 +109,10 @@ import { storeToRefs } from "pinia";
 import { useDashboardStore } from "~/store/dashboard";
 useHead({ title: "Dashboard" });
 definePageMeta({ middleware: "auth" });
+
+const { getAll } = useDashboardStore();
+const { loading, dashboard } = storeToRefs(useDashboardStore());
+
 const sunColorsTwo = ["#03071E", "#D00000", "#370617", "#F48C06", "#DC2F02"];
 const uptodateOption = ref([
   {
@@ -171,7 +179,7 @@ const locatairesOptions = ref([
     ],
   },
 ]);
-const proprietesOptions = ref([
+const proprietesOptions = computed(() => [
   {
     name: "propriétés de type",
     type: "pie",
@@ -195,30 +203,11 @@ const proprietesOptions = ref([
     },
     labelLine: { show: false },
     data: [
-      { value: 500, name: "appartements" },
-      { value: 800, name: "terrains" },
+      { value: dashboard.value?.appartements, name: "appartements" },
+      { value: dashboard.value?.terrains, name: "terrains" },
     ],
   },
 ]);
-// const locationsOptions = ref([
-//   {
-//     name: "montant des :",
-//     type: "pie",
-//     center: ["50%", "50%"],
-//     roseType: "radius",
-//     itemStyle: { borderRadius: 8 },
-//     labelLine: { show: false },
-//     data: [
-//       { value: 5000, name: "Visites" },
-//       { value: 4500, name: "Frais de dossier" },
-//       { value: 12000, name: "Frais d'agence" },
-//       { value: 15000, name: "Cautions" },
-//       { value: 20000, name: "Avances" },
-//     ],
-//   },
-// ]);
-const { getAll } = useDashboardStore();
-const { loading, dashboard } = storeToRefs(useDashboardStore());
 await getAll();
 </script>
 
