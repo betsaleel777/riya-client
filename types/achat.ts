@@ -16,6 +16,7 @@ interface Achat extends Entity {
   created_at: string;
   bien_type: string;
   paiements?: Paiements;
+  contractible: boolean
 }
 
 interface AchatValidation extends Entity {

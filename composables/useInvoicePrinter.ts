@@ -25,8 +25,7 @@ const usePaiementReceipt = async (paiement: Paiement, achat: Achat) => {
   const { getOne } = useSocieteStore();
   const { societe } = useSocieteStore();
   getOne().then(() => {
-    if (societe !== undefined && paiement !== undefined)
-      paiementReceiptPdf(societe, paiement, achat);
+    if (societe !== undefined && paiement !== undefined) paiementReceiptPdf(societe, paiement, achat);
   });
 };
 

@@ -32,20 +32,55 @@ onMounted(async () => {
       </div>
 
       <div class="row">
-        <div class="col-xl-7">
-          <div class="card">
-            <div class="card-body">
-              <h4 class="card-title mb-4">Détails du clients</h4>
-              <PersonneDescriptionComponent :personne="achat?.personne!" />
+        <div class="col-lg-7">
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title mb-4">Détails du clients</h4>
+                  <PersonneDescriptionComponent :personne="achat?.personne!" />
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-12">
+              <div class="card">
+                <div class="card-body">
+                  <div class="table-responsive">
+                    <AchatPaiementTableComponent :paiements="achat?.paiements!" />
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
 
-        <div class="col-xl-5">
-          <div class="card">
-            <div class="card-body">
-              <h4 class="card-title mb-4">Détails du Biens</h4>
-              <BienDescriptionComponent :bien="achat?.bien!" />
+        <div class="col-lg-5">
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title mb-4">Détails du Biens</h4>
+                  <BienDescriptionComponent :bien="achat?.bien!" />
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-12">
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title mb-4">Détails de l'achat</h4>
+                  <el-descriptions direction="horizontal" :column="2" size="large">
+                    <el-descriptions-item label="Montant versé:"
+                      >{{ achat?.total }} FCFA
+                    </el-descriptions-item>
+                    <el-descriptions-item label="Reste à payer :"
+                      >{{ achat?.reste }} FCFA</el-descriptions-item
+                    >
+                    <el-descriptions-item label="Date :">{{
+                      achat?.created_at
+                    }}</el-descriptions-item>
+                  </el-descriptions>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -53,31 +88,8 @@ onMounted(async () => {
       <!-- end row -->
 
       <div class="row">
-        <div class="col-xl-7">
-          <div class="card">
-            <div class="card-body">
-              <div class="table-responsive">
-                <AchatPaiementTableComponent :paiements="achat?.paiements!" />
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-5">
-          <div class="card">
-            <div class="card-body">
-              <h4 class="card-title mb-4">Détails de l'achat</h4>
-              <el-descriptions direction="horizontal" :column="2" size="large">
-                <el-descriptions-item label="Montant versé:"
-                  >{{ achat?.total }} FCFA
-                </el-descriptions-item>
-                <el-descriptions-item label="Reste à payer :"
-                  >{{ achat?.reste }} FCFA</el-descriptions-item
-                >
-                <el-descriptions-item label="Date :">{{ achat?.created_at }}</el-descriptions-item>
-              </el-descriptions>
-            </div>
-          </div>
-        </div>
+        <div class="col-xl-7"></div>
+        <div class="col-lg-5"></div>
       </div>
     </div>
   </div>

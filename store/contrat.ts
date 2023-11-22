@@ -48,18 +48,11 @@ export const useContratStore = defineStore("contrat", () => {
     }
   };
 
-  const validerContrat = async (payload: Contrat, fromValidationPage: boolean) => {
+  const validerContrat = async (payload: Contrat) => {
     const response = await $apiFetch<string>(`api/contrats/validate`, {
       method: "post",
       body: payload,
     });
-    if (fromValidationPage) await getPending()
-    if (typeContrat.visite === payload.operation_type) {
-      await getVisites();
-      await getVisite(payload.operation_id);
-    } else {
-      await getAchat(payload.operation_id);
-    }
     return response;
   };
 

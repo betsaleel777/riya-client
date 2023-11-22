@@ -1,25 +1,17 @@
 <script setup lang="ts">
 import { Field, useField } from "vee-validate";
-import { useVisiteStore } from "~/store/visite";
-import { useAchatStore } from "~/store/achat";
 const props = defineProps<{
   errors: any;
   paiementId?: number;
+  operationId: number;
   type: string;
 }>();
 const { value: operationId } = useField("operation_id");
 const { value: type } = useField("operation_type");
 const { value: paiement } = useField("paiement");
 paiement.value = props.paiementId;
-if (typeContrat.visite === props.type) {
-  const { visite } = useVisiteStore();
-  operationId.value = visite?.id;
-  type.value = "Visite";
-} else {
-  const { achat } = useAchatStore();
-  operationId.value = achat?.id;
-  type.value = "Achat";
-}
+operationId.value = props.operationId;
+type.value = props.type;
 </script>
 
 <template>
@@ -48,7 +40,6 @@ if (typeContrat.visite === props.type) {
       <Field name="debut" v-slot="{ value, handleChange }">
         <el-form-item label="Debut du contrat">
           <el-date-picker
-            @change="autocompleteField"
             :model-value="value"
             @update:modelValue="handleChange"
             id="debut"

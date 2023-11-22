@@ -5,8 +5,9 @@ import { usePaiementStore } from "~/store/paiement";
 import { useAchatStore } from "~/store/achat";
 
 const props = defineProps<{ paiements: Paiements }>();
-let contratForm = reactive({ modal: false, paiement: 0 });
+let contratForm = reactive({ modal: false, paiement: 0, operation: 0 });
 const { achat } = storeToRefs(useAchatStore());
+const { getOne } = useAchatStore();
 const { trash, valider } = usePaiementStore();
 const { filterTableData, setPage, search, total, pageSize } = usePaiementFilterPagination(
   props.paiements
@@ -31,6 +32,7 @@ const handleValidate = (paiement: Paiement) => {
     } else {
       contratForm.modal = true;
       contratForm.paiement = paiement.id || 0;
+      contratForm.operation = paiement.payable_id;
     }
   });
 };
@@ -39,6 +41,9 @@ const printReceipt = async (paiement: Paiement) => {
   const { getOne } = useAchatStore();
   await getOne(paiement.payable_id);
   await usePaiementReceipt(paiement, achat.value!);
+};
+const onContratCreated = async () => {
+  await getOne(achat.value?.id!);
 };
 </script>
 
@@ -117,9 +122,11 @@ const printReceipt = async (paiement: Paiement) => {
     v-model="modal.edit.dialog"
   />
   <ContratCreateModal
+    :operation-id="contratForm.operation"
     v-model="contratForm.modal"
     :paiement-id="contratForm.paiement"
     type="Achat"
+    @contrat-created="onContratCreated()"
   />
 </template>
 

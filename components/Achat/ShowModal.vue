@@ -3,31 +3,44 @@ import { storeToRefs } from "pinia";
 import { useAchatStore } from "~/store/achat";
 import { Paiement } from "~/types/paiements";
 
-const props = defineProps<{ modelValue: boolean; id: number }>();
+const props = withDefaults(
+  defineProps<{ modelValue: boolean; id: number; fromValidationPage?: boolean }>(),
+  { fromValidationPage: false }
+);
 const emit = defineEmits<{ (event: "update:modelValue", payload: boolean): void }>();
 const { dialog } = useDialogModelValue(props, emit);
 
-const { getOne, valider } = useAchatStore();
+const contratForm = reactive({ modal: false, paiement: 0 });
+const { getOne, valider, getPending } = useAchatStore();
 const { achat, loading } = storeToRefs(useAchatStore());
 getOne(props.id);
-const handleValidate = () => {
-  ElMessageBox.confirm(
-    `Cette action est irréversible, voulez réelement valider le paiement en attente: ${pendingPaiement.value.code}?`,
-    "Attention",
-    { confirmButtonText: "Confirmer", cancelButtonText: "Abandonner", type: "warning" }
-  ).then(() => {
-    valider(achat.value?.id!).then((message) => {
-      ElNotification.success({ title: "succès", message });
-      dialog.value = false;
-    });
-  });
-};
 const pendingPaiement = computed(
   () =>
     achat.value?.paiements
       ?.filter((paiement: Paiement) => paiement.status === statusValidable.wait)
       .at(0) as Paiement
 );
+const handleValidate = () => {
+  ElMessageBox.confirm(
+    `Cette action est irréversible, voulez réelement valider le paiement en attente: ${pendingPaiement.value.code}?`,
+    "Attention",
+    { confirmButtonText: "Confirmer", cancelButtonText: "Abandonner", type: "warning" }
+  ).then(() => {
+    if (achat.value?.contractible) {
+      contratForm.modal = true;
+      contratForm.paiement = pendingPaiement.value?.id || 0;
+    } else {
+      valider(achat.value?.id!).then((message) => {
+        ElNotification.success({ title: "succès", message });
+        dialog.value = false;
+      });
+    }
+  });
+};
+const onContratCreated = async () => {
+  if (props.fromValidationPage) await getPending();
+  await getOne(props.id);
+};
 </script>
 
 <template>
@@ -48,6 +61,13 @@ const pendingPaiement = computed(
       <AchatDescriptionComponent :achat="achat" />
       <AchatPaiementTimelineComponent :paiements="achat?.paiements" />
     </div>
+    <ContratCreateModal
+      :operation-id="achat?.id || 0"
+      v-model="contratForm.modal"
+      :paiement-id="contratForm.paiement"
+      type="Achat"
+      @contrat-created="onContratCreated()"
+    />
   </el-dialog>
 </template>
 

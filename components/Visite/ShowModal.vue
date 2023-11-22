@@ -11,7 +11,7 @@ const { dialog } = useDialogModelValue(props, emit);
 
 const activeName = ref("visite");
 const contratDialog = ref(false);
-const { getOne, validerDirectement } = useVisiteStore();
+const { getOne, validerDirectement, getPending, getAll } = useVisiteStore();
 const { visite, loading } = storeToRefs(useVisiteStore());
 getOne(props.id);
 const validated = computed(() => visite.value?.status === statusValidable.valid);
@@ -56,7 +56,13 @@ const imprimer = () => {
   useVisiteInvoice(visite);
 };
 const imprimerProvisoire = () => {
+  console.log(visite.value);
   useVisiteInvoiceProvisoire(visite);
+};
+const onContratCreated = async () => {
+  if (props.fromValidationPage) await getPending();
+  await getOne(visite.value?.id!);
+  await getAll();
 };
 </script>
 
@@ -68,7 +74,7 @@ const imprimerProvisoire = () => {
     destroy-on-close
     center
   >
-    <div class="d-flex flex-row-reverse">
+    <div class="d-flex flex-row-reverse align-items-baseline">
       <el-button @click="handleValidate" v-if="validable" type="success" text
         >Valider la visite</el-button
       >
@@ -78,9 +84,10 @@ const imprimerProvisoire = () => {
       <el-button @click="imprimerProvisoire" v-if="validatedProvisoire" type="primary" text
         >Imprimer reçu provisoire</el-button
       >
+      <span class="text-muted me-auto">créer par {{ visite?.responsable?.name }}</span>
     </div>
     <div v-loading="loading.edit">
-      <el-collapse v-model="activeName" accordion class="my-4">
+      <el-collapse v-model="activeName" accordion class="my-1">
         <el-collapse-item title="Informations de la visite" name="visite">
           <VisiteDescriptionComponent :visite="visite!" />
         </el-collapse-item>
@@ -93,9 +100,10 @@ const imprimerProvisoire = () => {
       </el-collapse>
       <LazyVisiteTabOperation v-if="!loading.edit && !validated" />
       <ContratCreateModal
+        :operation-id="visite?.id || 0"
         v-model="contratDialog"
         type="Visite"
-        :from-validation-page="props.fromValidationPage"
+        @contrat-created="onContratCreated()"
       />
     </div>
   </el-dialog>

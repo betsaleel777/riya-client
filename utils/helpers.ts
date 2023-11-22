@@ -136,34 +136,34 @@ const invoicePdf = (societe: Ref<Societe>, visite: Ref<Visite | undefined>, prov
     theme: "plain",
   });
   autoTable(doc, {
-    head: [["Description", "Quantité", "Prix Unitaire", "Montant"]],
+    head: [["Description", "Quantité", "Prix Unitaire", 'date', "Montant"]],
     body: [
       [
         "Visite du bien: " + visite.value?.appartement?.nom,
-        "1", visite.value?.montant!, visite.value?.montant!
+        "1", visite.value?.montant!, visite?.value?.created_at!, visite.value?.montant!
       ],
       [
         "Frais de dossier: ", societe.value.frais_dossier + "%",
         visite.value?.frais_dossier === undefined ? 0 : visite.value?.appartement?.montant_location!,
-        visite.value?.frais_dossier === undefined ? 0 : visite.value.frais_dossier,
+        '', visite.value?.frais_dossier === undefined ? 0 : visite.value.frais_dossier,
       ],
       [
         "Frais d'agence: ",
         visite.value?.frais === undefined ? "0 mois" : visite.value.frais + " mois",
         visite.value?.frais === undefined ? "" : visite.value?.appartement?.montant_location!,
-        visite.value?.frais === undefined ? "" : visite.value?.appartement?.montant_location! * visite.value.frais,
+        dayjs(visite.value?.fraisObject?.created_at!).format("DD-MM-YYYY"), visite.value?.frais === undefined ? "" : visite.value?.appartement?.montant_location! * visite.value.frais,
       ],
       [
         "Caution: ",
         visite.value?.caution === undefined ? "0 mois" : visite.value.caution + " mois",
         visite.value?.caution === undefined ? "" : visite.value?.appartement?.montant_location!,
-        visite.value?.caution === undefined ? "" : visite.value?.appartement?.montant_location! * visite.value.caution,
+        dayjs(visite.value?.cautionObject?.created_at).format("DD-MM-YYYY"), visite.value?.caution === undefined ? "" : visite.value?.appartement?.montant_location! * visite.value.caution,
       ],
       [
         "Avance: ",
         visite.value?.avance === undefined ? "0 mois" : visite.value.avance + " mois",
         visite.value?.avance === undefined ? "" : visite.value?.appartement?.montant_location!,
-        visite.value?.avance === undefined ? "" : visite.value?.appartement?.montant_location! * visite.value.avance,
+        dayjs(visite.value?.avanceObject?.created_at).format("DD-MM-YYYY"), visite.value?.avance === undefined ? "" : visite.value?.appartement?.montant_location! * visite.value.avance,
       ],
     ],
     theme: "striped",

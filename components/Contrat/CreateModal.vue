@@ -2,16 +2,18 @@
 import { Form } from "vee-validate";
 import { useContratStore } from "~/store/contrat";
 const { validerContrat } = useContratStore();
-const props = withDefaults(
-  defineProps<{
-    modelValue: boolean;
-    paiementId?: number;
-    type: string;
-    fromValidationPage?: boolean;
-  }>(),
-  { fromValidationPage: false }
-);
-const emit = defineEmits<{ (event: "update:modelValue", payload: boolean): void }>();
+
+const props = defineProps<{
+  modelValue: boolean;
+  paiementId?: number;
+  operationId: number;
+  type: string;
+}>();
+
+const emit = defineEmits<{
+  (event: "update:modelValue", payload: boolean): void;
+  (e: "contratCreated"): void;
+}>();
 const dialog = computed({
   get() {
     return props.modelValue;
@@ -21,10 +23,11 @@ const dialog = computed({
   },
 });
 const onSubmit = (values: any, actions: any) => {
-  validerContrat(values, props.fromValidationPage)
+  validerContrat(values)
     .then((message) => {
       ElNotification.success({ title: "succès", message });
       if (dialog !== undefined) dialog.value = false;
+      emit("contratCreated");
     })
     .catch((err) => {
       if (err.data.errors) actions.setErrors(err.data.errors);
@@ -43,7 +46,12 @@ const onSubmit = (values: any, actions: any) => {
       center
       scrollable
     >
-      <ContratDialogForm :errors="errors" :paiement-id="paiementId" :type="props.type" />
+      <ContratDialogForm
+        :errors="errors"
+        :operation-id="operationId"
+        :paiement-id="paiementId"
+        :type="props.type"
+      />
       <template #footer>
         <span class="dialog-footer">
           <el-button type="danger" @click="dialog = false" plain>Annuler</el-button>
@@ -55,5 +63,4 @@ const onSubmit = (values: any, actions: any) => {
     </el-dialog>
   </Form>
 </template>
-
 <style scoped></style>

@@ -10,37 +10,14 @@ const links = [
   { path: "/", title: "Acceuil" },
   { path: "#", title: "Paiements" },
 ];
-let contratForm = reactive({ modal: false, paiement: 0 });
-const { getAll, validerPaiement, trash } = usePaiementStore();
+const { getAll, trash } = usePaiementStore();
 const { paiements, loading } = storeToRefs(usePaiementStore());
 getAll();
 const { filterTableData, setPage, search, total, pageSize } =
   usePaiementRefFilterPagination(paiements);
 const { onPrint } = usePaiementRefPrinter(paiements);
 const { handleDelete, handleEdit, handleShow, modal } = useHandleCrudButtons(trash);
-const existOnePaiement = (paiement: Paiement): boolean => {
-  const payableIds = paiements.value.map((paiement) => paiement.payable_id);
-  return !payableIds.includes(paiement.payable_id);
-};
-const handleValidate = (paiement: Paiement) => {
-  ElMessageBox.confirm(
-    `Voulez vous valider le paiement du ${paiement.code}`,
-    "Confirmation de validation",
-    {
-      confirmButtonText: "confirmer",
-      cancelButtonText: "abandonner",
-      type: "warning",
-    }
-  ).then(async () => {
-    if (existOnePaiement(paiement)) {
-      contratForm.modal = true;
-      contratForm.paiement = paiement.id || 0;
-    } else {
-      const message = await validerPaiement(paiement);
-      ElNotification.success({ title: "succès", message });
-    }
-  });
-};
+
 const classStatus = (state: string) => {
   return state === statusValidable.wait ? "warning" : "success";
 };
@@ -114,14 +91,11 @@ const printReceipt = async (paiement: Paiement) => {
                         ><i class="bx bx-show"
                       /></el-button>
                       <el-button
-                        v-if="scope.row.status === statusValidable.wait"
-                        type="success"
-                        @click="handleValidate(scope.row)"
+                        v-if="scope.row.status === statusValidable.valid"
+                        type="warning"
+                        @click="printReceipt(scope.row)"
                         plain
                         circle
-                        ><i class="bx bx-check-shield"
-                      /></el-button>
-                      <el-button v-else type="warning" @click="printReceipt(scope.row)" plain circle
                         ><i class="bx bx-printer"
                       /></el-button>
                       <el-button
@@ -169,11 +143,6 @@ const printReceipt = async (paiement: Paiement) => {
                 v-model="modal.show.dialog"
                 v-if="modal.show.dialog"
                 :id="modal.show.id"
-              />
-              <ContratCreateModal
-                v-model="contratForm.modal"
-                :paiement-id="contratForm.paiement"
-                type="Achat"
               />
             </div>
           </div>

@@ -74,7 +74,12 @@ const { runShowModal, show } = useShowModal();
               </div>
             </div>
           </div>
-          <LazyAchatShowModal :id="show.id" v-if="show.enable" v-model="show.enable" />
+          <LazyAchatShowModal
+            :id="show.id"
+            v-if="show.enable"
+            v-model="show.enable"
+            :from-validation-page="true"
+          />
         </div>
       </el-scrollbar>
       <el-empty v-else class="bg-white" :image-size="80">

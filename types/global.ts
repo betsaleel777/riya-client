@@ -35,6 +35,13 @@ interface Bien extends Entity {
   status: string;
 }
 
+interface User extends Entity {
+  name: string;
+  email: string;
+  created_at: string;
+  photo: string;
+}
+
 interface TypePostForm {
   nom: string;
 }
@@ -43,4 +50,4 @@ interface TypePutForm extends TypePostForm {
 }
 type Types = Array<Type>;
 
-export { Entity, Type, Types, TypePostForm, TypePutForm, Personne, Bien };
+export { Entity, Type, Types, TypePostForm, TypePutForm, Personne, Bien, User };
