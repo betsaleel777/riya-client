@@ -74,12 +74,6 @@
           <template #header>
             <el-text>Paramètres d'éclairage</el-text>
           </template>
-          <!-- <ColorScheme placeholder="..." tag="span">
-            Color mode: <b>{{ $colorMode.preference }}</b>
-            <span v-if="$colorMode.preference === 'system'"
-              >(<i>{{ $colorMode.value }}</i> mode detected)</span
-            >
-          </ColorScheme> -->
           <div class="d-flex flex-column justify-content-center">
             <el-switch v-model="isDark" class="mb-2" active-text="sombre" inactive-text="claire" />
             <el-image
