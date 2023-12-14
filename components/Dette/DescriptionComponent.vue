@@ -9,7 +9,7 @@ const props = defineProps<{ dette: Dette }>();
       >{{ props.dette?.code }}
     </el-descriptions-item>
     <el-descriptions-item v-if="props.dette?.montant" label="Montant:"
-      >{{ props.dette?.montant }}
+      >{{ useCurrency(props.dette?.montant) }}
     </el-descriptions-item>
     <el-descriptions-item v-if="props.dette?.origine_type" label="Dette sur:"
       >{{ props.dette?.origine_type }}

@@ -20,11 +20,11 @@ const props = defineProps<{
       props.achat?.bien.nom
     }}</el-descriptions-item>
     <el-descriptions-item v-if="props.achat?.total !== undefined" label="Montant Versé :">{{
-      props.achat?.total
+      useCurrency(props.achat?.total)
     }}</el-descriptions-item>
-    <el-descriptions-item v-if="props.achat?.reste !== undefined" label="Reste à Payer :"
-      >{{ props.achat?.reste }} FCFA</el-descriptions-item
-    >
+    <el-descriptions-item v-if="props.achat?.reste !== undefined" label="Reste à Payer :">{{
+      useCurrency(props.achat?.reste)
+    }}</el-descriptions-item>
   </el-descriptions>
 </template>
 

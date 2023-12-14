@@ -12,7 +12,8 @@ import VChart, { THEME_KEY } from "vue-echarts";
 
 use([CanvasRenderer, BarChart, TitleComponent, TooltipComponent, LegendComponent, GridComponent]);
 
-provide(THEME_KEY, "light");
+const color = useColorMode();
+provide(THEME_KEY, color.preference);
 
 const option = ref({
   title: { left: "center" },

@@ -10,18 +10,22 @@
   },
   "devDependencies": {
     "@element-plus/nuxt": "^1.0.4",
+    "@nuxtjs/color-mode": "^3.3.2",
     "@types/node": "^18",
     "dayjs-nuxt": "^2.1.9",
     "element-plus": "^2.4.1",
     "nuxt": "^3.4.2"
   },
   "dependencies": {
+    "@coders-tm/vue-number-format": "^3.34.0",
     "@pinia/nuxt": "^0.4.9",
+    "@types/numeral": "^2.0.5",
     "echarts": "^5.4.3",
     "jspdf": "^2.5.1",
     "jspdf-autotable": "^3.5.28",
     "maska": "^2.1.9",
     "metismenujs": "^1.4.0",
+    "numeral": "^2.0.6",
     "nuxt-sanctum-auth": "^0.4.7",
     "pinia": "^2.0.35",
     "vee-validate": "^4.8.6",

@@ -37,12 +37,15 @@ const onInput = () => {
           <div class="row">
             <div class="col-sm-10">
               <div class="avatar-md profile-user-wid mb-4">
-                <el-avatar
+                <el-image
+                  style="width: 75px; height: 75px"
+                  fit="fill"
+                  :preview-src-list="[props.societe.logo]"
+                  lazy
                   v-if="props.societe.logo"
                   :src="props.societe.logo"
-                  :size="75"
                   alt="logo"
-                  class="rounded-circle"
+                  class="rounded-circle bg-transparent"
                 />
                 <img
                   v-else
@@ -57,7 +60,6 @@ const onInput = () => {
           </div>
         </div>
       </div>
-      <!-- end card -->
 
       <div class="card">
         <div class="card-body">

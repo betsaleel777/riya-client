@@ -1,5 +1,5 @@
 import { Contrat } from "./contrat";
-import { Entity } from "./global";
+import { Audit, Entity } from "./global";
 import { Paiement } from "./paiements";
 import { Visite } from "./visite";
 
@@ -19,7 +19,7 @@ interface DetteValidation extends Entity {
   montant: number;
   created_at: string
   origine: string;
-  responsable: string
+  audit: Audit
 }
 
 type Dettes = Array<Dette>;

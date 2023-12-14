@@ -35,6 +35,8 @@ const typePaiement = {
   purchase: "Achat",
 } as const
 
+const numberConfig = { suffix: " FCFA", separator: " ", decimal: ",", precision: 0 } as const
+
 export {
   statusBien,
   statusValidable,
@@ -43,5 +45,6 @@ export {
   statusAvance,
   typeContrat,
   statusPayable,
-  typePaiement
+  typePaiement,
+  numberConfig
 };

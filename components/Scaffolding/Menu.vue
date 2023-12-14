@@ -118,7 +118,6 @@
 <script setup lang="ts">
 import MetisMenu from "metismenujs";
 const menu = ref({
-  // layouts: { root: false, horizontal: false },
   parametres: false,
   biens: false,
   operations: false,

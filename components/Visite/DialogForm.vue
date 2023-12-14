@@ -68,8 +68,7 @@ getAppartements();
       id="montant"
       placeholder="montant"
       :class="{ 'is-invalid': props.errors.montant }"
-      v-maska
-      data-maska="######"
+      v-number="numberConfig"
     />
     <div class="invalid-feedback" v-if="props.errors.montant">{{ props.errors.montant }}</div>
   </div>

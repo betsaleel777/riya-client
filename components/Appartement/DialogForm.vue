@@ -79,8 +79,7 @@ onMounted(async () => {
             id="montant_location"
             :model-value="value"
             @update:model-value="handleChange"
-            v-maska
-            data-maska="##########"
+            v-number="numberConfig"
             :class="{ 'is-invalid': props.errors.montant_location }"
           />
         </Field>
@@ -95,8 +94,7 @@ onMounted(async () => {
             id="montant_investit"
             :model-value="value"
             @update:model-value="handleChange"
-            v-maska
-            data-maska="##########"
+            v-number="numberConfig"
             :class="{ 'is-invalid': props.errors.montant_investit }"
           />
         </Field>
@@ -111,8 +109,7 @@ onMounted(async () => {
             id="cout_achat"
             :model-value="value"
             @update:model-value="handleChange"
-            v-maska
-            data-maska="##########"
+            v-number="numberConfig"
             :class="{ 'is-invalid': props.errors.cout_achat }"
           />
         </Field>

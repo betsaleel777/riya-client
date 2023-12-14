@@ -1,6 +1,6 @@
 import { Appartement } from "./appartement";
 import { Contrat } from "./contrat";
-import { Entity } from "./global";
+import { Entity, Media } from "./global";
 import { Client } from "./personne";
 
 interface Loyer extends Entity {
@@ -20,7 +20,7 @@ interface LoyerValidation extends Entity {
   personne: string
   bien: string;
   created_at: string;
-  avatar: string;
+  avatar: Media;
 }
 
 type Loyers = Array<Loyer>;

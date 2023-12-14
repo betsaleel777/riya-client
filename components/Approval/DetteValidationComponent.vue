@@ -28,15 +28,39 @@ const { runShowModal, show } = useShowModal();
                 <div class="d-flex">
                   <div class="flex-shrink-0 align-self-center me-4">
                     <div class="avatar-md">
-                      <span class="avatar-title badge-primary-subtle rounded-circle">
-                        <el-tooltip content="celui qui a crée la dette" placement="top">
-                          <el-avatar class="bg-transparent" size="large">RE</el-avatar>
+                      <span
+                        class="avatar-title badge-primary-subtle rounded-circle text-danger font-size-16"
+                      >
+                        <el-tooltip
+                          v-if="dette?.audit"
+                          :content="`L'utilisateur: ${dette?.audit.user.name}`"
+                          placement="top"
+                        >
+                          <el-image
+                            class="bg-transparent"
+                            style="width: 70px; height: 70px"
+                            fit="fill"
+                            :src="dette?.audit.user.photo"
+                            :preview-src-list="[dette?.audit.user.photo]"
+                            lazy
+                          ></el-image>
+                        </el-tooltip>
+                        <el-tooltip
+                          v-else
+                          :content="`L'utilisateur: ${dette?.audit.user.name}`"
+                          placement="top"
+                        >
+                          <el-avatar class="bg-transparent" size="large">
+                            {{ dette?.audit.user.name.substring(0, 2).toUpperCase() }}</el-avatar
+                          >
                         </el-tooltip>
                       </span>
                     </div>
                   </div>
                   <div class="flex-grow-1 overflow-hidden">
-                    <h5 class="text-truncate font-size-15 text-dark">{{ dette?.montant }} FCFA</h5>
+                    <h5 class="text-truncate font-size-15 text-dark">
+                      {{ useCurrency(dette?.montant) }}
+                    </h5>
                     <p class="text-muted mb-0">{{ dette?.code }}</p>
                     <p class="headline mb-2">{{ dette?.created_at }}</p>
                     <el-tag size="small">{{ dette?.origine }}</el-tag>
@@ -44,7 +68,7 @@ const { runShowModal, show } = useShowModal();
                 </div>
               </div>
               <div class="d-flex border-top justify-content-center px-1 py-1">
-                <el-button @click="runShowModal(dette?.id!)" class="w-100" color="#556ee6" plain
+                <el-button @click="runShowModal(dette?.id!)" class="w-100" type="primary" plain
                   >consulter et valider</el-button
                 >
               </div>

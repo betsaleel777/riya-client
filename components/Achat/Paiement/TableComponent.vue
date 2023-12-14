@@ -57,7 +57,11 @@ const onContratCreated = async () => {
     <el-input v-model="search" class="w-50 my-1" placeholder="Rechercher" />
     <el-table :data="filterTableData" style="width: 100%" empty-text="aucun paiement">
       <el-table-column prop="code" label="Code" width="100" />
-      <el-table-column prop="montant" label="Montant" sortable />
+      <el-table-column prop="montant" label="Montant" sortable>
+        <template #default="scope">
+          {{ useCurrency(scope.row.montant) }}
+        </template>
+      </el-table-column>
       <el-table-column prop="status" label="Statut" width="150">
         <template #default="scope">
           <el-tag :type="classStatus(scope.row.status)">{{ scope.row.status }}</el-tag>

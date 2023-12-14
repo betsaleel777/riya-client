@@ -140,30 +140,33 @@ const invoicePdf = (societe: Ref<Societe>, visite: Ref<Visite | undefined>, prov
     body: [
       [
         "Visite du bien: " + visite.value?.appartement?.nom,
-        "1", visite.value?.montant!, visite?.value?.created_at!, visite.value?.montant!
+        "1", useCurrency(visite.value?.montant!), visite?.value?.created_at!, useCurrency(visite.value?.montant!)
       ],
       [
         "Frais de dossier: ", societe.value.frais_dossier + "%",
-        visite.value?.frais_dossier === undefined ? 0 : visite.value?.appartement?.montant_location!,
-        '', visite.value?.frais_dossier === undefined ? 0 : visite.value.frais_dossier,
+        visite.value?.frais_dossier === undefined ? 0 : useCurrency(visite.value?.appartement?.montant_location!),
+        '', visite.value?.frais_dossier === undefined ? 0 : useCurrency(visite.value.frais_dossier),
       ],
       [
         "Frais d'agence: ",
         visite.value?.frais === undefined ? "0 mois" : visite.value.frais + " mois",
-        visite.value?.frais === undefined ? "" : visite.value?.appartement?.montant_location!,
-        dayjs(visite.value?.fraisObject?.created_at!).format("DD-MM-YYYY"), visite.value?.frais === undefined ? "" : visite.value?.appartement?.montant_location! * visite.value.frais,
+        visite.value?.frais === undefined ? "" : useCurrency(visite.value?.appartement?.montant_location!),
+        dayjs(visite.value?.fraisObject?.created_at!).format("DD-MM-YYYY"), visite.value?.frais === undefined ? "" :
+          useCurrency(visite.value?.appartement?.montant_location! * visite.value.frais),
       ],
       [
         "Caution: ",
         visite.value?.caution === undefined ? "0 mois" : visite.value.caution + " mois",
-        visite.value?.caution === undefined ? "" : visite.value?.appartement?.montant_location!,
-        dayjs(visite.value?.cautionObject?.created_at).format("DD-MM-YYYY"), visite.value?.caution === undefined ? "" : visite.value?.appartement?.montant_location! * visite.value.caution,
+        visite.value?.caution === undefined ? "" : useCurrency(visite.value?.appartement?.montant_location!),
+        dayjs(visite.value?.cautionObject?.created_at).format("DD-MM-YYYY"), visite.value?.caution === undefined ? "" :
+          useCurrency(visite.value?.appartement?.montant_location! * visite.value.caution),
       ],
       [
         "Avance: ",
         visite.value?.avance === undefined ? "0 mois" : visite.value.avance + " mois",
-        visite.value?.avance === undefined ? "" : visite.value?.appartement?.montant_location!,
-        dayjs(visite.value?.avanceObject?.created_at).format("DD-MM-YYYY"), visite.value?.avance === undefined ? "" : visite.value?.appartement?.montant_location! * visite.value.avance,
+        visite.value?.avance === undefined ? "" : useCurrency(visite.value?.appartement?.montant_location!),
+        dayjs(visite.value?.avanceObject?.created_at).format("DD-MM-YYYY"), visite.value?.avance === undefined ? "" :
+          useCurrency(visite.value?.appartement?.montant_location! * visite.value.avance),
       ],
     ],
     theme: "striped",
@@ -181,7 +184,7 @@ const invoicePdf = (societe: Ref<Societe>, visite: Ref<Visite | undefined>, prov
           },
         },
         {
-          content: total,
+          content: useCurrency(total),
           styles: {
             halign: "right",
           },
@@ -209,7 +212,7 @@ const invoicePdf = (societe: Ref<Societe>, visite: Ref<Visite | undefined>, prov
           },
         },
         {
-          content: total,
+          content: useCurrency(total),
           styles: {
             halign: "right",
           },
@@ -313,7 +316,7 @@ const paiementReceiptPdf = (societe: Societe, paiement: Paiement, achat: Achat) 
       ],
       [
         {
-          content: achat.bien.cout_achat,
+          content: useCurrency(achat.bien.cout_achat),
           styles: {
             halign: "right",
             fontSize: 20,
@@ -335,7 +338,7 @@ const paiementReceiptPdf = (societe: Societe, paiement: Paiement, achat: Achat) 
   autoTable(doc, {
     head: [["Description", "Quantité", "Prix", "Montant"]],
     body: [
-      ["Achat du bien: " + achat.bien?.nom, "1", achat.bien.cout_achat, achat.bien.cout_achat],
+      ["Achat du bien: " + achat.bien?.nom, "1", useCurrency(achat.bien.cout_achat), useCurrency(achat.bien.cout_achat)],
     ],
     theme: "striped",
     headStyles: {
@@ -352,7 +355,7 @@ const paiementReceiptPdf = (societe: Societe, paiement: Paiement, achat: Achat) 
           },
         },
         {
-          content: paiement.montant,
+          content: useCurrency(paiement.montant),
           styles: {
             halign: "right",
           },
@@ -366,7 +369,7 @@ const paiementReceiptPdf = (societe: Societe, paiement: Paiement, achat: Achat) 
           },
         },
         {
-          content: achat.reste,
+          content: useCurrency(achat.reste),
           styles: {
             halign: "right",
           },
@@ -472,7 +475,7 @@ const rentReceiptPdf = (societe: Ref<Societe>, loyer: Ref<Loyer | undefined>) =>
       ],
       [
         {
-          content: loyer.value?.montant,
+          content: useCurrency(loyer.value?.montant!),
           styles: {
             halign: "right",
             fontSize: 20,
@@ -493,7 +496,7 @@ const rentReceiptPdf = (societe: Ref<Societe>, loyer: Ref<Loyer | undefined>) =>
   });
   autoTable(doc, {
     head: [["Description", "Quantité", "Prix", "Montant"]],
-    body: [["Loyer du bien: " + bien?.nom, "1", bien.montant_location, bien.montant_location]],
+    body: [["Loyer du bien: " + bien?.nom, "1", useCurrency(bien.montant_location), useCurrency(bien.montant_location)]],
     theme: "striped",
     headStyles: {
       fillColor: "#343a40",
@@ -509,7 +512,7 @@ const rentReceiptPdf = (societe: Ref<Societe>, loyer: Ref<Loyer | undefined>) =>
           },
         },
         {
-          content: loyer.value?.montant,
+          content: useCurrency(loyer.value?.montant!),
           styles: {
             halign: "right",
           },

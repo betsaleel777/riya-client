@@ -28,15 +28,15 @@ const classType = (status: string) => {
     <el-descriptions-item v-if="props.bien?.proprietaire" label="Propriétaire:">{{
       props.bien?.proprietaire
     }}</el-descriptions-item>
-    <el-descriptions-item v-if="props.bien?.cout_achat" label="Coût d'achat:"
-      >{{ props.bien?.cout_achat }} FCFA</el-descriptions-item
-    >
-    <el-descriptions-item v-if="props.bien?.montant_location" label="Loyer:"
-      >{{ props.bien?.montant_location }} FCFA</el-descriptions-item
-    >
-    <el-descriptions-item v-if="props.bien?.montant_investit" label="Montant investit:"
-      >{{ props.bien?.montant_investit }} FCFA</el-descriptions-item
-    >
+    <el-descriptions-item v-if="props.bien?.cout_achat" label="Coût d'achat:">{{
+      useCurrency(props.bien?.cout_achat)
+    }}</el-descriptions-item>
+    <el-descriptions-item v-if="props.bien?.montant_location" label="Loyer:">{{
+      useCurrency(props.bien?.montant_location)
+    }}</el-descriptions-item>
+    <el-descriptions-item v-if="props.bien?.montant_investit" label="Montant investit:">{{
+      useCurrency(props.bien?.montant_investit)
+    }}</el-descriptions-item>
     <el-descriptions-item v-if="props.bien?.superficie" label="Superficie:"
       >{{ props.bien?.superficie }} m²</el-descriptions-item
     >

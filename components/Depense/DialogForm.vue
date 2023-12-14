@@ -27,15 +27,19 @@ getAll();
     </div>
     <div class="mb-2">
       <label for="montant" class="form-label">Montant</label>
-      <Field
-        name="montant"
-        id="montant"
-        class="form-control"
-        :class="{ 'is-invalid': props.errors.montant }"
-      />
-      <div class="invalid-feedback" v-if="errors.montant">
-        {{ props.errors.montant }}
-      </div>
+      <Field name="montant" v-slot="{ value, handleChange }">
+        <vue-number
+          id="montant"
+          class="form-control"
+          v-bind="numberConfig"
+          :model-value="value"
+          @update:model-value="handleChange"
+          :class="{ 'is-invalid': props.errors.montant }"
+        ></vue-number>
+        <div class="invalid-feedback" v-if="errors.montant">
+          {{ props.errors.montant }}
+        </div>
+      </Field>
     </div>
     <div class="mb-2">
       <label for="type_depense" class="form-label">Type de dépense</label>

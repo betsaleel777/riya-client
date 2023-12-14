@@ -70,11 +70,11 @@ onMounted(async () => {
                   <h4 class="card-title mb-4">Détails de l'achat</h4>
                   <el-descriptions direction="horizontal" :column="2" size="large">
                     <el-descriptions-item label="Montant versé:"
-                      >{{ achat?.total }} FCFA
+                      >{{ useCurrency(achat?.total!) }}
                     </el-descriptions-item>
-                    <el-descriptions-item label="Reste à payer :"
-                      >{{ achat?.reste }} FCFA</el-descriptions-item
-                    >
+                    <el-descriptions-item label="Reste à payer :">{{
+                      useCurrency(achat?.reste!)
+                    }}</el-descriptions-item>
                     <el-descriptions-item label="Date :">{{
                       achat?.created_at
                     }}</el-descriptions-item>

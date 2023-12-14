@@ -1,5 +1,5 @@
 import { Appartement } from "./appartement";
-import { Entity, User } from "./global";
+import { Audit, Entity } from "./global";
 import { Client } from "./personne";
 
 const enum OperationName {
@@ -33,7 +33,7 @@ interface Visite extends Entity {
   fraisObject: Operation | null;
   avanceStatus: string;
   frais_dossier: number;
-  responsable: User
+  audit: Audit
 }
 
 interface VisiteValidation extends Entity {

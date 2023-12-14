@@ -104,7 +104,7 @@ const printReceipt = async (id: number) => {
                     width="150"
                     sortable
                   >
-                    <template #default="scope"> {{ scope.row.montant }} FCFA </template>
+                    <template #default="scope"> {{ useCurrency(scope.row.montant) }} </template>
                   </el-table-column>
                   <el-table-column prop="status" label="Statut" width="150"
                     ><template #default="scope">

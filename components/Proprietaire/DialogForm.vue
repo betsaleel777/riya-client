@@ -23,6 +23,8 @@ const props = defineProps<{ errors: any }>();
       type="text"
       class="form-control"
       id="telephone"
+      v-maska
+      data-maska="+225 ##########"
       :class="{ 'is-invalid': props.errors.telephone }"
     />
     <div class="invalid-feedback" v-if="errors.telephone">{{ props.errors.telephone }}</div>

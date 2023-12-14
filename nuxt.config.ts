@@ -6,10 +6,6 @@ export default defineNuxtConfig({
       htmlAttrs: {
         lang: "fr",
       },
-      bodyAttrs: {
-        "data-sidebar": "dark",
-        "data-layout-mode": "light",
-      },
       link: [
         { rel: "shortcut icon", href: "/images/favicon.ico" },
         {
@@ -32,11 +28,21 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {},
   },
-  modules: ["@pinia/nuxt", "nuxt-sanctum-auth", "@element-plus/nuxt", 'dayjs-nuxt'],
+  modules: ["@pinia/nuxt", "nuxt-sanctum-auth", "@element-plus/nuxt", 'dayjs-nuxt', '@nuxtjs/color-mode'],
   dayjs: {
     locales: ['fr'],
     plugins: ['relativeTime', 'utc', 'timezone'],
     defaultLocale: 'fr',
+  },
+  colorMode: {
+    preference: 'system',
+    fallback: 'light',
+    hid: 'nuxt-color-mode-script',
+    globalName: '__NUXT_COLOR_MODE__',
+    componentName: 'ColorScheme',
+    classPrefix: '',
+    classSuffix: '',
+    storageKey: 'nuxt-color-mode'
   },
   nuxtSanctumAuth: {
     token: false,

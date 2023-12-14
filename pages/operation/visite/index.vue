@@ -31,7 +31,6 @@ const classStatus = (status: string) => {
 <template>
   <div class="page-content">
     <div class="container-fluid">
-      <!-- start page title -->
       <div class="row">
         <div class="col-12">
           <div class="card">
@@ -83,7 +82,7 @@ const classStatus = (status: string) => {
                     sortable
                   >
                     <template #default="scope">
-                      {{ scope.row.frais * scope.row.loyer }} FCFA
+                      {{ useCurrency(scope.row.frais * scope.row.loyer) }}
                     </template>
                   </el-table-column>
                   <el-table-column
@@ -94,12 +93,12 @@ const classStatus = (status: string) => {
                     sortable
                   >
                     <template #default="scope">
-                      {{ scope.row.caution * scope.row.loyer }} FCFA
+                      {{ useCurrency(scope.row.caution * scope.row.loyer) }}
                     </template>
                   </el-table-column>
                   <el-table-column prop="avance" label="Avance" align="center" width="150" sortable>
                     <template #default="scope">
-                      {{ scope.row.avance * scope.row.loyer }} FCFA
+                      {{ useCurrency(scope.row.avance * scope.row.loyer) }}
                     </template>
                   </el-table-column>
                   <el-table-column prop="status" label="Statut" width="150">
@@ -172,9 +171,7 @@ const classStatus = (status: string) => {
           </div>
         </div>
       </div>
-      <!-- end page title -->
     </div>
-    <!-- container-fluid -->
   </div>
 </template>
 

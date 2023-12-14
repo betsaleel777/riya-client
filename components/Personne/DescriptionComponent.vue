@@ -6,20 +6,26 @@ const props = defineProps<{ personne: Client }>();
 
 <template>
   <div class="d-flex justify-content-around align-items-center mb-4">
-    <el-avatar
-      v-if="props.personne?.avatar"
+    <el-image
+      lazy
+      class="bg-transparent rounded-circle"
+      style="width: 110px; height: 110px"
+      fit="fill"
+      :preview-src-list="[props.personne?.avatar]"
       :src="props.personne?.avatar"
-      :size="110"
-      shape="circle"
+      v-if="props.personne?.avatar"
       alt="avatar du client"
-    ></el-avatar>
-    <el-avatar
-      v-if="props.personne?.piece"
+    ></el-image>
+    <el-image
+      lazy
+      class="bg-transparent rounded-circle"
+      style="width: 110px; height: 110px"
+      fit="fill"
+      :preview-src-list="[props.personne?.piece]"
       :src="props.personne?.piece"
-      :size="110"
-      shape="circle"
+      v-if="props.personne?.piece"
       alt="piece du client"
-    ></el-avatar>
+    ></el-image>
   </div>
   <el-descriptions direction="horizontal" :column="2" size="large">
     <el-descriptions-item v-if="props.personne?.nom_complet" label="Nom & prénom:"

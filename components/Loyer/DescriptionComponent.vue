@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import { Loyer } from "~/types/loyer";
-
 const props = defineProps<{ loyer: Loyer }>();
 </script>
 
@@ -10,7 +9,7 @@ const props = defineProps<{ loyer: Loyer }>();
       >{{ props.loyer?.code }}
     </el-descriptions-item>
     <el-descriptions-item v-if="props.loyer?.montant" label="Montant:"
-      >{{ props.loyer?.montant }}
+      >{{ useCurrency(props.loyer?.montant) }}
     </el-descriptions-item>
     <el-descriptions-item v-if="props.loyer?.status" label="Dette sur:"
       >{{ props.loyer?.status }}

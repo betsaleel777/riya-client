@@ -29,7 +29,7 @@ const props = defineProps<{ montant: number; icon: string; titre: string }>();
       <div class="d-flex flex-wrap">
         <div>
           <p class="text-muted mb-1">montant</p>
-          <h4 class="mb-3">{{ props.montant }}</h4>
+          <h4 class="mb-3">{{ useCurrency(props.montant) }}</h4>
           <p class="text-success mb-0">
             <span>0.6 % <i class="mdi mdi-arrow-top-right ms-1"></i></span>
           </p>

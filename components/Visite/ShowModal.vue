@@ -84,7 +84,7 @@ const onContratCreated = async () => {
       <el-button @click="imprimerProvisoire" v-if="validatedProvisoire" type="primary" text
         >Imprimer reçu provisoire</el-button
       >
-      <span class="text-muted me-auto">créer par {{ visite?.responsable?.name }}</span>
+      <span class="text-muted me-auto">créer par {{ visite?.audit?.user.name }}</span>
     </div>
     <div v-loading="loading.edit">
       <el-collapse v-model="activeName" accordion class="my-1">

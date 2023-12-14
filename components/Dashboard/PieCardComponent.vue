@@ -8,7 +8,8 @@ import VChart, { THEME_KEY } from "vue-echarts";
 
 const props = defineProps<{ titre: string; seriesOption: PieSeriesOption; size: number }>();
 use([CanvasRenderer, PieChart, TitleComponent, TooltipComponent, LegendComponent]);
-provide(THEME_KEY, "light");
+const color = useColorMode();
+provide(THEME_KEY, color.preference);
 
 const option = ref({
   tooltip: {

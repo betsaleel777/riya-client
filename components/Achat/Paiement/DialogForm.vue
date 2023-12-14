@@ -24,6 +24,7 @@ payableType.value = "Achat";
       id="montant"
       placeholder="montant"
       :class="{ 'is-invalid': props.errors.montant }"
+      v-number="numberConfig"
     />
     <div class="invalid-feedback" v-if="props.errors.montant">{{ props.errors.montant }}</div>
   </div>

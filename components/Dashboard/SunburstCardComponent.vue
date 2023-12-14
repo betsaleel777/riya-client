@@ -12,7 +12,8 @@ const props = defineProps<{
   seriesOption: SunburstSeriesOption;
 }>();
 use([CanvasRenderer, SunburstChart, TitleComponent, TooltipComponent, LegendComponent]);
-provide(THEME_KEY, "light");
+const color = useColorMode();
+provide(THEME_KEY, color.preference);
 
 const option = ref({
   color: props.colors,

@@ -1,4 +1,4 @@
-import { Entity, Type } from "./global";
+import { Audit, Entity, Type } from "./global";
 
 interface Depense extends Entity {
   type_depense_id: number;
@@ -15,8 +15,7 @@ interface DepenseValidation extends Entity {
   created_at: string;
   montant: number;
   type: string;
-  responsable: string,
-  avatar: string;
+  audit: Audit,
 }
 
 interface TypeDepense extends Type { }

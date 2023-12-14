@@ -11,9 +11,9 @@ const props = defineProps<{ depense: Depense }>();
     <el-descriptions-item v-if="props.depense?.type" label="Type de dépense :">{{
       props.depense?.type.nom
     }}</el-descriptions-item>
-    <el-descriptions-item v-if="props.depense?.montant" label="Montant :"
-      >{{ props.depense?.montant }} FCFA</el-descriptions-item
-    >
+    <el-descriptions-item v-if="props.depense?.montant" label="Montant :">{{
+      useCurrency(props.depense?.montant)
+    }}</el-descriptions-item>
     <el-descriptions-item v-if="props.depense?.created_at" label="Date:"
       >{{ props.depense?.created_at }}
     </el-descriptions-item>

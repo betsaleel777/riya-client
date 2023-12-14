@@ -49,5 +49,11 @@ interface TypePutForm extends TypePostForm {
   id: number;
 }
 type Types = Array<Type>;
+interface Media extends Entity {
+  url: string
+}
+interface Audit extends Entity {
+  user: User
+}
 
-export { Entity, Type, Types, TypePostForm, TypePutForm, Personne, Bien, User };
+export { Entity, Type, Types, TypePostForm, TypePutForm, Personne, Bien, User, Media, Audit };

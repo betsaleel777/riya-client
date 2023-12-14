@@ -36,13 +36,20 @@ const { runShowModal, show } = useShowModal();
                           :content="`Le client: ${loyer.personne}`"
                           placement="top"
                         >
-                          <el-avatar
-                            class="bg-transparent"
-                            :src="loyer?.avatar"
-                            :size="70"
-                          ></el-avatar>
+                          <el-image
+                            class="bg-transparent rounded-circle"
+                            style="width: 70px; height: 70px"
+                            fit="fill"
+                            :src="loyer?.avatar.url"
+                            :preview-src-list="[loyer?.avatar.url]"
+                            lazy
+                          ></el-image>
                         </el-tooltip>
-                        <el-tooltip :content="`Le client: ${loyer.personne}`" placement="top">
+                        <el-tooltip
+                          v-else
+                          :content="`Le client: ${loyer.personne}`"
+                          placement="top"
+                        >
                           <el-avatar class="bg-transparent" size="large">
                             {{ loyer.personne.substring(0, 2).toUpperCase() }}</el-avatar
                           >
@@ -51,7 +58,9 @@ const { runShowModal, show } = useShowModal();
                     </div>
                   </div>
                   <div class="flex-grow-1 overflow-hidden">
-                    <h5 class="text-truncate font-size-15 text-dark">{{ loyer?.montant }} FCFA</h5>
+                    <h5 class="text-truncate font-size-15 text-dark">
+                      {{ useCurrency(loyer?.montant) }}
+                    </h5>
                     <el-tooltip :content="loyer?.bien" placement="right">
                       <p class="text-muted text-truncate mb-0">{{ loyer?.bien }}</p>
                     </el-tooltip>
@@ -60,7 +69,7 @@ const { runShowModal, show } = useShowModal();
                 </div>
               </div>
               <div class="d-flex border-top justify-content-center px-1 py-1">
-                <el-button @click="runShowModal(loyer?.id!)" class="w-100" color="#556ee6" plain
+                <el-button @click="runShowModal(loyer?.id!)" class="w-100" type="primary" plain
                   >consulter et valider</el-button
                 >
               </div>
@@ -74,9 +83,9 @@ const { runShowModal, show } = useShowModal();
           />
         </div>
       </el-scrollbar>
-      <el-empty v-else class="bg-white" :image-size="80">
+      <el-empty v-else :image-size="80">
         <template #description>
-          <el-text class="text-dark headline">aucun loyer à valider</el-text>
+          <el-text class="headline">aucun loyer à valider</el-text>
         </template>
       </el-empty>
     </div>

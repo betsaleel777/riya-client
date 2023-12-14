@@ -11,30 +11,21 @@ const props = defineProps<{
     <el-descriptions-item v-if="props.visite?.code" label="Code visite:"
       >{{ props.visite?.code }}
     </el-descriptions-item>
-    <el-descriptions-item v-if="props.visite?.montant" label="Montant de visite:"
-      >{{ props.visite?.montant }} FCFA</el-descriptions-item
-    >
-    <el-descriptions-item v-if="props.visite?.frais_dossier" label="Frais de dossier:"
-      >{{ props.visite?.frais_dossier! }} FCFA</el-descriptions-item
-    >
+    <el-descriptions-item v-if="props.visite?.montant" label="Montant de visite:">{{
+      useCurrency(props.visite?.montant)
+    }}</el-descriptions-item>
+    <el-descriptions-item v-if="props.visite?.frais_dossier" label="Frais de dossier:">{{
+      useCurrency(props.visite?.frais_dossier!)
+    }}</el-descriptions-item>
     <el-descriptions-item v-if="props.visite?.frais" label="Frais agence:"
-      >{{
-        props.visite?.appartement?.montant_location! * props.visite?.frais!
-      }}
-      FCFA</el-descriptions-item
-    >
+      >{{ useCurrency(props.visite?.appartement?.montant_location! * props.visite?.frais!) }}
+    </el-descriptions-item>
     <el-descriptions-item v-if="props.visite?.caution" label="Caution:"
-      >{{
-        props.visite?.appartement?.montant_location! * props.visite?.caution!
-      }}
-      FCFA</el-descriptions-item
-    >
+      >{{ useCurrency(props.visite?.appartement?.montant_location! * props.visite?.caution!) }}
+    </el-descriptions-item>
     <el-descriptions-item v-if="props.visite?.avance!" label="Avance:"
-      >{{
-        props.visite?.appartement?.montant_location! * props.visite?.avance!
-      }}
-      FCFA</el-descriptions-item
-    >
+      >{{ useCurrency(props.visite?.appartement?.montant_location! * props.visite?.avance!) }}
+    </el-descriptions-item>
     <el-descriptions-item v-if="props.visite?.created_at" label="Date de creéation:">{{
       props.visite?.created_at
     }}</el-descriptions-item>

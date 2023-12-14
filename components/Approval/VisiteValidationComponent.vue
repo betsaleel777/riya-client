@@ -59,7 +59,7 @@ const { runShowModal, show } = useShowModal();
                 </div>
               </div>
               <div class="d-flex border-top justify-content-center px-1 py-1">
-                <el-button @click="runShowModal(visite?.id!)" class="w-100" color="#556ee6" plain
+                <el-button @click="runShowModal(visite?.id!)" class="w-100" type="primary" plain
                   >consulter et valider</el-button
                 >
               </div>
@@ -73,9 +73,9 @@ const { runShowModal, show } = useShowModal();
           />
         </div>
       </el-scrollbar>
-      <el-empty v-else class="bg-white" :image-size="80">
+      <el-empty v-else :image-size="80">
         <template #description>
-          <el-text class="text-dark headline">aucune visite à valider</el-text>
+          <el-text class="headline">aucune visite à valider</el-text>
         </template>
       </el-empty>
     </div>

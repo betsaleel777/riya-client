@@ -3,7 +3,6 @@ import { storeToRefs } from "pinia";
 import { useDetteStore } from "~/store/dette";
 import { statusPayable } from "~/utils/constante";
 import { Dette } from "~/types/dette";
-import { useModal } from "element-plus";
 
 useHead({ title: "Dette" });
 definePageMeta({ middleware: "auth" });
@@ -11,7 +10,7 @@ const links = [
   { path: "/", title: "Acceuil" },
   { path: "#", title: "Dettes" },
 ];
-const { getAll, valider, repay } = useDetteStore();
+const { getAll, repay } = useDetteStore();
 const { dettes, loading } = storeToRefs(useDetteStore());
 getAll();
 const { filterTableData, setPage, search, total, pageSize } = useDetteFilterPagination(dettes);
@@ -93,7 +92,9 @@ const { runShowModal, show } = useShowModal();
                     </template>
                   </el-table-column>
                   <el-table-column prop="montant" label="Montant" align="center" sortable>
-                    <template #default="scope"> {{ scope.row.montant }} FCFA </template>
+                    <template #default="scope">
+                      {{ useCurrency(scope.row.montant) }}
+                    </template>
                   </el-table-column>
                   <el-table-column prop="status" label="Statut"
                     ><template #default="scope">

@@ -70,7 +70,11 @@ const printReceipt = async (paiement: Paiement) => {
                   empty-text="aucun paiement"
                 >
                   <el-table-column prop="code" label="Code" width="100" />
-                  <el-table-column prop="montant" label="Montant" sortable />
+                  <el-table-column prop="montant" label="Montant" sortable>
+                    <template #default="scope">
+                      {{ useCurrency(scope.row.montant) }}
+                    </template>
+                  </el-table-column>
                   <el-table-column prop="payable_type" label="Type" sortable>
                     <template #default="scope">
                       <el-tag type="info">{{ scope.row.payable_type }}</el-tag>

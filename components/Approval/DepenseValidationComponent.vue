@@ -31,15 +31,35 @@ const { runShowModal, show } = useShowModal();
                       <span
                         class="avatar-title badge-primary-subtle rounded-circle text-danger font-size-16"
                       >
-                        <el-tooltip content="nom du créateur de la dépense" placement="top">
-                          <el-avatar class="bg-transparent" size="large">RE</el-avatar>
+                        <el-tooltip
+                          v-if="depense?.audit"
+                          :content="`L'utilisateur: ${depense?.audit.user.name}`"
+                          placement="top"
+                        >
+                          <el-image
+                            class="bg-transparent"
+                            style="width: 70px; height: 70px"
+                            fit="fill"
+                            :src="depense?.audit.user.photo"
+                            :preview-src-list="[depense?.audit.user.photo]"
+                            lazy
+                          ></el-image>
+                        </el-tooltip>
+                        <el-tooltip
+                          v-else
+                          :content="`L'utilisateur: ${depense?.audit.user.name}`"
+                          placement="top"
+                        >
+                          <el-avatar class="bg-transparent" size="large">
+                            {{ depense?.audit.user.name.substring(0, 2).toUpperCase() }}</el-avatar
+                          >
                         </el-tooltip>
                       </span>
                     </div>
                   </div>
                   <div class="flex-grow-1 overflow-hidden">
                     <h5 class="text-truncate font-size-15 text-dark">
-                      {{ depense?.montant }} FCFA
+                      {{ useCurrency(depense?.montant) }}
                     </h5>
                     <el-tooltip :content="depense?.titre" placement="right">
                       <span class="text-muted text-truncate mb-0">{{ depense?.titre }}</span
@@ -55,7 +75,7 @@ const { runShowModal, show } = useShowModal();
                 </div>
               </div>
               <div class="d-flex border-top justify-content-center px-1 py-1">
-                <el-button @click="runShowModal(depense?.id!)" class="w-100" color="#556ee6" plain
+                <el-button @click="runShowModal(depense?.id!)" class="w-100" type="primary" plain
                   >consulter et valider</el-button
                 >
               </div>
@@ -69,9 +89,9 @@ const { runShowModal, show } = useShowModal();
           />
         </div>
       </el-scrollbar>
-      <el-empty v-else class="bg-white" :image-size="80">
+      <el-empty v-else :image-size="80">
         <template #description>
-          <el-text class="text-dark headline">aucune dépense à valider</el-text>
+          <el-text class="headline">aucune dépense à valider</el-text>
         </template>
       </el-empty>
     </div>

@@ -11,7 +11,7 @@ const props = defineProps<{ paiement: Paiement }>();
       >{{ props.paiement?.code }}
     </el-descriptions-item>
     <el-descriptions-item v-if="props.paiement?.montant" label="Montant:"
-      >{{ props.paiement?.montant }} FCFA
+      >{{ useCurrency(props.paiement?.montant) }}
     </el-descriptions-item>
     <el-descriptions-item v-if="props.paiement?.payable_type" label="paiement sur:"
       >{{ props.paiement?.payable_type }}
@@ -33,10 +33,10 @@ const props = defineProps<{ paiement: Paiement }>();
       >{{ props.paiement?.payable?.created_at }}
     </el-descriptions-item>
     <el-descriptions-item v-if="props.paiement?.payable?.total" label="Déjà Versé:"
-      >{{ props.paiement?.payable?.total }} FCFA
+      >{{ useCurrency(props.paiement?.payable?.total) }}
     </el-descriptions-item>
     <el-descriptions-item v-if="props.paiement?.payable?.reste !== undefined" label="Reste à payer:"
-      >{{ props.paiement?.payable?.reste }} FCFA
+      >{{ useCurrency(props.paiement?.payable?.reste) }}
     </el-descriptions-item>
   </el-descriptions>
   <el-divider content-position="left">Client</el-divider>
@@ -65,13 +65,13 @@ const props = defineProps<{ paiement: Paiement }>();
       >{{ props.paiement?.payable?.bien?.superficie }} m²
     </el-descriptions-item>
     <el-descriptions-item v-if="props.paiement?.payable?.bien?.cout_achat" label="Coût d'achat:"
-      >{{ props.paiement?.payable?.bien?.cout_achat }} FCFA
+      >{{ useCurrency(props.paiement?.payable?.bien?.cout_achat) }}
     </el-descriptions-item>
     <el-descriptions-item v-if="props.paiement?.payable?.bien?.quartier" label="Quartier:"
       >{{ props.paiement?.payable?.bien?.quartier }}
     </el-descriptions-item>
     <el-descriptions-item v-if="props.paiement?.payable?.bien?.montant_location" label="Loyer:"
-      >{{ props.paiement?.payable?.bien?.montant_location }} FCFA
+      >{{ useCurrency(props.paiement?.payable?.bien?.montant_location) }}
     </el-descriptions-item>
   </el-descriptions>
 </template>

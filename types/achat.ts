@@ -1,5 +1,5 @@
 import { Appartement } from "./appartement";
-import { Entity } from "./global";
+import { Entity, Media } from "./global";
 import { Paiements } from "./paiements";
 import { Client } from "./personne";
 import { Terrain } from "./terrain";
@@ -26,7 +26,7 @@ interface AchatValidation extends Entity {
   bien: string;
   cout: number;
   montant: number;
-  avatar: string
+  avatar: Media
 }
 
 type Achats = Array<Achat>;

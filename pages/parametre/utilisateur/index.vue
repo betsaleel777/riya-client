@@ -40,7 +40,15 @@ const { handleDelete, handleEdit, modal } = useHandleCrudButtons(trash);
                 >
                   <el-table-column prop="photo" width="75">
                     <template #default="scope">
-                      <el-avatar size="small" :src="scope.row.photo" alt="" />
+                      <el-image
+                        class="bg-transparent rounded-circle"
+                        style="width: 30px; height: 30px"
+                        fit="fill"
+                        :src="scope.row.photo"
+                        :preview-src-list="[scope.row.photo]"
+                        lazy
+                        preview-teleported
+                      ></el-image>
                     </template>
                   </el-table-column>
                   <el-table-column prop="name" label="Nom" sortable>

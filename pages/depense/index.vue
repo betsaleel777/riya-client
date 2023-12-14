@@ -52,7 +52,7 @@ const statusClass = (status: string) => {
                     </template>
                   </el-table-column>
                   <el-table-column prop="montant" label="Montant" width="200">
-                    <template #default="scope"> {{ scope.row.montant }} FCFA </template>
+                    <template #default="scope"> {{ useCurrency(scope.row.montant) }} </template>
                   </el-table-column>
                   <el-table-column prop="status" label="Statut" width="150">
                     <template #default="scope">

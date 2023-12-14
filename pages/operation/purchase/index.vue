@@ -38,11 +38,19 @@ const { handleDelete, modal } = useHandleCrudButtons(trash);
                   style="width: 100%"
                   empty-text="aucun achat"
                 >
-                  <el-table-column prop="code" label="Code" width="100" />
+                  <el-table-column prop="code" label="Code" width="120" />
                   <el-table-column prop="personne" label="Client" sortable />
                   <el-table-column prop="bien" label="Bien" />
-                  <el-table-column prop="total" label="Payé" width="150" sortable />
-                  <el-table-column prop="reste" label="Reste" width="150" sortable />
+                  <el-table-column prop="total" label="Payé" width="150" sortable>
+                    <template #default="scope">
+                      {{ useCurrency(scope.row.total) }}
+                    </template>
+                  </el-table-column>
+                  <el-table-column prop="reste" label="Reste" width="150" sortable>
+                    <template #default="scope">
+                      {{ useCurrency(scope.row.reste) }}
+                    </template>
+                  </el-table-column>
                   <el-table-column prop="created_at" label="Date" width="110" sortable />
                   <el-table-column width="150" align="right">
                     <template #header>
