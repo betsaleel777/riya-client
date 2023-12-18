@@ -51,7 +51,7 @@ const activateDescriptionModal = (id: number, type: string) => {
                 @print="onPrint"
                 @create="modal.create = true"
               >
-                <el-input v-model="search" class="w-50 my-1" placeholder="Rechercher" />
+                <el-input v-model="search" class="w-50 mt-1 mb-2" placeholder="Rechercher" />
                 <el-table
                   v-loading="loading.index"
                   :data="filterTableData"
@@ -69,7 +69,11 @@ const activateDescriptionModal = (id: number, type: string) => {
                       >
                     </template>
                   </el-table-column>
-                  <el-table-column prop="bien" label="Bien" align="center" sortable />
+                  <el-table-column prop="bien" label="Bien" align="center" sortable>
+                    <template #default="scope">
+                      <el-text truncated>{{ scope.row.bien }}</el-text>
+                    </template>
+                  </el-table-column>
                   <el-table-column prop="client" label="Client" align="center" sortable />
                   <el-table-column prop="debut" label="Debut" width="130" align="center" sortable />
                   <el-table-column prop="status" label="Statut" width="120">

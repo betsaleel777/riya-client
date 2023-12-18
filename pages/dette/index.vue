@@ -55,7 +55,7 @@ const { runShowModal, show } = useShowModal();
                 @print="onPrint"
                 @create="modal.create = true"
               >
-                <el-row class="my-1" justify="end">
+                <el-row class="mt-1 mb-2" justify="end">
                   <el-col :span="12">
                     <el-input v-model="search" placeholder="Rechercher" />
                   </el-col>

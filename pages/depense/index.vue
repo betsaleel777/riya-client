@@ -32,7 +32,7 @@ const statusClass = (status: string) => {
                 :extra="{ exist: true, create: true }"
                 @create="modal.create = true"
               >
-                <el-input v-model="search" class="w-50 mt-1" placeholder="Rechercher" />
+                <el-input v-model="search" class="w-50 mt-1 mb-2" placeholder="Rechercher" />
                 <el-table
                   v-loading="loading.index"
                   :data="filterTableData"

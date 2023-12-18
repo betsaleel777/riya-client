@@ -42,7 +42,7 @@ const classStatus = (status: string) => {
                 @print="onPrint"
                 @create="modal.create = true"
               >
-                <el-row class="my-1" justify="end">
+                <el-row class="mt-1 mb-2" justify="end">
                   <el-col :span="12">
                     <el-input v-model="search" placeholder="Rechercher" />
                   </el-col>
@@ -103,12 +103,14 @@ const classStatus = (status: string) => {
                   </el-table-column>
                   <el-table-column prop="status" label="Statut" width="150">
                     <template #default="scope">
-                      <el-tag :type="classType(scope.row.status)">{{ scope.row.status }}</el-tag>
+                      <el-tag class="text-truncated" :type="classType(scope.row.status)">{{
+                        scope.row.status
+                      }}</el-tag>
                     </template>
                   </el-table-column>
                   <el-table-column prop="avanceStatus" label="Status avance" width="150"
                     ><template #default="scope">
-                      <el-tag :type="classStatus(scope.row.avanceStatus)">{{
+                      <el-tag class="text-truncated" :type="classStatus(scope.row.avanceStatus)">{{
                         scope.row.avanceStatus
                       }}</el-tag>
                     </template>

@@ -32,7 +32,7 @@ const { handleDelete, handleEdit, handleShow, modal } = useHandleCrudButtons(tra
                 @print="onPrint"
                 @create="modal.create = true"
               >
-                <el-input v-model="search" class="w-50 mt-1" placeholder="Rechercher" />
+                <el-input v-model="search" class="w-50 mt-1 mb-2" placeholder="Rechercher" />
                 <el-table
                   v-loading="loading.index"
                   :data="filterTableData"
@@ -97,7 +97,11 @@ const { handleDelete, handleEdit, handleShow, modal } = useHandleCrudButtons(tra
                 v-if="modal.edit.dialog"
                 v-model="modal.edit.dialog"
               />
-              <ProprietaireShowModal :id="modal.show.id" v-if="modal.show.dialog" v-model="modal.show.dialog" />
+              <ProprietaireShowModal
+                :id="modal.show.id"
+                v-if="modal.show.dialog"
+                v-model="modal.show.dialog"
+              />
             </div>
           </div>
         </div>

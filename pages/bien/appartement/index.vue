@@ -36,7 +36,7 @@ const classType = (status: string) => {
                 @print="onPrint"
                 @create="modal.create = true"
               >
-                <el-input v-model="search" class="w-50 mt-1" placeholder="Rechercher" />
+                <el-input v-model="search" class="w-50 mt-1 mb-2" placeholder="Rechercher" />
                 <el-table
                   v-loading="loading.index"
                   :data="filterTableData"
@@ -48,14 +48,24 @@ const classType = (status: string) => {
                       <el-text truncated>{{ scope.row.nom.toUpperCase() }}</el-text>
                     </template>
                   </el-table-column>
-                  <el-table-column prop="quartier" label="Quartier" width="200" sortable />
+                  <el-table-column prop="quartier" label="Quartier" width="200" sortable>
+                    <template #default="scope">
+                      <el-text truncated>{{ scope.row.quartier }}</el-text>
+                    </template>
+                  </el-table-column>
                   <el-table-column prop="type" label="Type" sortable width="200">
                     <template #default="scope">
-                      <span v-if="scope.row.type">{{ scope.row.type }}</span>
+                      <el-tag class="text-truncate" v-if="scope.row.type">{{
+                        scope.row.type
+                      }}</el-tag>
                       <el-tag v-else type="info">Aucun type</el-tag>
                     </template>
                   </el-table-column>
-                  <el-table-column prop="proprietaire" label="proprietaire" />
+                  <el-table-column prop="proprietaire" label="proprietaire">
+                    <template #default="scope">
+                      <el-text truncated>{{ scope.row.proprietaire }}</el-text>
+                    </template>
+                  </el-table-column>
                   <el-table-column prop="status" label="Statut" width="150">
                     <template #default="scope">
                       <el-tag :type="classType(scope.row.status)">{{ scope.row.status }}</el-tag>
