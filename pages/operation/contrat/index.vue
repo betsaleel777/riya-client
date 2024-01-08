@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
 import { useContratStore } from "~/store/contrat";
-import { statusContrat, stateContrat, typeContrat } from "~/utils/constante";
+import { NuxtLink } from "#components";
 
 useHead({ title: "Contrats" });
 definePageMeta({ middleware: "auth" });
@@ -93,9 +93,14 @@ const activateDescriptionModal = (id: number, type: string) => {
                       <span>Option</span>
                     </template>
                     <template #default="scope">
-                      <!-- <el-button type="info" @click="handleShow(scope.row)" plain circle
-                        ><i class="bx bx-show"
-                      /></el-button> -->
+                      <el-button
+                        type="warning"
+                        :tag="NuxtLink"
+                        :to="`/operation/contrat/${scope.row.id}`"
+                        plain
+                        circle
+                        ><i class="bx bx-printer"
+                      /></el-button>
                       <el-button
                         type="danger"
                         @click="

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
 import { useAchatStore } from "~/store/achat";
+import { NuxtLink } from "#components";
 
 useHead({ title: "Achats" });
 definePageMeta({ middleware: "auth" });
@@ -65,9 +66,14 @@ const { handleDelete, modal } = useHandleCrudButtons(trash);
                       <span>Option</span>
                     </template>
                     <template #default="scope">
-                      <nuxt-link class="ml-2" :to="`/operation/purchase/${scope.row.id}`">
-                        <el-button type="info" plain circle><i class="bx bx-show" /></el-button>
-                      </nuxt-link>
+                      <el-button
+                        :tag="NuxtLink"
+                        :to="`/operation/purchase/${scope.row.id}`"
+                        type="info"
+                        plain
+                        circle
+                        ><i class="bx bx-show"
+                      /></el-button>
                       <el-button
                         type="danger"
                         @click="
