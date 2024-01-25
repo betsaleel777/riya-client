@@ -27,7 +27,6 @@ type.value = props.type;
         type="text"
         class="form-control"
         id="commission"
-        placeholder="commission"
         v-maska
         data-maska="##"
         :class="{ 'is-invalid': props.errors.commission }"
