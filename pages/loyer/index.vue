@@ -9,12 +9,13 @@ const links = [
   { path: "/", title: "Acceuil" },
   { path: "#", title: "Loyers" },
 ];
-const { getAll, cashed, valider, trash } = useLoyerStore();
+const { getAll, trash } = useLoyerStore();
 const { loyers, loading } = storeToRefs(useLoyerStore());
 getAll();
 const { filterTableData, setPage, search, total, pageSize } = useLoyerFilterPagination(loyers);
 const { onPrint } = useLoyerPrinter(loyers);
 const { handleDelete, handleShow, modal } = useHandleCrudButtons(trash);
+const cashing = reactive({ active: false, id: 0 });
 const classStatus = (status: string) => {
   const classes = {
     [statusPayable.pending as string]: "warning",
@@ -32,9 +33,9 @@ const handleCashed = (loyer: Loyer) => {
       cancelButtonText: "abandonner",
       type: "warning",
     }
-  ).then(async () => {
-    const message = await cashed(loyer.id!);
-    ElNotification.success({ title: "succès", message });
+  ).then(() => {
+    cashing.id = loyer.id!;
+    cashing.active = true;
   });
 };
 const printReceipt = async (id: number) => {
@@ -167,6 +168,11 @@ const printReceipt = async (id: number) => {
                 :id="modal.show.id"
                 v-if="modal.show.dialog"
                 v-model="modal.show.dialog"
+              />
+              <LazyLoyerAmountComponent
+                :id="cashing.id"
+                v-if="cashing.active"
+                v-model="cashing.active"
               />
             </div>
           </div>

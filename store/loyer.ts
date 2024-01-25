@@ -49,8 +49,9 @@ export const useLoyerStore = defineStore("loyer", () => {
     }
   };
 
-  const cashed = async (id: number) => {
-    const response = await $apiFetch<string>(`api/loyers/cashed/${ id }`, { method: "PATCH" });
+  const cashed = async (payload: { id: number, montant: number }) => {
+    const { id, montant } = payload
+    const response = await $apiFetch<string>('api/loyers/cashed', { method: "PATCH", params: { id, montant } });
     await getAll();
     return response;
   };
