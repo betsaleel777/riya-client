@@ -40,8 +40,7 @@ interface VisiteValidation extends Entity {
   code: string;
   montant: number;
   created_at: string;
-  personne: string;
-  avatar: string;
+  personne: Client;
   bien: string;
 }
 
