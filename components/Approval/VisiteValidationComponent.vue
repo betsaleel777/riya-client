@@ -32,15 +32,22 @@ const { runShowModal, show } = useShowModal();
                         class="avatar-title badge-primary-subtle rounded-circle text-danger font-size-16"
                       >
                         <el-tooltip
-                          v-if="visite?.avatar"
-                          :content="visite?.personne"
+                          v-if="visite?.personne.avatar"
+                          :content="visite?.personne.nom_complet"
                           placement="top"
                         >
-                          <el-avatar :src="visite?.avatar" size="large" />
+                          <el-image
+                            class="bg-transparent"
+                            style="border-radius: 100%; width: 70px; height: 70px"
+                            fit="fill"
+                            :src="visite?.personne.avatar"
+                            :preview-src-list="[visite?.personne.avatar]"
+                            lazy
+                          ></el-image>
                         </el-tooltip>
-                        <el-tooltip v-else :content="visite?.personne" placement="top">
+                        <el-tooltip v-else :content="visite?.personne.nom_complet" placement="top">
                           <el-avatar class="bg-transparent" size="large">{{
-                            visite?.personne.substring(0, 2)
+                            visite?.personne.nom_complet.substring(0, 2)
                           }}</el-avatar>
                         </el-tooltip>
                       </span>
