@@ -393,10 +393,12 @@ const paiementReceiptPdf = (societe: Societe, paiement: Paiement, achat: Achat) 
   });
   return doc.save("invoice");
 };
-const rentReceiptPdf = (societe: Ref<Societe>, loyer: Ref<Loyer | undefined>) => {
+const rentReceiptPdf = (societe: Ref<Societe>, loyer: Loyer) => {
   const doc = new JsPDF("p", "pt", "a4");
-  const client = loyer.value?.personne as Client;
-  const bien = loyer.value?.bien as Appartement;
+  const client = loyer?.personne as Client;
+  const bien = loyer?.bien as Appartement;
+  let paid = 0
+  loyer?.paiements.forEach((paiement) => paid += paiement.montant)
   autoTable(doc, {
     body: [
       [
@@ -427,7 +429,7 @@ const rentReceiptPdf = (societe: Ref<Societe>, loyer: Ref<Loyer | undefined>) =>
     body: [
       [
         {
-          content: `Reference: ${ loyer.value?.code } \nDate: ${ dayjs().format("DD/MM/YYYY") }`,
+          content: `Reference: ${ loyer?.code } \nDate: ${ dayjs().format("DD/MM/YYYY") }`,
           styles: {
             halign: "right",
           },
@@ -443,7 +445,7 @@ const rentReceiptPdf = (societe: Ref<Societe>, loyer: Ref<Loyer | undefined>) =>
           content: `Facturé à:
             \n${ client?.nom_complet }
             \n${ client?.ville } ${ client?.quartier }
-            \n${ client?.pays }`,
+            \n${ client?.pays ?? '' }`,
           styles: {
             halign: "left",
           },
@@ -475,7 +477,7 @@ const rentReceiptPdf = (societe: Ref<Societe>, loyer: Ref<Loyer | undefined>) =>
       ],
       [
         {
-          content: useCurrency(loyer.value?.montant!),
+          content: useCurrency(loyer?.montant!),
           styles: {
             halign: "right",
             fontSize: 20,
@@ -512,7 +514,21 @@ const rentReceiptPdf = (societe: Ref<Societe>, loyer: Ref<Loyer | undefined>) =>
           },
         },
         {
-          content: useCurrency(loyer.value?.montant!),
+          content: useCurrency(paid),
+          styles: {
+            halign: "right",
+          },
+        },
+      ],
+      [
+        {
+          content: "reste à payer:",
+          styles: {
+            halign: "right",
+          },
+        },
+        {
+          content: useCurrency(loyer?.montant - paid),
           styles: {
             halign: "right",
           },
@@ -624,11 +640,8 @@ const numberToFrench = (n: number, custom_join_character: string): string => {
       }
 
     }
-
   }
-
   return words.reverse().join(' ');
-
 }
 
 export { capitalize, arrayPdf, invoicePdf, paiementReceiptPdf, rentReceiptPdf, numberToFrench };

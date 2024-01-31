@@ -29,12 +29,10 @@ const usePaiementReceipt = async (paiement: Paiement, achat: Achat) => {
   });
 };
 
-const useLoyerReceipt = async (loyer: Ref<Loyer | undefined>) => {
+const useLoyerReceipt = async (loyer: Loyer) => {
   const { getOne } = useSocieteStore();
   const { societe } = storeToRefs(useSocieteStore());
-  getOne().then(() => {
-    if (societe !== undefined && loyer !== undefined) rentReceiptPdf(societe, loyer);
-  });
+  getOne().then(() => rentReceiptPdf(societe, loyer));
 };
 
 export { useVisiteInvoice, useVisiteInvoiceProvisoire, usePaiementReceipt, useLoyerReceipt };

@@ -38,12 +38,6 @@ const handleCashed = (loyer: Loyer) => {
     cashing.active = true;
   });
 };
-const printReceipt = async (id: number) => {
-  const { getOne } = useLoyerStore();
-  const { loyer } = storeToRefs(useLoyerStore());
-  await getOne(id);
-  await useLoyerReceipt(loyer);
-};
 </script>
 
 <template>

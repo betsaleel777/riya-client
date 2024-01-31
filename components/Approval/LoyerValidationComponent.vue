@@ -26,7 +26,7 @@ const { runShowModal, show } = useShowModal();
             <div class="card">
               <div class="card-body p-3">
                 <div class="d-flex">
-                  <div class="flex-shrink-0 me-4">
+                  <div class="flex-shrink-0 me-4 align-self-center">
                     <div class="avatar-md">
                       <span
                         class="avatar-title badge-primary-subtle rounded-circle text-danger font-size-16"
@@ -50,21 +50,29 @@ const { runShowModal, show } = useShowModal();
                           :content="`Le client: ${loyer.personne}`"
                           placement="top"
                         >
-                          <el-avatar class="bg-transparent" size="large">
-                            {{ loyer.personne.substring(0, 2).toUpperCase() }}</el-avatar
-                          >
+                          <el-avatar class="bg-transparent" size="large">{{
+                            loyer.personne.substring(0, 2).toUpperCase()
+                          }}</el-avatar>
                         </el-tooltip>
                       </span>
                     </div>
                   </div>
                   <div class="flex-grow-1 overflow-hidden">
-                    <h5 class="text-truncate font-size-15 text-dark">
-                      {{ useCurrency(loyer?.montant) }}
-                    </h5>
+                    <el-tooltip content="montant payé par le client à valider" placement="right">
+                      <h5 class="text-truncate font-size-15 text-dark">
+                        {{ useCurrency(loyer.montant) }}
+                      </h5>
+                    </el-tooltip>
+                    <h6>{{ loyer?.code }}</h6>
                     <el-tooltip :content="loyer?.bien" placement="right">
                       <p class="text-muted text-truncate mb-0">{{ loyer?.bien }}</p>
                     </el-tooltip>
                     <p class="headline mb-0">{{ loyer?.created_at }}</p>
+                    <el-tooltip content="coût total du loyer" placement="right">
+                      <el-text class="w-200px headline text-uppercase text-primary" truncated>{{
+                        useCurrency(loyer?.cout)
+                      }}</el-text>
+                    </el-tooltip>
                   </div>
                 </div>
               </div>

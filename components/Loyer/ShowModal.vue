@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import { storeToRefs } from "pinia";
 import { useLoyerStore } from "~/store/loyer";
-import { usePaiementStore } from "~/store/paiement";
 const props = withDefaults(
   defineProps<{ modelValue: boolean; id: number; fromValidationPage?: boolean }>(),
   { fromValidationPage: false }
@@ -23,47 +22,28 @@ const handleValidate = () => {
     });
   });
 };
-const { loading: paiementLoading, paiements } = storeToRefs(usePaiementStore());
-const { getByPayable: getPaiements } = usePaiementStore();
-const paiementsLoaded = ref<boolean>(false);
-const loadPaiements = async () => {
-  await getPaiements(loyer.value?.id!);
-  paiementsLoaded.value = true;
-};
+const validable = computed(() =>
+  loyer.value?.paiements.some((paiement) => paiement.status === statusValidable.wait)
+);
+const imprimable = computed(
+  () => loyer.value?.paiements !== undefined && loyer.value?.paiements.length > 0
+);
 </script>
 
 <template>
   <el-dialog v-model="dialog" title="Détails du loyer" width="40%" destroy-on-close center>
     <div v-loading="loading.edit">
       <div class="d-flex flex-row-reverse">
-        <el-button
-          v-if="loyer?.status === statusPayable.pending"
-          @click="handleValidate"
-          type="primary"
-          text
-          >valider ce loyer</el-button
+        <el-button v-if="validable" @click="handleValidate" type="primary" text plain
+          >valider le paiement en attente</el-button
+        >
+        <el-button v-if="imprimable" @click="useLoyerReceipt(loyer!)" type="warning" text plain
+          >imprimer reçu</el-button
         >
       </div>
       <el-divider class="mt-0" />
-      <el-collapse accordion class="my-1">
-        <el-collapse-item title="Informations du loyer" name="loyer">
-          <LoyerDescriptionComponent :loyer="loyer" />
-        </el-collapse-item>
-        <el-collapse-item :disabled="!paiementsLoaded" name="paiements">
-          <template #title>
-            <el-button
-              v-if="!paiementsLoaded"
-              @click="loadPaiements()"
-              :loading="paiementLoading.edit"
-              type="primary"
-              text
-              >Charger les paiements</el-button
-            >
-            <span v-else>Paiements</span>
-          </template>
-          <AchatPaiementTimelineComponent :paiements="paiements" />
-        </el-collapse-item>
-      </el-collapse>
+      <LoyerDescriptionComponent :loyer="loyer" />
+      <AchatPaiementTimelineComponent :paiements="loyer?.paiements" />
     </div>
   </el-dialog>
 </template>

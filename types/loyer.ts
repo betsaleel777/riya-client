@@ -1,7 +1,9 @@
 import { Appartement } from "./appartement";
 import { Contrat } from "./contrat";
 import { Entity, Media } from "./global";
+import { Paiements } from "./paiements";
 import { Client } from "./personne";
+
 
 interface Loyer extends Entity {
   code: string;
@@ -14,6 +16,7 @@ interface Loyer extends Entity {
   contrat: Contrat;
   paid: number;
   pending: boolean;
+  paiements: Paiements;
 }
 
 interface LoyerValidation extends Entity {
@@ -22,6 +25,7 @@ interface LoyerValidation extends Entity {
   personne: string
   bien: string;
   created_at: string;
+  cout: number,
   avatar: Media;
 }
 

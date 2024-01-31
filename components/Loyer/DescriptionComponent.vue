@@ -17,9 +17,21 @@ const props = defineProps<{ loyer: Loyer }>();
     <el-descriptions-item v-if="props.loyer?.created_at" label="Date:"
       >{{ props.loyer?.created_at }}
     </el-descriptions-item>
+    <el-descriptions-item v-if="props.loyer?.personne" label="Client :">{{
+      props.loyer?.personne.nom_complet
+    }}</el-descriptions-item>
+    <el-descriptions-item v-if="props.loyer?.bien" label="Bien :">{{
+      props.loyer?.bien.nom
+    }}</el-descriptions-item>
+    <el-descriptions-item v-if="props.loyer?.paid !== undefined" label="Montant Versé :">{{
+      useCurrency(props.loyer?.paid)
+    }}</el-descriptions-item>
+    <el-descriptions-item
+      v-if="props.loyer?.paid !== undefined && props.loyer?.montant !== undefined"
+      label="Reste à Payer :"
+      >{{ useCurrency(props.loyer?.montant - props.loyer?.paid) }}</el-descriptions-item
+    >
   </el-descriptions>
-  <PersonneDescriptionComponent :personne="props.loyer?.personne" />
-  <BienDescriptionComponent :bien="props.loyer?.bien" />
 </template>
 
 <style scoped></style>

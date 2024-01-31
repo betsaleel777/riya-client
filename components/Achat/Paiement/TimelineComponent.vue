@@ -25,7 +25,7 @@ const classType = (status: string) => {
       >
         <div class="d-flex justify-content-between">
           <span
-            ><b>{{ paiement.code }}</b> -- {{ paiement.montant }} FCFA</span
+            ><b>{{ paiement.code }}</b> -- {{ useCurrency(paiement.montant) }}</span
           >
           <el-tag :type="classType(paiement.status)">{{ paiement.status }}</el-tag>
         </div>

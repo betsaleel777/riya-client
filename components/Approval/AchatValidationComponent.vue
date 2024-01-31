@@ -58,17 +58,21 @@ const { runShowModal, show } = useShowModal();
                     </div>
                   </div>
                   <div class="flex-grow-1 overflow-hidden">
-                    <h5 class="text-truncate font-size-15 text-dark">
-                      {{ useCurrency(achat.montant) }}
-                    </h5>
+                    <el-tooltip content="montant payé par le client à valider" placement="right">
+                      <h5 class="text-truncate font-size-15 text-dark">
+                        {{ useCurrency(achat.montant) }}
+                      </h5>
+                    </el-tooltip>
                     <h6>{{ achat?.code }}</h6>
                     <el-tooltip :content="achat?.bien" placement="right">
                       <p class="text-muted text-truncate mb-0">{{ achat?.bien }}</p>
                     </el-tooltip>
                     <p class="headline mb-0">{{ achat?.created_at }}</p>
-                    <el-text class="w-200px headline text-uppercase text-primary" truncated>{{
-                      useCurrency(achat?.cout)
-                    }}</el-text>
+                    <el-tooltip content="coût total d'achat du bien" placement="right">
+                      <el-text class="w-200px headline text-uppercase text-primary" truncated>{{
+                        useCurrency(achat?.cout)
+                      }}</el-text>
+                    </el-tooltip>
                   </div>
                 </div>
               </div>
