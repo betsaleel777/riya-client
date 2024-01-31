@@ -73,11 +73,12 @@ export const usePaiementStore = defineStore("paiement", () => {
     return response;
   };
 
-  const getByAchat = async (id: number) => {
-    loading.index = true;
-    paiements.value = await $apiFetch<Paiements>("api/paiements/achat/" + id);
-    loading.index = false;
-  };
+
+  const getByPayable = async (id: number) => {
+    loading.edit = true
+    paiements.value = await $apiFetch<Paiements>('api/paiements/payable/' + id, { method: "get" })
+    loading.edit = false
+  }
 
   return {
     paiement,
@@ -90,8 +91,8 @@ export const usePaiementStore = defineStore("paiement", () => {
     updateDirect,
     getOne,
     trash,
-    getByAchat,
     valider,
     validerPaiement,
+    getByPayable,
   };
 });

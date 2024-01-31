@@ -83,16 +83,19 @@ watch(bien, (newBien) => {
   </div>
   <div class="mb-3">
     <label for="montant" class="form-label">Apport initial</label>
-    <Field
-      name="montant"
-      type="text"
-      class="form-control"
-      id="montant"
-      placeholder="montant"
-      :class="{ 'is-invalid': props.errors.montant }"
-      v-number="numberConfig"
-    />
-    <div class="invalid-feedback" v-if="props.errors.montant">{{ props.errors.montant }}</div>
+    <Field name="montant" v-slot="{ value, handleChange }">
+      <vue-number
+        id="montant"
+        class="form-control"
+        v-bind="numberConfig"
+        :model-value="value ?? 0"
+        @update:model-value="handleChange"
+        :class="{ 'is-invalid': props.errors.montant }"
+      ></vue-number>
+      <div class="invalid-feedback" v-if="props.errors.montant">
+        {{ props.errors.montant }}
+      </div>
+    </Field>
   </div>
   <div class="mb-2">
     <Field name="bien_type" v-slot="{ handleChange, value }">

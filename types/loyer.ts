@@ -11,7 +11,8 @@ interface Loyer extends Entity {
   bien: string & Appartement;
   created_at: string;
   contrat_id: number;
-  contrat: Contrat
+  contrat: Contrat;
+  paid: number;
 }
 
 interface LoyerValidation extends Entity {

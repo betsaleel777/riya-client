@@ -11,7 +11,7 @@ const props = defineProps<{ loyer: Loyer }>();
     <el-descriptions-item v-if="props.loyer?.montant" label="Montant:"
       >{{ useCurrency(props.loyer?.montant) }}
     </el-descriptions-item>
-    <el-descriptions-item v-if="props.loyer?.status" label="Dette sur:"
+    <el-descriptions-item v-if="props.loyer?.status" label="Statut:"
       >{{ props.loyer?.status }}
     </el-descriptions-item>
     <el-descriptions-item v-if="props.loyer?.created_at" label="Date:"

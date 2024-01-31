@@ -1,12 +1,9 @@
 <script lang="ts" setup>
 import { storeToRefs } from "pinia";
 import { useLoyerStore } from "~/store/loyer";
+import { usePaiementStore } from "~/store/paiement";
 const props = withDefaults(
-  defineProps<{
-    modelValue: boolean;
-    id: number;
-    fromValidationPage?: boolean;
-  }>(),
+  defineProps<{ modelValue: boolean; id: number; fromValidationPage?: boolean }>(),
   { fromValidationPage: false }
 );
 const emit = defineEmits<{ (event: "update:modelValue", payload: boolean): void }>();
@@ -26,6 +23,8 @@ const handleValidate = () => {
     });
   });
 };
+const { loading: paiementLoading, paiements } = storeToRefs(usePaiementStore());
+const { getByPayable: getPaiements } = usePaiementStore();
 </script>
 
 <template>
@@ -41,7 +40,25 @@ const handleValidate = () => {
         >
       </div>
       <el-divider class="mt-0" />
-      <LoyerDescriptionComponent :loyer="loyer" />
+      <el-collapse accordion class="my-1">
+        <el-collapse-item title="Informations du loyer" name="loyer">
+          <LoyerDescriptionComponent :loyer="loyer" />
+        </el-collapse-item>
+        <el-collapse-item name="paiements">
+          <template #title>
+            <el-button
+              v-if="paiements.length === 0"
+              @click="getPaiements(loyer?.id!)"
+              :loading="paiementLoading.edit"
+              type="primary"
+              text
+              >Charger les paiements</el-button
+            >
+            <span v-else>Paiements</span>
+          </template>
+          <AchatPaiementTimelineComponent :paiements="paiements" />
+        </el-collapse-item>
+      </el-collapse>
     </div>
   </el-dialog>
 </template>

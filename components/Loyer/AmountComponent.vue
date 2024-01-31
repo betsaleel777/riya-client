@@ -15,12 +15,11 @@ const { onSubmit } = useSubmitForm(cashed, dialog);
   <Form
     class="form-horizontal"
     @submit="onSubmit"
-    v-slot="{ isSubmitting, errors, values }"
+    v-slot="{ isSubmitting, errors }"
     :initial-values="{ id: props.id }"
   >
     <el-dialog v-model="dialog" title="Montant du loyer" width="40%" destroy-on-close center>
       <LoyerAmountForm :id="props.id" :errors="errors" />
-      <pre>{{ values }}</pre>
       <template #footer>
         <span class="dialog-footer">
           <el-button type="danger" @click="dialog = false" plain>Annuler</el-button>
