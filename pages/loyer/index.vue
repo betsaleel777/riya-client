@@ -49,7 +49,6 @@ const printReceipt = async (id: number) => {
 <template>
   <div class="page-content">
     <div class="container-fluid">
-      <!-- start page title -->
       <div class="row">
         <div class="col-12">
           <div class="card">
@@ -125,20 +124,12 @@ const printReceipt = async (id: number) => {
                         ><i class="bx bx-show"
                       /></el-button>
                       <el-button
-                        v-if="scope.row.status === statusPayable.unpaid"
+                        v-if="!scope.row.pending"
                         type="primary"
                         @click="handleCashed(scope.row)"
                         plain
                         circle
                         ><i class="bx bx-dollar"
-                      /></el-button>
-                      <el-button
-                        v-else
-                        type="warning"
-                        @click="printReceipt(scope.row.id)"
-                        plain
-                        circle
-                        ><i class="bx bx-printer"
                       /></el-button>
                       <el-button
                         type="danger"
@@ -181,16 +172,13 @@ const printReceipt = async (id: number) => {
           </div>
         </div>
       </div>
-      <!-- end page title -->
     </div>
-    <!-- container-fluid -->
   </div>
 </template>
 
 <style scoped>
 .el-dropdown-link {
   cursor: pointer;
-  /* color: var(--el-color-primary); */
   display: flex;
   align-items: center;
   font-size: 2.3em;

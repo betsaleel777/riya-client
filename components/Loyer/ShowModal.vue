@@ -25,6 +25,11 @@ const handleValidate = () => {
 };
 const { loading: paiementLoading, paiements } = storeToRefs(usePaiementStore());
 const { getByPayable: getPaiements } = usePaiementStore();
+const paiementsLoaded = ref<boolean>(false);
+const loadPaiements = async () => {
+  await getPaiements(loyer.value?.id!);
+  paiementsLoaded.value = true;
+};
 </script>
 
 <template>
@@ -44,11 +49,11 @@ const { getByPayable: getPaiements } = usePaiementStore();
         <el-collapse-item title="Informations du loyer" name="loyer">
           <LoyerDescriptionComponent :loyer="loyer" />
         </el-collapse-item>
-        <el-collapse-item name="paiements">
+        <el-collapse-item :disabled="!paiementsLoaded" name="paiements">
           <template #title>
             <el-button
-              v-if="paiements.length === 0"
-              @click="getPaiements(loyer?.id!)"
+              v-if="!paiementsLoaded"
+              @click="loadPaiements()"
               :loading="paiementLoading.edit"
               type="primary"
               text

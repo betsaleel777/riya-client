@@ -13,6 +13,7 @@ interface Loyer extends Entity {
   contrat_id: number;
   contrat: Contrat;
   paid: number;
+  pending: boolean;
 }
 
 interface LoyerValidation extends Entity {
