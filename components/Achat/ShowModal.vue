@@ -56,6 +56,9 @@ const onContratCreated = async () => {
         <el-button v-if="pendingPaiement" @click="handleValidate" type="primary" text
           >valider le paiement en attente</el-button
         >
+        <el-button @click="useAchatReceipt(achat!)" type="warning" text plain
+          >imprimer reçu</el-button
+        >
       </div>
       <el-divider class="mt-0" />
       <AchatDescriptionComponent :achat="achat" />

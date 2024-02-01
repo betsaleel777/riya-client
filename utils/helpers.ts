@@ -553,6 +553,178 @@ const rentReceiptPdf = (societe: Ref<Societe>, loyer: Loyer) => {
   return doc.save("reçu-loyer");
 };
 
+const purchaseReceiptPdf = (societe: Ref<Societe>, achat: Achat) => {
+  const doc = new JsPDF("p", "pt", "a4");
+  const paiements = achat.paiements
+  const pending = paiements?.find((paiement) => paiement.status === statusValidable.wait)
+  const paiementsStorie = paiements?.map((paiement) => {
+    const { code, created_at, montant } = paiement
+    return [code, created_at, useCurrency(montant)]
+  }).flat()
+  autoTable(doc, {
+    body: [
+      [
+        {
+          content: societe.value.raison_sociale,
+          styles: {
+            halign: "left",
+            fontSize: 20,
+            textColor: "#ffffff",
+          },
+        },
+        {
+          content: "Reçu de paiement",
+          styles: {
+            halign: "right",
+            fontSize: 20,
+            textColor: "#ffffff",
+          },
+        },
+      ],
+    ],
+    theme: "plain",
+    styles: {
+      fillColor: "#3366ff",
+    },
+  });
+  autoTable(doc, {
+    body: [
+      [
+        {
+          content: `Reference: ${ achat.code } \nDate: ${ dayjs().format("DD/MM/YYYY") }`,
+          styles: {
+            halign: "right",
+          },
+        },
+      ],
+    ],
+    theme: "plain",
+  });
+  autoTable(doc, {
+    body: [
+      [
+        {
+          content: `Facturé à:
+            \n${ achat.personne?.nom_complet }
+            \n${ achat.personne?.ville } ${ achat.personne?.quartier }
+            \n${ achat.personne?.pays }`,
+          styles: {
+            halign: "left",
+          },
+        },
+        {
+          content: `De: 
+            \n${ societe.value.raison_sociale } 
+            \n${ societe.value.siege }
+            \n${ societe.value.boite_postale }
+            \nCôte d'voire`,
+          styles: {
+            halign: "right",
+          },
+        },
+      ],
+    ],
+    theme: "plain",
+  });
+  autoTable(doc, {
+    body: [
+      [
+        {
+          content: "Montant dû:",
+          styles: {
+            halign: "right",
+            fontSize: 14,
+          },
+        },
+      ],
+      [
+        {
+          content: useCurrency(achat.bien.cout_achat),
+          styles: {
+            halign: "right",
+            fontSize: 20,
+            textColor: "#3366ff",
+          },
+        },
+      ],
+      [
+        {
+          content: dayjs().add(3, "days").format("DD/MM/YYYY"),
+          styles: {
+            halign: "right",
+          },
+        },
+      ],
+    ],
+    theme: "plain",
+  });
+  autoTable(doc, {
+    head: [["Description", "Quantité", "Prix", "Montant"]],
+    body: [
+      ["Achat du bien: " + achat.bien?.nom, "1", useCurrency(achat.bien.cout_achat), useCurrency(achat.bien.cout_achat)],
+    ],
+    theme: "striped",
+    headStyles: {
+      fillColor: "#343a40",
+    },
+  });
+  autoTable(doc, {
+    head: [["Code du paiement", "Date", "Montant"]],
+    body: [paiementsStorie!],
+    theme: "striped",
+    headStyles: {
+      fillColor: "#343a40",
+    },
+  });
+  autoTable(doc, {
+    body: [
+      [
+        {
+          content: "montant versé:",
+          styles: {
+            halign: "right",
+          },
+        },
+        {
+          content: useCurrency(pending?.montant!),
+          styles: {
+            halign: "right",
+          },
+        },
+      ],
+      [
+        {
+          content: "Reste à payer:",
+          styles: {
+            halign: "right",
+          },
+        },
+        {
+          content: useCurrency(achat.bien.cout_achat - pending?.montant!),
+          styles: {
+            halign: "right",
+          },
+        },
+      ],
+    ],
+    theme: "plain",
+  });
+  autoTable(doc, {
+    body: [
+      [
+        {
+          content: `${ societe.value.raison_sociale } ${ societe.value.forme_juridique }, registre de commerce: ${ societe.value.registre }`,
+          styles: {
+            halign: "center",
+          },
+        },
+      ],
+    ],
+    theme: "plain",
+  });
+  return doc.save("reçu-achat");
+}
+
 /**
  * Convert an integer to its words representation
  * 
@@ -644,4 +816,4 @@ const numberToFrench = (n: number, custom_join_character: string): string => {
   return words.reverse().join(' ');
 }
 
-export { capitalize, arrayPdf, invoicePdf, paiementReceiptPdf, rentReceiptPdf, numberToFrench };
+export { capitalize, arrayPdf, invoicePdf, paiementReceiptPdf, rentReceiptPdf, purchaseReceiptPdf, numberToFrench };

@@ -35,4 +35,10 @@ const useLoyerReceipt = async (loyer: Loyer) => {
   getOne().then(() => rentReceiptPdf(societe, loyer));
 };
 
-export { useVisiteInvoice, useVisiteInvoiceProvisoire, usePaiementReceipt, useLoyerReceipt };
+const useAchatReceipt = async (achat: Achat) => {
+  const { getOne } = useSocieteStore();
+  const { societe } = storeToRefs(useSocieteStore());
+  getOne().then(() => purchaseReceiptPdf(societe, achat));
+};
+
+export { useVisiteInvoice, useVisiteInvoiceProvisoire, usePaiementReceipt, useLoyerReceipt, useAchatReceipt };
