@@ -23,9 +23,12 @@ const classType = (status: string) => {
         :timestamp="paiement.created_at"
         placement="top"
       >
-        <div class="d-flex justify-content-between">
-          <span
-            ><b>{{ paiement.code }}</b> -- {{ useCurrency(paiement.montant) }}</span
+        <div class="d-flex justify-content-between align-items-center">
+          <span>
+            <em v-if="paiement.audit"
+              ><h6>encaissé par {{ paiement.audit.user.name }}</h6></em
+            >
+            <b>{{ paiement.code }}</b> -- {{ useCurrency(paiement.montant) }}</span
           >
           <el-tag :type="classType(paiement.status)">{{ paiement.status }}</el-tag>
         </div>

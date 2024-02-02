@@ -52,13 +52,16 @@ const onContratCreated = async () => {
     center
   >
     <div v-loading="loading.edit">
-      <div class="d-flex flex-row-reverse">
-        <el-button v-if="pendingPaiement" @click="handleValidate" type="primary" text
-          >valider le paiement en attente</el-button
-        >
-        <el-button @click="useAchatReceipt(achat!)" type="warning" text plain
-          >imprimer reçu</el-button
-        >
+      <div class="d-flex justify-content-between align-items-center">
+        <span class="text-truncate">créer par {{ achat?.audit.user.name }}</span>
+        <div class="d-flex flex-row-reverse">
+          <el-button v-if="pendingPaiement" @click="handleValidate" type="primary" text>
+            valider le paiement en attente
+          </el-button>
+          <el-button @click="useAchatReceipt(achat!)" type="warning" text plain>
+            imprimer reçu
+          </el-button>
+        </div>
       </div>
       <el-divider class="mt-0" />
       <AchatDescriptionComponent :achat="achat" />

@@ -557,10 +557,9 @@ const purchaseReceiptPdf = (societe: Ref<Societe>, achat: Achat) => {
   const doc = new JsPDF("p", "pt", "a4");
   const paiements = achat.paiements
   const pending = paiements?.find((paiement) => paiement.status === statusValidable.wait)
-  const paiementsStorie = paiements?.map((paiement) => {
-    const { code, created_at, montant } = paiement
-    return [code, created_at, useCurrency(montant)]
-  }).flat()
+  const paiementsStorie = paiements?.map((paiement) => (
+    [paiement.code, paiement.audit.user.name, paiement.created_at, useCurrency(paiement.montant)]
+  )).flat()
   autoTable(doc, {
     body: [
       [
@@ -591,6 +590,12 @@ const purchaseReceiptPdf = (societe: Ref<Societe>, achat: Achat) => {
     body: [
       [
         {
+          content: `Achat crée par: ${ achat.audit.user.name }`,
+          styles: {
+            halign: "left",
+          },
+        },
+        {
           content: `Reference: ${ achat.code } \nDate: ${ dayjs().format("DD/MM/YYYY") }`,
           styles: {
             halign: "right",
@@ -607,7 +612,8 @@ const purchaseReceiptPdf = (societe: Ref<Societe>, achat: Achat) => {
           content: `Facturé à:
             \n${ achat.personne?.nom_complet }
             \n${ achat.personne?.ville } ${ achat.personne?.quartier }
-            \n${ achat.personne?.pays }`,
+            \n${ achat.personne?.telephone }
+            \n${ achat.personne?.email ?? '' }`,
           styles: {
             halign: "left",
           },
@@ -669,7 +675,7 @@ const purchaseReceiptPdf = (societe: Ref<Societe>, achat: Achat) => {
     },
   });
   autoTable(doc, {
-    head: [["Code du paiement", "Date", "Montant"]],
+    head: [["Code du paiement", "Caissier", "Date", "Montant"]],
     body: [paiementsStorie!],
     theme: "striped",
     headStyles: {

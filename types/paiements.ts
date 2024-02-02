@@ -1,5 +1,5 @@
 import { Achat } from "./achat";
-import { Entity } from "./global";
+import { Audit, Entity } from "./global";
 import { Loyer } from "./loyer";
 
 interface Paiement extends Entity {
@@ -10,6 +10,7 @@ interface Paiement extends Entity {
   payable?: Achat & Loyer;
   payable_id: number;
   payable_type: string;
+  audit: Audit
 }
 
 type Paiements = Array<Paiement>;
