@@ -399,6 +399,9 @@ const rentReceiptPdf = (societe: Ref<Societe>, loyer: Loyer) => {
   const bien = loyer?.bien as Appartement;
   let paid = 0
   loyer?.paiements.forEach((paiement) => paid += paiement.montant)
+  const paiementsStorie = loyer?.paiements?.map((paiement) => (
+    [paiement.code, paiement.audit.user.name, paiement.created_at, useCurrency(paiement.montant)]
+  )).flat()
   autoTable(doc, {
     body: [
       [
@@ -445,7 +448,8 @@ const rentReceiptPdf = (societe: Ref<Societe>, loyer: Loyer) => {
           content: `Facturé à:
             \n${ client?.nom_complet }
             \n${ client?.ville } ${ client?.quartier }
-            \n${ client?.pays ?? '' }`,
+            \n${ client?.telephone }
+            \n${ client?.email ?? '' }`,
           styles: {
             halign: "left",
           },
@@ -499,6 +503,14 @@ const rentReceiptPdf = (societe: Ref<Societe>, loyer: Loyer) => {
   autoTable(doc, {
     head: [["Description", "Quantité", "Prix", "Montant"]],
     body: [["Loyer du bien: " + bien?.nom, "1", useCurrency(bien.montant_location), useCurrency(bien.montant_location)]],
+    theme: "striped",
+    headStyles: {
+      fillColor: "#343a40",
+    },
+  });
+  autoTable(doc, {
+    head: [["Code du paiement", "Caissier", "Date", "Montant"]],
+    body: [paiementsStorie!],
     theme: "striped",
     headStyles: {
       fillColor: "#343a40",
