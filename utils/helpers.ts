@@ -2,7 +2,7 @@ import { jsPDF as JsPDF } from "jspdf";
 import autoTable from "jspdf-autotable";
 import { Societe } from "~/types/societe";
 import { Visite } from "~/types/visite";
-import * as dayjs from "dayjs";
+import dayjs from "dayjs";
 import { Paiement } from "~/types/paiements";
 import { Achat } from "~/types/achat";
 import { Loyer } from "~/types/loyer";
@@ -401,7 +401,7 @@ const rentReceiptPdf = (societe: Ref<Societe>, loyer: Loyer) => {
   loyer?.paiements.forEach((paiement) => paid += paiement.montant)
   const paiementsStorie = loyer?.paiements?.map((paiement) => (
     [paiement.code, paiement.audit.user.name, paiement.created_at, useCurrency(paiement.montant)]
-  )).flat()
+  ))
   autoTable(doc, {
     body: [
       [
@@ -510,7 +510,7 @@ const rentReceiptPdf = (societe: Ref<Societe>, loyer: Loyer) => {
   });
   autoTable(doc, {
     head: [["Code du paiement", "Caissier", "Date", "Montant"]],
-    body: [paiementsStorie!],
+    body: [...paiementsStorie!],
     theme: "striped",
     headStyles: {
       fillColor: "#343a40",
@@ -571,7 +571,7 @@ const purchaseReceiptPdf = (societe: Ref<Societe>, achat: Achat) => {
   const pending = paiements?.find((paiement) => paiement.status === statusValidable.wait)
   const paiementsStorie = paiements?.map((paiement) => (
     [paiement.code, paiement.audit.user.name, paiement.created_at, useCurrency(paiement.montant)]
-  )).flat()
+  ))
   autoTable(doc, {
     body: [
       [
@@ -688,7 +688,7 @@ const purchaseReceiptPdf = (societe: Ref<Societe>, achat: Achat) => {
   });
   autoTable(doc, {
     head: [["Code du paiement", "Caissier", "Date", "Montant"]],
-    body: [paiementsStorie!],
+    body: [...paiementsStorie!],
     theme: "striped",
     headStyles: {
       fillColor: "#343a40",
@@ -745,7 +745,6 @@ const purchaseReceiptPdf = (societe: Ref<Societe>, achat: Achat) => {
 
 /**
  * Convert an integer to its words representation
- * 
  */
 const numberToFrench = (n: number, custom_join_character: string): string => {
 

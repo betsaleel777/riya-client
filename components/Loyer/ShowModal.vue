@@ -12,7 +12,7 @@ const { getOne, valider } = useLoyerStore();
 getOne(props.id);
 const handleValidate = () => {
   ElMessageBox.confirm(
-    `Cette action est irréversible, voulez réelement valider cette ${loyer.value?.code}?`,
+    `Cette action est irréversible, voulez-vous réelement valider le paiement du loyer: ${loyer.value?.code}?`,
     "Attention",
     { confirmButtonText: "Confirmer", cancelButtonText: "Abandonner", type: "warning" }
   ).then(() => {

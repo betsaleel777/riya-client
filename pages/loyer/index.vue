@@ -118,7 +118,7 @@ const handleCashed = (loyer: Loyer) => {
                         ><i class="bx bx-show"
                       /></el-button>
                       <el-button
-                        v-if="!scope.row.pending"
+                        v-if="!scope.row.pending && scope.row.status === statusPayable.unpaid"
                         type="primary"
                         @click="handleCashed(scope.row)"
                         plain
