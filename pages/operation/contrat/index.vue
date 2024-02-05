@@ -13,7 +13,6 @@ const { getAll, trash } = useContratStore();
 const { contrats, loading } = storeToRefs(useContratStore());
 getAll();
 const { filterTableData, setPage, search, total, pageSize } = useContratFilterPagination(contrats);
-const { onPrint } = useContratPrinter(contrats);
 const { handleDelete, modal } = useHandleCrudButtons(trash);
 const classTypeStatus = (status: string) => {
   return status === statusContrat.notuptodate ? "danger" : "success";
@@ -44,13 +43,10 @@ const activateDescriptionModal = (id: number, type: string) => {
         <div class="col-12">
           <div class="card">
             <div class="card-body">
-              <StructurePageHeader
-                :breadcrumbs="links"
-                title="Contrats"
-                :extra="{ exist: true, create: false, print: true }"
-                @print="onPrint"
-                @create="modal.create = true"
-              >
+              <StructurePageHeader :breadcrumbs="links" title="Contrats">
+                <template #options>
+                  <el-button @click="modal.create = true" plain type="primary">Ajouter</el-button>
+                </template>
                 <el-input v-model="search" class="w-50 mt-1 mb-2" placeholder="Rechercher" />
                 <el-table
                   v-loading="loading.index"

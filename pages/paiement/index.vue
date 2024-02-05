@@ -15,7 +15,6 @@ const { paiements, loading } = storeToRefs(usePaiementStore());
 getAll();
 const { filterTableData, setPage, search, total, pageSize } =
   usePaiementRefFilterPagination(paiements);
-const { onPrint } = usePaiementRefPrinter(paiements);
 const { handleDelete, handleEdit, handleShow, modal } = useHandleCrudButtons(trash);
 
 const classStatus = (state: string) => {
@@ -31,13 +30,10 @@ const classStatus = (state: string) => {
         <div class="col-12">
           <div class="card">
             <div class="card-body">
-              <StructurePageHeader
-                :breadcrumbs="links"
-                title="Paiements"
-                :extra="{ exist: true, create: true, print: true }"
-                @print="onPrint"
-                @create="modal.create = true"
-              >
+              <StructurePageHeader :breadcrumbs="links" title="Paiements">
+                <template #options>
+                  <el-button @click="modal.create = true" plain type="primary">Ajouter</el-button>
+                </template>
                 <el-row class="mt-1 mb-2" justify="end">
                   <el-col :span="12">
                     <el-input v-model="search" placeholder="Rechercher" />

@@ -13,7 +13,6 @@ const { getAll, trash } = useVisiteStore();
 const { visites, loading } = storeToRefs(useVisiteStore());
 getAll();
 const { filterTableData, setPage, search, total, pageSize } = useVisiteFilterPagination(visites);
-const { onPrint } = useVisitePrinter(visites);
 const { handleDelete, handleEdit, handleShow, modal } = useHandleCrudButtons(trash);
 const classType = (status: string) => {
   return status === statusValidable.wait ? "warning" : "success";
@@ -35,13 +34,10 @@ const classStatus = (status: string) => {
         <div class="col-12">
           <div class="card">
             <div class="card-body">
-              <StructurePageHeader
-                :breadcrumbs="links"
-                title="Locations"
-                :extra="{ exist: true, create: true, print: true }"
-                @print="onPrint"
-                @create="modal.create = true"
-              >
+              <StructurePageHeader :breadcrumbs="links" title="Locations">
+                <template #options>
+                  <el-button @click="modal.create = true" plain type="primary">Ajouter</el-button>
+                </template>
                 <el-row class="mt-1 mb-2" justify="end">
                   <el-col :span="12">
                     <el-input v-model="search" placeholder="Rechercher" />

@@ -13,7 +13,6 @@ const { getAll, trash } = useAchatStore();
 const { achats, loading } = storeToRefs(useAchatStore());
 getAll();
 const { filterTableData, setPage, search, total, pageSize } = usePurchaseFilterPagination(achats);
-const { onPrint } = useAchatPrinter(achats);
 const { handleDelete, modal } = useHandleCrudButtons(trash);
 </script>
 
@@ -25,13 +24,10 @@ const { handleDelete, modal } = useHandleCrudButtons(trash);
         <div class="col-12">
           <div class="card">
             <div class="card-body">
-              <StructurePageHeader
-                :breadcrumbs="links"
-                title="Achats"
-                :extra="{ exist: true, create: true, print: true }"
-                @print="onPrint"
-                @create="modal.create = true"
-              >
+              <StructurePageHeader :breadcrumbs="links" title="Achats">
+                <template #options>
+                  <el-button @click="modal.create = true" plain type="primary">Ajouter</el-button>
+                </template>
                 <el-input v-model="search" class="w-50 mt-1 mb-2" placeholder="Rechercher" />
                 <el-table
                   v-loading="loading.index"

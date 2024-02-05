@@ -14,7 +14,6 @@ const { getAll, repay } = useDetteStore();
 const { dettes, loading } = storeToRefs(useDetteStore());
 getAll();
 const { filterTableData, setPage, search, total, pageSize } = useDetteFilterPagination(dettes);
-const { onPrint } = useDettePrinter(dettes);
 const classStatus = (status: string) => {
   const classes = {
     [statusPayable.pending as string]: "warning",
@@ -48,13 +47,7 @@ const { runShowModal, show } = useShowModal();
         <div class="col-12">
           <div class="card">
             <div class="card-body">
-              <StructurePageHeader
-                :breadcrumbs="links"
-                title="Dettes"
-                :extra="{ exist: true, create: false, print: true }"
-                @print="onPrint"
-                @create="modal.create = true"
-              >
+              <StructurePageHeader :breadcrumbs="links" title="Dettes">
                 <el-row class="mt-1 mb-2" justify="end">
                   <el-col :span="12">
                     <el-input v-model="search" placeholder="Rechercher" />

@@ -18,21 +18,6 @@ const capitalize = (str: string) => {
   return str.charAt(0).toUpperCase() + str.slice(1);
 };
 
-const arrayPdf = (cols: header[], records: any[], filename: string) => {
-  const doc = new JsPDF("l", "pt", cols.length > 10 ? "a3" : "a4");
-  autoTable(doc, {
-    headStyles: { fillColor: "#eff5ff", textColor: "#515365" },
-    columns: cols,
-    body: records,
-    styles: { overflow: "linebreak" },
-    pageBreak: "auto",
-    margin: { top: 45 },
-    didDrawPage: () => {
-      doc.text(filename.toUpperCase(), cols.length > 10 ? 535 : 365, 30);
-    },
-  });
-  doc.save(filename + ".pdf");
-};
 
 const invoicePdf = (societe: Ref<Societe>, visite: Ref<Visite | undefined>, provisoire: boolean = false) => {
   const doc = new JsPDF("p", "pt", "a4");
@@ -677,4 +662,4 @@ const numberToFrench = (n: number, custom_join_character: string): string => {
   return words.reverse().join(' ');
 }
 
-export { capitalize, arrayPdf, invoicePdf, paiementReceiptPdf, rentReceiptPdf, purchaseReceiptPdf, numberToFrench };
+export { capitalize, invoicePdf, rentReceiptPdf, purchaseReceiptPdf, numberToFrench };

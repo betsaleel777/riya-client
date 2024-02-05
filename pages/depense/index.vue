@@ -26,12 +26,10 @@ const statusClass = (status: string) => {
         <div class="col-12">
           <div class="card">
             <div class="card-body">
-              <StructurePageHeader
-                :breadcrumbs="links"
-                title="Dépenses"
-                :extra="{ exist: true, create: true }"
-                @create="modal.create = true"
-              >
+              <StructurePageHeader :breadcrumbs="links" title="Dépenses">
+                <template #options>
+                  <el-button @click="modal.create = true" plain type="primary">Ajouter</el-button>
+                </template>
                 <el-input v-model="search" class="w-50 mt-1 mb-2" placeholder="Rechercher" />
                 <el-table
                   v-loading="loading.index"

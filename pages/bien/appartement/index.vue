@@ -14,7 +14,6 @@ const { appartements, loading } = storeToRefs(useAppartementStore());
 getAll();
 const { filterTableData, setPage, search, total, pageSize } =
   useAppartementFilterPagination(appartements);
-const { onPrint } = useAppartementPrinter(appartements);
 const { handleDelete, handleEdit, handleShow, modal } = useHandleCrudButtons(trash);
 const classType = (status: string) => {
   return status === statusBien.busy ? "danger" : "success";
@@ -29,13 +28,10 @@ const classType = (status: string) => {
         <div class="col-12">
           <div class="card">
             <div class="card-body">
-              <StructurePageHeader
-                :breadcrumbs="links"
-                title="Appartements"
-                :extra="{ exist: true, create: true, print: true }"
-                @print="onPrint"
-                @create="modal.create = true"
-              >
+              <StructurePageHeader :breadcrumbs="links" title="Appartements">
+                <template #options>
+                  <el-button @click="modal.create = true" plain type="primary">Ajouter</el-button>
+                </template>
                 <el-input v-model="search" class="w-50 mt-1 mb-2" placeholder="Rechercher" />
                 <el-table
                   v-loading="loading.index"

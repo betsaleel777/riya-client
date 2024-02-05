@@ -13,25 +13,20 @@ const { proprietaires, loading } = storeToRefs(useProprietaireStore());
 getAll();
 const { filterTableData, setPage, search, total, pageSize } =
   useProprietaireFilterPagination(proprietaires);
-const { onPrint } = useProprietairePrinter(proprietaires);
 const { handleDelete, handleEdit, handleShow, modal } = useHandleCrudButtons(trash);
 </script>
 
 <template>
   <div class="page-content">
     <div class="container-fluid">
-      <!-- start page title -->
       <div class="row">
         <div class="col-12">
           <div class="card">
             <div class="card-body">
-              <StructurePageHeader
-                :breadcrumbs="links"
-                title="proprietaires"
-                :extra="{ exist: true, create: true, print: true }"
-                @print="onPrint"
-                @create="modal.create = true"
-              >
+              <StructurePageHeader :breadcrumbs="links" title="proprietaires">
+                <template #options>
+                  <el-button @click="modal.create = true" plain type="primary">Ajouter</el-button>
+                </template>
                 <el-input v-model="search" class="w-50 mt-1 mb-2" placeholder="Rechercher" />
                 <el-table
                   v-loading="loading.index"
@@ -106,9 +101,7 @@ const { handleDelete, handleEdit, handleShow, modal } = useHandleCrudButtons(tra
           </div>
         </div>
       </div>
-      <!-- end page title -->
     </div>
-    <!-- container-fluid -->
   </div>
 </template>
 

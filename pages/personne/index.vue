@@ -13,7 +13,6 @@ const { personnes, loading } = storeToRefs(usePersonneStore());
 getAll();
 const { filterTableData, setPage, search, total, pageSize } =
   usePersonneFilterPagination(personnes);
-const { onPrint } = useClientPrinter(personnes);
 const { handleDelete, handleEdit, handleShow, modal } = useHandleCrudButtons(trash);
 </script>
 
@@ -24,13 +23,10 @@ const { handleDelete, handleEdit, handleShow, modal } = useHandleCrudButtons(tra
         <div class="col-12">
           <div class="card">
             <div class="card-body">
-              <StructurePageHeader
-                :breadcrumbs="links"
-                title="Clients"
-                :extra="{ exist: true, create: true, print: true }"
-                @print="onPrint"
-                @create="modal.create = true"
-              >
+              <StructurePageHeader :breadcrumbs="links" title="Clients">
+                <template #options>
+                  <el-button @click="modal.create = true" plain type="primary">Ajouter</el-button>
+                </template>
                 <el-input v-model="search" class="w-50 mt-1 mb-2" placeholder="Rechercher" />
                 <el-table
                   v-loading="loading.index"

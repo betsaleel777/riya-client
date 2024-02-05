@@ -12,7 +12,6 @@ const { trash, valider } = usePaiementStore();
 const { filterTableData, setPage, search, total, pageSize } = usePaiementFilterPagination(
   props.paiements
 );
-const { onPrint } = usePaiementPrinter(props.paiements);
 const { handleDelete, handleEdit, modal } = useHandleCrudButtons(trash);
 const classStatus = (state: string) => {
   return state === statusValidable.wait ? "warning" : "success";
@@ -43,12 +42,10 @@ const onContratCreated = async () => {
 </script>
 
 <template>
-  <StructurePageHeader
-    title="liste des paiements"
-    :extra="{ exist: true, create: createPaiement, print: true }"
-    @print="onPrint"
-    @create="modal.create = true"
-  >
+  <StructurePageHeader title="liste des paiements">
+    <template #options>
+      <el-button @click="createPaiement" plain type="primary">Ajouter</el-button>
+    </template>
     <el-input v-model="search" class="w-50 my-1" placeholder="Rechercher" />
     <el-table :data="filterTableData" style="width: 100%" empty-text="aucun paiement">
       <el-table-column prop="code" label="Code" width="100" />

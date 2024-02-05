@@ -13,7 +13,6 @@ const { getAll, trash } = useLoyerStore();
 const { loyers, loading } = storeToRefs(useLoyerStore());
 getAll();
 const { filterTableData, setPage, search, total, pageSize } = useLoyerFilterPagination(loyers);
-const { onPrint } = useLoyerPrinter(loyers);
 const { handleDelete, handleShow, modal } = useHandleCrudButtons(trash);
 const cashing = reactive({ active: false, id: 0 });
 const classStatus = (status: string) => {
@@ -47,13 +46,10 @@ const handleCashed = (loyer: Loyer) => {
         <div class="col-12">
           <div class="card">
             <div class="card-body">
-              <StructurePageHeader
-                :breadcrumbs="links"
-                title="Loyers"
-                :extra="{ exist: true, create: false, print: true }"
-                @print="onPrint"
-                @create="modal.create = true"
-              >
+              <StructurePageHeader :breadcrumbs="links" title="Loyers">
+                <template #options>
+                  <el-button @click="modal.create = true" plain type="primary">Ajouter</el-button>
+                </template>
                 <el-row class="mt-1 mb-2" justify="end">
                   <el-col :span="12">
                     <el-input v-model="search" placeholder="Rechercher" />
