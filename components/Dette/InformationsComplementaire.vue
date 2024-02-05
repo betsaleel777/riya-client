@@ -1,22 +1,27 @@
 <script lang="ts" setup>
 import { useVisiteStore } from "~/store/visite";
 import { usePaiementStore } from "~/store/paiement";
-import { useProprietaireStore } from "~/store/proprietaire";
 import { storeToRefs } from "pinia";
+import { useLoyerStore } from "~/store/loyer";
 
 const props = defineProps<{ origine: number; type: string }>();
 const { getOne: getVisite } = useVisiteStore();
 const { visite, loading: visiteLoading } = storeToRefs(useVisiteStore());
 const { getOne: getPaiement } = usePaiementStore();
 const { paiement, loading: paiementLoading } = storeToRefs(usePaiementStore());
-const { getOne: getProprietaire } = useProprietaireStore();
-const { proprietaire, loading: ownerLoading } = storeToRefs(useProprietaireStore());
-const isOrigineVisite = computed<boolean>(() => props.type === "Visite");
-isOrigineVisite.value ? getVisite(props.origine) : getPaiement(props.origine);
+const { loyer, loading: loyerLoading } = storeToRefs(useLoyerStore());
+const { getOne: getLoyer } = useLoyerStore();
+if (props.type === "Visite") {
+  getVisite(props.origine);
+} else if (props.type === "Loyer") {
+  getLoyer(props.origine);
+} else {
+  getPaiement(props.origine);
+}
 </script>
 
 <template>
-  <div v-if="isOrigineVisite" v-loading="visiteLoading.edit">
+  <div v-if="props.type === 'Visite'" v-loading="visiteLoading.edit">
     <el-collapse accordion class="my-4">
       <el-collapse-item title="Informations de la visite" name="visite">
         <VisiteDescriptionComponent :visite="visite!" />
@@ -27,23 +32,12 @@ isOrigineVisite.value ? getVisite(props.origine) : getPaiement(props.origine);
       <el-collapse-item title="Informations sur le client" name="client">
         <PersonneDescriptionComponent :personne="visite?.personne!" />
       </el-collapse-item>
-      <el-collapse-item name="proprietaire">
-        <template #title>
-          <el-button
-            v-if="!proprietaire"
-            @click="getProprietaire(visite?.appartement?.proprietaire_id!)"
-            :loading="ownerLoading.edit"
-            type="primary"
-            text
-            >Charger les données du propriétaire</el-button
-          >
-          <span v-else>Informations sur le propriétaire</span>
-        </template>
-        <ProprietaireDescriptionComponent :proprietaire="proprietaire" />
-      </el-collapse-item>
     </el-collapse>
   </div>
-  <div v-else v-loading="paiementLoading.edit">
+  <div v-else-if="props.type === 'Loyer'" :loading="loyerLoading.edit">
+    <LoyerDescriptionComponent :loyer="loyer" />
+  </div>
+  <div v-else :loading="paiementLoading.edit">
     <PaiementDescriptionComponent :paiement="paiement" />
   </div>
 </template>
