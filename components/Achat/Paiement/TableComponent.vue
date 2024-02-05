@@ -37,11 +37,6 @@ const handleValidate = (paiement: Paiement) => {
   });
 };
 const createPaiement = computed<boolean>(() => achat.value?.reste !== 0);
-const printReceipt = async (paiement: Paiement) => {
-  const { getOne } = useAchatStore();
-  await getOne(paiement.payable_id);
-  await usePaiementReceipt(paiement, achat.value!);
-};
 const onContratCreated = async () => {
   await getOne(achat.value?.id!);
 };
@@ -80,9 +75,6 @@ const onContratCreated = async () => {
             plain
             circle
             ><i class="bx bx-check-shield"
-          /></el-button>
-          <el-button v-else type="warning" @click="printReceipt(scope.row)" plain circle
-            ><i class="bx bx-printer"
           /></el-button>
           <el-button
             type="primary"

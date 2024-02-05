@@ -21,12 +21,6 @@ const { handleDelete, handleEdit, handleShow, modal } = useHandleCrudButtons(tra
 const classStatus = (state: string) => {
   return state === statusValidable.wait ? "warning" : "success";
 };
-const printReceipt = async (paiement: Paiement) => {
-  const { getOne } = useAchatStore();
-  const { achat } = storeToRefs(useAchatStore());
-  await getOne(paiement.payable_id);
-  await usePaiementReceipt(paiement, achat.value!);
-};
 </script>
 
 <template>
@@ -93,14 +87,6 @@ const printReceipt = async (paiement: Paiement) => {
                     <template #default="scope">
                       <el-button type="info" @click="handleShow(scope.row)" plain circle
                         ><i class="bx bx-show"
-                      /></el-button>
-                      <el-button
-                        v-if="scope.row.status === statusValidable.valid"
-                        type="warning"
-                        @click="printReceipt(scope.row)"
-                        plain
-                        circle
-                        ><i class="bx bx-printer"
                       /></el-button>
                       <el-button
                         type="primary"
