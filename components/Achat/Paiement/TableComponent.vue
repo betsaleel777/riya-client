@@ -1,17 +1,18 @@
 <script lang="ts" setup>
 import { storeToRefs } from "pinia";
-import { Paiements, Paiement } from "~/types/paiements";
+import { Paiement, Paiements } from "~/types/paiements";
 import { usePaiementStore } from "~/store/paiement";
 import { useAchatStore } from "~/store/achat";
+import { Achat } from "~/types/achat";
 
-const props = defineProps<{ paiements: Paiements }>();
+const props = defineProps<{ achat: Achat }>();
 let contratForm = reactive({ modal: false, paiement: 0, operation: 0 });
 const { achat } = storeToRefs(useAchatStore());
 const { getOne } = useAchatStore();
 const { trash, valider } = usePaiementStore();
-const { filterTableData, setPage, search, total, pageSize } = usePaiementFilterPagination(
-  props.paiements
-);
+const paiements = ref<Paiements>(props.achat?.paiements!);
+const { filterTableData, setPage, search, total, pageSize } =
+  usePaiementFilterPagination(paiements);
 const { handleDelete, handleEdit, modal } = useHandleCrudButtons(trash);
 const classStatus = (state: string) => {
   return state === statusValidable.wait ? "warning" : "success";
@@ -26,7 +27,7 @@ const handleValidate = (paiement: Paiement) => {
       type: "warning",
     }
   ).then(() => {
-    if (props.paiements.length > 1) {
+    if (paiements.value.length > 1) {
       valider(paiement);
     } else {
       contratForm.modal = true;
@@ -44,7 +45,10 @@ const onContratCreated = async () => {
 <template>
   <StructurePageHeader title="liste des paiements">
     <template #options>
-      <el-button @click="createPaiement" plain type="primary">Ajouter</el-button>
+      <el-button @click="useAchatReceipt(achat)" plain type="warning">Reçu</el-button>
+      <el-button v-if="createPaiement" @click="modal.create = true" plain type="primary"
+        >Ajouter</el-button
+      >
     </template>
     <el-input v-model="search" class="w-50 my-1" placeholder="Rechercher" />
     <el-table :data="filterTableData" style="width: 100%" empty-text="aucun paiement">

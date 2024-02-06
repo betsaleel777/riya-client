@@ -78,10 +78,10 @@ const onContratCreated = async () => {
       <el-button @click="handleValidate" v-if="validable" type="success" text
         >Valider la visite</el-button
       >
-      <el-button @click="imprimer" v-if="validated" type="primary" text
+      <el-button @click="imprimer" v-if="validated" type="warning" text
         >Imprimer reçu de visite</el-button
       >
-      <el-button @click="imprimerProvisoire" v-if="validatedProvisoire" type="primary" text
+      <el-button @click="imprimerProvisoire" v-if="validatedProvisoire" type="warning" text
         >Imprimer reçu provisoire</el-button
       >
       <span class="text-muted me-auto">créer par {{ visite?.audit?.user.name }}</span>

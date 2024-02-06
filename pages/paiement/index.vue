@@ -14,7 +14,7 @@ const { getAll, trash } = usePaiementStore();
 const { paiements, loading } = storeToRefs(usePaiementStore());
 getAll();
 const { filterTableData, setPage, search, total, pageSize } =
-  usePaiementRefFilterPagination(paiements);
+  usePaiementFilterPagination(paiements);
 const { handleDelete, handleEdit, handleShow, modal } = useHandleCrudButtons(trash);
 
 const classStatus = (state: string) => {

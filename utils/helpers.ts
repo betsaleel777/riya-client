@@ -3,16 +3,10 @@ import autoTable from "jspdf-autotable";
 import { Societe } from "~/types/societe";
 import { Visite } from "~/types/visite";
 import dayjs from "dayjs";
-import { Paiement } from "~/types/paiements";
 import { Achat } from "~/types/achat";
 import { Loyer } from "~/types/loyer";
 import { Client } from "~/types/personne";
 import { Appartement } from "~/types/appartement";
-
-interface header {
-  header: string;
-  dataKey: string;
-}
 
 const capitalize = (str: string) => {
   return str.charAt(0).toUpperCase() + str.slice(1);
@@ -527,13 +521,13 @@ const purchaseReceiptPdf = (societe: Ref<Societe>, achat: Achat) => {
     body: [
       [
         {
-          content: "montant versé:",
+          content: "total versé:",
           styles: {
             halign: "right",
           },
         },
         {
-          content: useCurrency(pending?.montant!),
+          content: pending ? useCurrency(achat.total + pending?.montant!) : useCurrency(achat.total),
           styles: {
             halign: "right",
           },
@@ -547,7 +541,7 @@ const purchaseReceiptPdf = (societe: Ref<Societe>, achat: Achat) => {
           },
         },
         {
-          content: useCurrency(achat.bien.cout_achat - pending?.montant!),
+          content: pending ? useCurrency(achat.reste - pending?.montant!) : useCurrency(achat.reste),
           styles: {
             halign: "right",
           },
@@ -572,9 +566,6 @@ const purchaseReceiptPdf = (societe: Ref<Societe>, achat: Achat) => {
   return doc.save("reçu-achat");
 }
 
-/**
- * Convert an integer to its words representation
- */
 const numberToFrench = (n: number, custom_join_character: string): string => {
 
   var string = n.toString(),

@@ -310,33 +310,7 @@ const useDepenseFilterPagination = (depenses: Ref<Depenses>) => {
   return { filterTableData, setPage, search, total, pageSize };
 };
 
-const usePaiementFilterPagination = (paiements: Paiements) => {
-  const search = ref("");
-  let total = ref(0);
-  let currentPage = ref(1);
-  let pageSize = ref(8);
-  const filterTableData = computed(() => {
-    const filtered = Array.isArray(paiements)
-      ? paiements.filter((paiement: Paiement) => {
-        if (paiement.code !== undefined)
-          return (
-            !search.value || paiement.code.toLowerCase().includes(search.value.toLowerCase())
-          );
-      })
-      : [];
-    total.value = filtered.length;
-    return filtered.slice(
-      pageSize.value * currentPage.value - pageSize.value,
-      pageSize.value * currentPage.value
-    );
-  });
-  const setPage = (val: number) => {
-    currentPage.value = val;
-  };
-  return { filterTableData, setPage, search, total, pageSize };
-};
-
-const usePaiementRefFilterPagination = (paiements: Ref<Paiements>) => {
+const usePaiementFilterPagination = (paiements: Ref<Paiements>) => {
   const search = ref("");
   let total = ref(0);
   let currentPage = ref(1);
@@ -372,9 +346,8 @@ export {
   useVisiteFilterPagination,
   useContratFilterPagination,
   usePurchaseFilterPagination,
-  usePaiementFilterPagination,
   useLoyerFilterPagination,
-  usePaiementRefFilterPagination,
+  usePaiementFilterPagination,
   useDetteFilterPagination,
   useDepenseFilterPagination
 };

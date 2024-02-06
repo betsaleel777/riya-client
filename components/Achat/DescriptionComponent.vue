@@ -3,6 +3,7 @@ import { Achat } from "~/types/achat";
 const props = defineProps<{
   achat?: Achat;
 }>();
+console.log(props.achat);
 </script>
 
 <template>
