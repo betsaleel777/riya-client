@@ -17,15 +17,12 @@ const { dette, loading } = storeToRefs(useDetteStore());
 const { getOne, valider } = useDetteStore();
 await getOne(props.id);
 const handleValidate = () => {
-  ElMessageBox.confirm(
-    `Cette action est irréversible, voulez réelement valider le remboursement de la dette ${dette.value?.code}?`,
-    "Attention",
-    {
-      confirmButtonText: "Confirmer",
-      cancelButtonText: "Abandonner",
-      type: "warning",
-    }
-  ).then(() => {
+  const message = `Cette action est irréversible, voulez réelement valider le remboursement de la dette ${dette.value?.code}?`;
+  ElMessageBox.confirm(message, "Attention", {
+    confirmButtonText: "Confirmer",
+    cancelButtonText: "Abandonner",
+    type: "warning",
+  }).then(() => {
     valider(dette.value?.id!, props.fromValidationPage).then((message) => {
       ElNotification.success({ title: "succès", message });
       dialog.value = false;

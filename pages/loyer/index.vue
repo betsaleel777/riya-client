@@ -37,6 +37,7 @@ const handleCashed = (loyer: Loyer) => {
     cashing.active = true;
   });
 };
+let openAvanceModal = false;
 </script>
 
 <template>
@@ -48,7 +49,9 @@ const handleCashed = (loyer: Loyer) => {
             <div class="card-body">
               <StructurePageHeader :breadcrumbs="links" title="Loyers">
                 <template #options>
-                  <el-button @click="modal.create = true" plain type="primary">Ajouter</el-button>
+                  <el-button @click="openAvanceModal = true" plain type="primary"
+                    >Avance sur loyer</el-button
+                  >
                 </template>
                 <el-row class="mt-1 mb-2" justify="end">
                   <el-col :span="12">
