@@ -23,7 +23,9 @@ const handleValidate = () => {
   });
 };
 const validable = computed(() =>
-  loyer.value?.paiements.some((paiement) => paiement.status === statusValidable.wait)
+  loyer.value?.paiements
+    ? loyer.value?.paiements.some((paiement) => paiement.status === statusValidable.wait)
+    : false
 );
 const imprimable = computed(
   () => loyer.value?.paiements !== undefined && loyer.value?.paiements.length > 0

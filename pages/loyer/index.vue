@@ -37,7 +37,7 @@ const handleCashed = (loyer: Loyer) => {
     cashing.active = true;
   });
 };
-let openAvanceModal = false;
+const openAvanceModal = ref(false);
 </script>
 
 <template>
@@ -161,6 +161,7 @@ let openAvanceModal = false;
                 v-if="cashing.active"
                 v-model="cashing.active"
               />
+              <LazyLoyerAvanceCreateModal v-if="openAvanceModal" v-model="openAvanceModal" />
             </div>
           </div>
         </div>

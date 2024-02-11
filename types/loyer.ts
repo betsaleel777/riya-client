@@ -4,7 +4,6 @@ import { Entity, Media } from "./global";
 import { Paiements } from "./paiements";
 import { Client } from "./personne";
 
-
 interface Loyer extends Entity {
   code: string;
   montant: number;
@@ -22,13 +21,18 @@ interface Loyer extends Entity {
 interface LoyerValidation extends Entity {
   code: string;
   montant: string;
-  personne: string
+  personne: string;
   bien: string;
   created_at: string;
-  cout: number,
+  cout: number;
   avatar: Media;
 }
 
+interface AvanceLoyerForm {
+  contrat_id: number;
+  periode: Array<string>;
+}
+
 type Loyers = Array<Loyer>;
-type LoyerValidations = Array<LoyerValidation>
-export { Loyers, Loyer, LoyerValidation, LoyerValidations };
+type LoyerValidations = Array<LoyerValidation>;
+export { Loyers, Loyer, LoyerValidation, LoyerValidations, AvanceLoyerForm };
