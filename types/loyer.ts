@@ -7,6 +7,7 @@ import { Client } from "./personne";
 interface Loyer extends Entity {
   code: string;
   montant: number;
+  mois: string;
   status: string;
   personne: string & Client;
   bien: string & Appartement;

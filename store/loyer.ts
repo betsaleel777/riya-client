@@ -82,6 +82,7 @@ export const useLoyerStore = defineStore("loyer", () => {
 
   const avancer = async (avance: AvanceLoyerForm) => {
     const response = await $apiFetch<string>("api/loyers/avance", { method: "post", body: avance });
+    await getAll();
     return response;
   };
 

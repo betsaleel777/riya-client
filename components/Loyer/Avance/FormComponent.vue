@@ -8,7 +8,7 @@ const props = defineProps<{ errors: any }>();
 const { getRentProcessing } = useContratStore();
 const { getLastPaid } = useLoyerStore();
 const { contrats, loading } = storeToRefs(useContratStore());
-const { loyer, loading: loyerLoader } = storeToRefs(useLoyerStore());
+const { loyer } = storeToRefs(useLoyerStore());
 getRentProcessing();
 loyer.value = undefined;
 const { value: id } = useField<number>("contrat_id");
@@ -18,9 +18,10 @@ const onSelected = () => {
     getLastPaid(id.value);
   }
 };
+const loyerDate = computed(() => dayjs(loyer.value?.mois, "DD-MM-YYYY", "fr").format("YYYY-MM-DD"));
 const dayjs = useDayjs();
 const datesValables = computed(() => {
-  let date = dayjs(loyer.value?.created_at, "DD-MM-YYYY", "fr").subtract(1, "months");
+  let date = dayjs(loyerDate.value);
   const end = dayjs(date).add(13, "months");
   const dates = [];
   let other = date;
