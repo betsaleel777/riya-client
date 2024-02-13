@@ -3,6 +3,7 @@ import { Field, useField } from "vee-validate";
 import { storeToRefs } from "pinia";
 import { useContratStore } from "~/store/contrat";
 import { useLoyerStore } from "~/store/loyer";
+import customParseFormat from "dayjs/plugin/customParseFormat";
 
 const props = defineProps<{ errors: any }>();
 const { getRentProcessing } = useContratStore();
@@ -18,8 +19,10 @@ const onSelected = () => {
     getLastPaid(id.value);
   }
 };
-const loyerDate = computed(() => dayjs(loyer.value?.mois, "DD-MM-YYYY", "fr").format("YYYY-MM-DD"));
 const dayjs = useDayjs();
+dayjs.extend(customParseFormat);
+const loyerDate = computed(() => dayjs(loyer.value?.mois, "DD-MM-YYYY", "fr").format("YYYY-MM-DD"));
+
 const datesValables = computed(() => {
   let date = dayjs(loyerDate.value);
   const end = dayjs(date).add(13, "months");

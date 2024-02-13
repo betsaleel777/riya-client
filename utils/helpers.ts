@@ -3,20 +3,22 @@ import autoTable from "jspdf-autotable";
 import { Societe } from "~/types/societe";
 import { Visite } from "~/types/visite";
 import dayjs from "dayjs";
+import html2pdf from "html2pdf.js";
 import { Achat } from "~/types/achat";
 import { Loyer } from "~/types/loyer";
 import { Client } from "~/types/personne";
 import { Appartement } from "~/types/appartement";
 
-// const getMonthInRange = (startDate: Date, endDate: Date) => {
-//   const date = dayjs(startDate);
-//   const dates = [];
-//   while (date.isBefore(endDate,)) {
-//     dates.push(date.format("YYYY-MM-DD"));
-//     date.add(1, "month");
-//   }
-//   return dates;
-// };
+const domPrinter = (element: HTMLElement) => {
+  html2pdf()
+    .set({
+      image: { type: "png", quality: 1 },
+      //html2canvas: { useCORS: true, proxy: "http://localhost:3000" },
+      margin: [1, 0],
+    })
+    .from(element)
+    .save();
+};
 
 const invoicePdf = (
   societe: Ref<Societe>,
@@ -768,4 +770,4 @@ const numberToFrench = (n: number, custom_join_character: string): string => {
   return words.reverse().join(" ");
 };
 
-export { getMonthInRange, invoicePdf, rentReceiptPdf, purchaseReceiptPdf, numberToFrench };
+export { invoicePdf, rentReceiptPdf, purchaseReceiptPdf, numberToFrench, domPrinter };
