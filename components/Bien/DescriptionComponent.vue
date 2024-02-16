@@ -51,20 +51,32 @@ const classType = (status: string) => {
     <el-descriptions-item
       v-if="props.bien?.attestation_villageoise"
       label="Attestation villageoise:"
-      ><el-checkbox class="text-primary" disabled :checked="props.bien?.attestation_villageoise"
+      ><input
+        class="form-check-input"
+        type="checkbox"
+        onclick="return false"
+        :checked="props.bien?.attestation_villageoise"
     /></el-descriptions-item>
     <el-descriptions-item v-if="props.bien?.arreter_approbation" label="Arrêter d'approbation:"
       ><input
         class="form-check-input"
         type="checkbox"
-        readonly
+        onclick="return false"
         :checked="props.bien?.arreter_approbation"
     /></el-descriptions-item>
     <el-descriptions-item v-if="props.bien?.document_cession" label="Document Cession:"
-      ><el-checkbox disabled :checked="props.bien?.document_cession"
+      ><input
+        class="form-check-input"
+        type="checkbox"
+        onclick="return false"
+        :checked="props.bien?.document_cession"
     /></el-descriptions-item>
     <el-descriptions-item v-if="props.bien?.titre_foncier" label="Titre Foncier:"
-      ><el-checkbox disabled :checked="props.bien?.titre_foncier"
+      ><input
+        class="form-check-input"
+        type="checkbox"
+        onclick="return false"
+        :checked="props.bien?.titre_foncier"
     /></el-descriptions-item>
   </el-descriptions>
 </template>
