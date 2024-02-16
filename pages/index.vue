@@ -1,7 +1,7 @@
 <template>
   <div class="page-content">
     <div class="container-fluid">
-      <div class="row" v-loading="loading">
+      <div class="row" v-loading="loading.dashboard">
         <div class="col-lg-12">
           <div class="row">
             <div class="col-lg-2">
@@ -76,11 +76,6 @@
               />
             </div>
           </div>
-          <!-- <DashboardPieCardComponent
-            :size="350"
-            :series-option="locationsOptions"
-            titre="Locations"
-          ></DashboardPieCardComponent> -->
         </div>
         <div class="col-lg-4">
           <DashboardAmountCardComponent

@@ -1,9 +1,11 @@
 import { defineStore } from "pinia";
 import { FetchError } from "ofetch";
 import { Contrat, Contrats } from "~/types/contrat";
+import { useDashboardStore } from "./dashboard";
 
 export const useContratStore = defineStore("contrat", () => {
   const { $apiFetch } = useNuxtApp();
+  const { getPendings } = useDashboardStore();
 
   let contrats = ref<Contrats>([]);
   let contrat = ref<Contrat>();
@@ -59,6 +61,7 @@ export const useContratStore = defineStore("contrat", () => {
       method: "post",
       body: payload,
     });
+    await getPendings();
     return response;
   };
 

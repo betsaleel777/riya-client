@@ -11,6 +11,7 @@ const { achat } = storeToRefs(useAchatStore());
 const { getOne } = useAchatStore();
 const { trash, valider } = usePaiementStore();
 const paiements = ref<Paiements>(props.achat?.paiements!);
+const existsPending = paiements.value.some((paiement) => paiement.status === statusValidable.wait);
 const { filterTableData, setPage, search, total, pageSize } =
   usePaiementFilterPagination(paiements);
 const { handleDelete, handleEdit, modal } = useHandleCrudButtons(trash);
@@ -37,16 +38,18 @@ const handleValidate = (paiement: Paiement) => {
   });
 };
 const createPaiement = computed<boolean>(() => achat.value?.reste !== 0);
-const onContratCreated = async () => {
-  await getOne(achat.value?.id!);
-};
+const onContratCreated = async () => await getOne(achat.value?.id!);
 </script>
 
 <template>
   <StructurePageHeader title="liste des paiements">
     <template #options>
       <el-button @click="useAchatReceipt(achat)" plain type="warning">Reçu</el-button>
-      <el-button v-if="createPaiement" @click="modal.create = true" plain type="primary"
+      <el-button
+        v-if="createPaiement && !existsPending"
+        @click="modal.create = true"
+        plain
+        type="primary"
         >Ajouter</el-button
       >
     </template>

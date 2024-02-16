@@ -2,10 +2,12 @@ import { defineStore } from "pinia";
 import { FetchError } from "ofetch";
 import { Paiement, Paiements } from "~/types/paiements";
 import { useAchatStore } from "./achat";
+import { useDashboardStore } from "./dashboard";
 
 export const usePaiementStore = defineStore("paiement", () => {
   const { $apiFetch } = useNuxtApp();
   const { getOne: getAchat } = useAchatStore();
+  const { getPendings } = useDashboardStore();
 
   let paiements = ref<Paiements>([]);
   let paiement = ref<Paiement>();
@@ -24,23 +26,34 @@ export const usePaiementStore = defineStore("paiement", () => {
   const create = async (payload: Paiement) => {
     const response = await $apiFetch<string>("api/paiements", { method: "post", body: payload });
     await getAchat(payload.payable_id);
+    await getPendings();
     return response;
   };
 
   const createDirect = async (payload: Paiement) => {
-    const response = await $apiFetch<string>("api/paiements/direct", { method: "post", body: payload });
+    const response = await $apiFetch<string>("api/paiements/direct", {
+      method: "post",
+      body: payload,
+    });
     await getAll();
+    await getPendings();
     return response;
   };
 
   const update = async (payload: Paiement) => {
-    const response = await $apiFetch<string>("api/paiements/" + payload.id, { method: "put", body: payload });
+    const response = await $apiFetch<string>("api/paiements/" + payload.id, {
+      method: "put",
+      body: payload,
+    });
     await getAchat(payload.payable_id);
     return response;
   };
 
   const updateDirect = async (payload: Paiement) => {
-    const response = await $apiFetch<string>("api/paiements/" + payload.id, { method: "put", body: payload });
+    const response = await $apiFetch<string>("api/paiements/" + payload.id, {
+      method: "put",
+      body: payload,
+    });
     await getAll();
     return response;
   };
@@ -62,23 +75,28 @@ export const usePaiementStore = defineStore("paiement", () => {
   };
 
   const valider = async (payload: Paiement) => {
-    const response = await $apiFetch<string>(`api/paiements/validate/${ payload.id }`, { method: "PATCH" });
+    const response = await $apiFetch<string>(`api/paiements/validate/${payload.id}`, {
+      method: "PATCH",
+    });
     await getAchat(payload.payable_id);
+    await getPendings();
     return response;
   };
 
   const validerPaiement = async (payload: Paiement) => {
-    const response = await $apiFetch<string>(`api/paiements/validate/${ payload.id }`, { method: "PATCH" });
+    const response = await $apiFetch<string>(`api/paiements/validate/${payload.id}`, {
+      method: "PATCH",
+    });
     await getAll();
+    await getPendings();
     return response;
   };
 
-
   const getByPayable = async (id: number) => {
-    loading.edit = true
-    paiements.value = await $apiFetch<Paiements>('api/paiements/payable/' + id, { method: "get" })
-    loading.edit = false
-  }
+    loading.edit = true;
+    paiements.value = await $apiFetch<Paiements>("api/paiements/payable/" + id, { method: "get" });
+    loading.edit = false;
+  };
 
   return {
     paiement,

@@ -70,6 +70,7 @@ watch(payable, (newPayable) => {
           :model-value="value"
           @update:model-value="handleChange"
           :class="{ 'is-invalid': props.errors.payable_id }"
+          style="width: 100%"
         >
           <template #append><i class="bx bx-plus" /></template>
           <el-option
@@ -96,6 +97,7 @@ watch(payable, (newPayable) => {
           :model-value="value"
           @update:model-value="handleChange"
           :class="{ 'is-invalid': props.errors.payable_id }"
+          style="width: 100%"
         >
           <template #append><i class="bx bx-plus" /></template>
           <el-option
@@ -114,16 +116,19 @@ watch(payable, (newPayable) => {
   </div>
   <div class="mb-3">
     <label for="montant" class="form-label">Montant</label>
-    <Field
-      name="montant"
-      type="text"
-      class="form-control"
-      id="montant"
-      placeholder="montant"
-      :class="{ 'is-invalid': props.errors.montant }"
-      v-number="numberConfig"
-    />
-    <div class="invalid-feedback" v-if="props.errors.montant">{{ props.errors.montant }}</div>
+    <Field name="montant" v-slot="{ value, handleChange }">
+      <vue-number
+        id="montant"
+        class="form-control"
+        v-bind="numberConfig"
+        :model-value="value ?? 0"
+        @update:model-value="handleChange"
+        :class="{ 'is-invalid': props.errors.montant }"
+      ></vue-number>
+      <div class="invalid-feedback" v-if="props.errors.montant">
+        {{ props.errors.montant }}
+      </div>
+    </Field>
   </div>
 </template>
 

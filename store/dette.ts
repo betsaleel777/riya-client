@@ -1,14 +1,16 @@
 import { defineStore } from "pinia";
 import { FetchError } from "ofetch";
 import { Dette, DetteValidations, Dettes } from "~/types/dette";
+import { useDashboardStore } from "./dashboard";
 
 export const useDetteStore = defineStore("dette", () => {
   const { $apiFetch } = useNuxtApp();
+  const { getPendings } = useDashboardStore();
 
   let dettes = ref<Dettes>([]);
   let dette = ref<Dette>();
   let loading = reactive({ index: false, edit: false });
-  let pendingValidation = ref<DetteValidations>([])
+  let pendingValidation = ref<DetteValidations>([]);
 
   const getAll = async () => {
     try {
@@ -28,7 +30,7 @@ export const useDetteStore = defineStore("dette", () => {
     } catch (error) {
       if (error instanceof FetchError && error.statusCode === 401) navigateTo("/login");
     }
-  }
+  };
 
   const getOne = async (id: number) => {
     try {
@@ -41,14 +43,16 @@ export const useDetteStore = defineStore("dette", () => {
   };
 
   const repay = async (id: number) => {
-    const response = await $apiFetch<string>(`api/dettes/repay/${ id }`, { method: "PATCH" });
+    const response = await $apiFetch<string>(`api/dettes/repay/${id}`, { method: "PATCH" });
     await getAll();
+    await getPendings();
     return response;
   };
 
   const valider = async (id: number, fromValidationPage: boolean) => {
-    const response = await $apiFetch<string>(`api/dettes/validate/${ id }`, { method: "PATCH" });
+    const response = await $apiFetch<string>(`api/dettes/validate/${id}`, { method: "PATCH" });
     fromValidationPage ? await getPending() : await getAll();
+    await getPendings();
     return response;
   };
 

@@ -2,9 +2,11 @@ import { defineStore } from "pinia";
 import { FetchError } from "ofetch";
 import { AvanceLoyerForm, Loyer, LoyerValidations, Loyers } from "~/types/loyer";
 import { statusPayable } from "~/utils/constante";
+import { useDashboardStore } from "./dashboard";
 
 export const useLoyerStore = defineStore("loyer", () => {
   const { $apiFetch } = useNuxtApp();
+  const { getPendings } = useDashboardStore();
 
   let loyers = ref<Loyers>([]);
   let loyer = ref<Loyer>();
@@ -71,18 +73,21 @@ export const useLoyerStore = defineStore("loyer", () => {
       params: { id, montant },
     });
     await getAll();
+    await getPendings();
     return response;
   };
 
   const valider = async (id: number, fromValidationPage: boolean) => {
     const response = await $apiFetch<string>(`api/loyers/validate/${id}`, { method: "PATCH" });
     fromValidationPage ? await getPending() : await getAll();
+    await getPendings();
     return response;
   };
 
   const avancer = async (avance: AvanceLoyerForm) => {
     const response = await $apiFetch<string>("api/loyers/avance", { method: "post", body: avance });
     await getAll();
+    await getPendings();
     return response;
   };
 

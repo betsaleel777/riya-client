@@ -2,14 +2,14 @@ import { defineStore } from "pinia";
 import { FetchError } from "ofetch";
 import { TypePostForm, TypePutForm } from "~/types/global";
 import { Depense, DepenseValidations, Depenses, TypeDepense, TypeDepenses } from "~/types/depense";
-
+import { useDashboardStore } from "./dashboard";
 
 const useTypeDepenseStore = defineStore("type-depense", () => {
   const { $apiFetch } = useNuxtApp();
 
   let types = ref<TypeDepenses>([]);
   let type = ref<TypeDepense>({});
-  let loading = reactive({ index: false, edit: false })
+  let loading = reactive({ index: false, edit: false });
 
   const getAll = async () => {
     try {
@@ -56,12 +56,12 @@ const useTypeDepenseStore = defineStore("type-depense", () => {
 });
 const useDepenseStore = defineStore("depense", () => {
   const { $apiFetch } = useNuxtApp();
+  const { getPendings } = useDashboardStore();
 
   let depenses = ref<Depenses>([]);
   let depense = ref<Depense>();
-  let pending = ref<DepenseValidations>([])
-  let loading = reactive({ index: false, edit: false })
-
+  let pending = ref<DepenseValidations>([]);
+  let loading = reactive({ index: false, edit: false });
 
   const getAll = async () => {
     try {
@@ -86,11 +86,15 @@ const useDepenseStore = defineStore("depense", () => {
   const create = async (payload: Depense) => {
     const response = await $apiFetch<string>("api/depenses", { method: "post", body: payload });
     await getAll();
+    await getPendings();
     return response;
   };
 
   const update = async (payload: Depense) => {
-    const response = await $apiFetch<string>("api/depenses/" + payload.id, { method: "put", body: payload });
+    const response = await $apiFetch<string>("api/depenses/" + payload.id, {
+      method: "put",
+      body: payload,
+    });
     await getAll();
     return response;
   };
@@ -113,14 +117,27 @@ const useDepenseStore = defineStore("depense", () => {
 
   const validate = async (id: number, fromValidationPage: boolean) => {
     try {
-      const response = await $apiFetch<string>('api/depenses/validate/' + id, { method: "PATCH" })
-      fromValidationPage ? await getPending() : await getAll()
-      return response
+      const response = await $apiFetch<string>("api/depenses/validate/" + id, { method: "PATCH" });
+      fromValidationPage ? await getPending() : await getAll();
+      await getPendings();
+      return response;
     } catch (error) {
       if (error instanceof FetchError && error.statusCode === 401) navigateTo("/login");
     }
-  }
-  return { depenses, depense, loading, getAll, create, update, getOne, trash, validate, getPending, pending };
+  };
+  return {
+    depenses,
+    depense,
+    loading,
+    getAll,
+    create,
+    update,
+    getOne,
+    trash,
+    validate,
+    getPending,
+    pending,
+  };
 });
 
 export { useTypeDepenseStore, useDepenseStore };

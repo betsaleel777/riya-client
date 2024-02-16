@@ -20,7 +20,13 @@
           <li class="">
             <nuxt-link to="/approval" class="waves-effect">
               <i class="bx bx-id-card"></i>
-              <span key="t-starter-page">Validations</span>
+              <span key="t-starter-page "> Validations </span>
+              <span
+                v-if="!loading.pendings && Number(pendings) !== 0"
+                class="float-end"
+                :class="pendingsColor(Number(pendings))"
+                >{{ pendings }}</span
+              >
             </nuxt-link>
           </li>
           <li>
@@ -117,6 +123,9 @@
 
 <script setup lang="ts">
 import MetisMenu from "metismenujs";
+import { storeToRefs } from "pinia";
+import { ButtonType, buttonTypes } from "element-plus";
+import { useDashboardStore } from "~/store/dashboard";
 const menu = ref({
   parametres: false,
   biens: false,
@@ -127,6 +136,21 @@ const side = ref<unknown>(null);
 onMounted(() => {
   new MetisMenu(side.value as HTMLElement);
 });
+const { getPendings } = useDashboardStore();
+const { pendings, loading } = storeToRefs(useDashboardStore());
+getPendings();
+const pendingsColor = (value: number): string => {
+  if (value <= 3) {
+    return "badge badge-soft-" + buttonTypes[2];
+  } else if (value <= 10) {
+    return "badge badge-soft-" + buttonTypes[1];
+  } else if (value <= 25) {
+    return "badge badge-soft-" + buttonTypes[3];
+  } else {
+    return "badge badge-soft-" + buttonTypes[5];
+  }
+};
+console.log(pendings.value);
 </script>
 
 <style scoped></style>
