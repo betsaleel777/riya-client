@@ -150,7 +150,6 @@ const pendingsColor = (value: number): string => {
     return "badge badge-soft-" + buttonTypes[5];
   }
 };
-console.log(pendings.value);
 </script>
 
 <style scoped></style>

@@ -6,12 +6,11 @@ const { avancer } = useLoyerStore();
 const props = defineProps<{ modelValue: boolean }>();
 const emit = defineEmits<{ (event: "update:modelValue", payload: boolean): void }>();
 const { dialog } = useDialogModelValue(props, emit);
-
 const { onSubmit } = useSubmitForm(avancer, dialog);
 </script>
 
 <template>
-  <Form class="form-horizontal" @submit="onSubmit" v-slot="{ isSubmitting, errors, values }">
+  <Form class="form-horizontal" @submit="onSubmit" v-slot="{ isSubmitting, errors }">
     <el-dialog
       v-model="dialog"
       title="Créer une avance sur loyer"
@@ -23,7 +22,12 @@ const { onSubmit } = useSubmitForm(avancer, dialog);
       <template #footer>
         <span class="dialog-footer">
           <el-button type="danger" @click="dialog = false" plain>Annuler</el-button>
-          <el-button type="primary" :disabled="isSubmitting" native-type="submit">
+          <el-button
+            type="primary"
+            :loading="isSubmitting"
+            :disabled="isSubmitting"
+            native-type="submit"
+          >
             enregistrer
           </el-button>
         </span>

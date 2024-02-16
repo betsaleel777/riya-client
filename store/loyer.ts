@@ -11,7 +11,7 @@ export const useLoyerStore = defineStore("loyer", () => {
   let loyers = ref<Loyers>([]);
   let loyer = ref<Loyer>();
   let pendingValidations = ref<LoyerValidations>([]);
-  let loading = reactive({ index: false, edit: false });
+  let loading = reactive({ index: true, edit: true });
 
   const impayes = computed<Loyers>(() =>
     loyers.value.filter((loyer) => loyer.status === statusPayable.unpaid)
@@ -19,7 +19,6 @@ export const useLoyerStore = defineStore("loyer", () => {
 
   const getAll = async () => {
     try {
-      loading.index = true;
       loyers.value = await $apiFetch<Loyers>("api/loyers");
       loading.index = false;
     } catch (error) {
@@ -29,7 +28,6 @@ export const useLoyerStore = defineStore("loyer", () => {
 
   const getPending = async () => {
     try {
-      loading.index = true;
       pendingValidations.value = await $apiFetch<LoyerValidations>("api/loyers/pending");
       loading.index = false;
     } catch (error) {
@@ -39,7 +37,6 @@ export const useLoyerStore = defineStore("loyer", () => {
 
   const getLastPaid = async (id: number) => {
     try {
-      loading.edit = true;
       loyer.value = await $apiFetch<Loyer>("api/loyers/last-paid/", {
         method: "get",
         params: { id },
@@ -58,7 +55,6 @@ export const useLoyerStore = defineStore("loyer", () => {
 
   const getOne = async (id: number) => {
     try {
-      loading.edit = true;
       loyer.value = await $apiFetch<Loyer>("api/loyers/" + id, { method: "get" });
       loading.edit = false;
     } catch (error) {

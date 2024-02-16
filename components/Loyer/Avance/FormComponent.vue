@@ -11,7 +11,6 @@ const { getLastPaid } = useLoyerStore();
 const { contrats, loading } = storeToRefs(useContratStore());
 const { loyer } = storeToRefs(useLoyerStore());
 getRentProcessing();
-loyer.value = undefined;
 const { value: id } = useField<number>("contrat_id");
 const disabledDate = computed(() => !Boolean(id.value));
 const onSelected = () => {
@@ -21,10 +20,8 @@ const onSelected = () => {
 };
 const dayjs = useDayjs();
 dayjs.extend(customParseFormat);
-const loyerDate = computed(() => dayjs(loyer.value?.mois, "DD-MM-YYYY", "fr").format("YYYY-MM-DD"));
-
 const datesValables = computed(() => {
-  let date = dayjs(loyerDate.value);
+  let date = dayjs(loyer.value?.mois + "-01");
   const end = dayjs(date).add(13, "months");
   const dates = [];
   let other = date;
