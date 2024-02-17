@@ -144,7 +144,7 @@ const pendingsColor = (value: number): string => {
     return "badge badge-soft-" + buttonTypes[2];
   } else if (value <= 10) {
     return "badge badge-soft-" + buttonTypes[1];
-  } else if (value <= 25) {
+  } else if (value <= 20) {
     return "badge badge-soft-" + buttonTypes[3];
   } else {
     return "badge badge-soft-" + buttonTypes[5];

@@ -58,7 +58,7 @@ export const useSocieteStore = defineStore("societe", () => {
     const formData = hydrateForm(payload);
     const response = await $apiFetch<string>("api/societes/" + payload.id + "?_method=PUT", {
       method: "post",
-      body: formData
+      body: formData,
     });
     await getOne();
     return response;

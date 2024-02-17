@@ -9,14 +9,14 @@ import { Loyer } from "~/types/loyer";
 import { Client } from "~/types/personne";
 import { Appartement } from "~/types/appartement";
 
-const domPrinter = (element: HTMLElement) => {
+const domPrinter = async (element: HTMLElement) => {
   html2pdf()
     .set({
-      image: { type: "png", quality: 1 },
-      //html2canvas: { useCORS: true, proxy: "http://localhost:3000" },
-      margin: [1, 0],
+      image: { type: "jpeg", quality: 1 },
+      html2canvas: { scale: 2 },
     })
     .from(element)
+    .toPdf()
     .save();
 };
 

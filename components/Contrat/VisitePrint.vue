@@ -1,22 +1,33 @@
 <script lang="ts" setup>
+// import { saveAs } from "file-saver";
 import { Contrat } from "~/types/contrat";
 import { useSocieteStore } from "~/store/societe";
 import { storeToRefs } from "pinia";
 import { Printer } from "@element-plus/icons-vue";
 import customParseFormat from "dayjs/plugin/customParseFormat";
+
 const dayjs = useDayjs();
 dayjs.extend(customParseFormat);
 const props = defineProps<{ contrat: Contrat }>();
 const { societe, loading } = storeToRefs(useSocieteStore());
 const { getOne } = useSocieteStore();
-getOne();
+let url = ref("");
+getOne().then(async () => {
+  const blob = await useDownloadFile(societe.value?.logo!);
+  if (blob) url.value = URL.createObjectURL(blob);
+});
 const dateStart = computed(() =>
   dayjs(props.contrat?.debut, "DD-MM-YYYY", "fr").format("YYYY-MM-DD")
 );
 const printzone = ref<HTMLElement>();
-const imprimer = () => {
+const imprimer = async () => {
+  const loading = ElLoading.service({
+    lock: true,
+    text: "L'impression du contrat est en cours",
+  });
   const html = printzone.value!;
-  domPrinter(html);
+  await domPrinter(html);
+  loading.close();
 };
 </script>
 
@@ -24,13 +35,18 @@ const imprimer = () => {
   <div class="flex flex-row-reverse mb-2">
     <el-button @click="imprimer" type="warning" plain :icon="Printer">imprimer</el-button>
   </div>
-  <div id="printzone" ref="printzone" v-if="!loading" v-loading="loading">
-    <div class="col-lg-12">
+  <div v-if="!loading" v-loading="loading">
+    <div ref="printzone" class="col-lg-12">
       <div class="card">
         <div class="card-body pe-5 ps-5">
           <div class="row text-center">
             <div class="col-4">
-              <el-image :src="societe.logo" style="height: 150px; width: 269px" />
+              <el-image
+                fit="fill"
+                v-if="url.length > 0"
+                :src="url"
+                style="height: 80%; width: 90%"
+              />
             </div>
             <div class="col-4">
               <el-image src="/images/eccuissonci.png" style="height: 140px; width: 140px" />
