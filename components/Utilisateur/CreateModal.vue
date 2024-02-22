@@ -10,7 +10,7 @@ const { onSubmit } = useSubmitForm(create, dialog);
 </script>
 
 <template>
-  <Form class="form-horizontal" @submit="onSubmit" v-slot="{ isSubmitting, errors, values }">
+  <Form class="form-horizontal" @submit="onSubmit" v-slot="{ isSubmitting, errors }">
     <el-dialog v-model="dialog" title="Créer l'utilisateur" width="35%" destroy-on-close center>
       <UtilisateurDialogForm :errors="errors" />
       <template #footer>

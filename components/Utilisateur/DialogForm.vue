@@ -1,17 +1,36 @@
 <script lang="ts" setup>
-import { Field } from "vee-validate";
+import { Field, useField } from "vee-validate";
 import { Utilisateur } from "~/types/utilisateur";
 
-const props = defineProps<{
-  errors: any;
-  user?: Utilisateur;
-}>();
+const props = defineProps<{ errors: any; user?: Utilisateur }>();
 let url = ref("");
 const image = ref();
 const edit = computed(() => Boolean(props.user));
 const onInput = () => {
   const [file] = image.value.files;
   if (file) url.value = URL.createObjectURL(file);
+};
+let adminOptionDisabled = ref(!props.user?.roles.includes(rolesNames.admin));
+const initialise = () => {
+  if (props.user?.roles.length === 0) {
+    adminOptionDisabled.value = false;
+    return 0;
+  } else {
+    return props.user?.roles.includes(rolesNames.admin) ? 1 : 2;
+  }
+};
+let limit = ref(initialise());
+const { value: roles } = useField<string[]>("roles");
+const onSelected = () => {
+  if (roles.value.includes(rolesNames.admin)) {
+    limit.value = 1;
+    adminOptionDisabled.value = false;
+  } else if (roles.value.length !== 0) {
+    limit.value = 2;
+    adminOptionDisabled.value = true;
+  } else {
+    adminOptionDisabled.value = false;
+  }
 };
 </script>
 
@@ -110,6 +129,33 @@ const onInput = () => {
     <div class="invalid-feedback" v-if="errors.password_confirmation">
       {{ props.errors.password_confirmation }}
     </div>
+  </div>
+  <div class="mb-2">
+    <label for="roles" class="form-label">Roles</label>
+    <Field name="roles" v-slot="{ value, handleChange }">
+      <el-select
+        id="roles"
+        :model-value="value"
+        multiple
+        :multiple-limit="limit"
+        @update:model-value="handleChange"
+        style="width: 100%"
+        clearable
+        :class="{ 'is-invalid': props.errors.roles }"
+        @change="onSelected()"
+      >
+        <el-option
+          v-for="(item, key) in Object.values(rolesNames)"
+          :key="key"
+          :label="item"
+          :value="item"
+          :disabled="item === rolesNames.admin && adminOptionDisabled"
+        />
+      </el-select>
+      <div class="invalid-feedback" v-if="errors.roles">
+        {{ props.errors.roles }}
+      </div>
+    </Field>
   </div>
 </template>
 

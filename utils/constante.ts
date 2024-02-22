@@ -1,41 +1,47 @@
 const statusBien = {
   busy: "occupé",
   free: "disponible",
-} as const
+} as const;
 const statusValidable = {
   wait: "en attente",
   valid: "validée",
-} as const
+} as const;
 const statusContrat = {
   uptodate: "à jours",
   notuptodate: "non à jours",
-} as const
+} as const;
 const stateContrat = {
   using: "en cours",
   aborted: "résilié",
-} as const
+} as const;
 const typeContrat = {
   achat: "Achat",
   visite: "Visite",
-} as const
+} as const;
 const statusAvance = {
   exhausted: "avance épuisée",
   inuse: "avance en cours",
   contratWithout: "simple visite",
-} as const
+} as const;
 
 const statusPayable = {
   paid: "payé",
   unpaid: "impayé",
   pending: "en attente",
-} as const
+} as const;
 
 const typePaiement = {
   rent: "Loyer",
   purchase: "Achat",
-} as const
+} as const;
 
-const numberConfig = { suffix: " FCFA", separator: " ", decimal: ",", precision: 0 } as const
+const rolesNames = {
+  admin: "Administrateur",
+  financial: "Finance",
+  employee: "Employé",
+};
+
+const numberConfig = { suffix: " FCFA", separator: " ", decimal: ",", precision: 0 } as const;
 
 export {
   statusBien,
@@ -46,5 +52,6 @@ export {
   typeContrat,
   statusPayable,
   typePaiement,
-  numberConfig
+  numberConfig,
+  rolesNames,
 };

@@ -18,6 +18,7 @@
   },
   "dependencies": {
     "@coders-tm/vue-number-format": "^3.34.0",
+    "@formkit/auto-animate": "^0.8.1",
     "@pinia/nuxt": "^0.4.9",
     "@types/numeral": "^2.0.5",
     "echarts": "^5.4.3",

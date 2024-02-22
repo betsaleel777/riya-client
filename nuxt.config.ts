@@ -28,7 +28,14 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {},
   },
-  modules: ["@pinia/nuxt", "nuxt-sanctum-auth", "@element-plus/nuxt", 'dayjs-nuxt', '@nuxtjs/color-mode'],
+  modules: [
+    "@pinia/nuxt",
+    "nuxt-sanctum-auth",
+    "@element-plus/nuxt",
+    'dayjs-nuxt',
+    '@nuxtjs/color-mode',
+    "@formkit/auto-animate"
+  ],
   dayjs: {
     locales: ['fr'],
     plugins: ['relativeTime', 'utc', 'timezone'],
