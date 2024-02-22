@@ -3,12 +3,8 @@ import { Field } from "vee-validate";
 import { usePersonneStore } from "~/store/personne";
 import { useAppartementStore } from "~/store/appartement";
 import { storeToRefs } from "pinia";
-import { Visite } from "~/types/visite";
 
-const props = defineProps<{
-  errors: any;
-  visite?: Visite;
-}>();
+const props = defineProps<{ errors: any }>();
 
 const dialog = reactive({ personne: false, appartement: false });
 const { personnes } = storeToRefs(usePersonneStore());

@@ -21,9 +21,7 @@ const { onSubmit } = useSubmitForm(update, dialog);
   >
     <el-dialog v-model="dialog" title="Modifier l'utilisateur" width="35%" destroy-on-close center>
       <div v-loading="loading.edit">
-        <div v-auto-animate="{ duration: 500 }">
-          <UtilisateurDialogForm v-if="!loading.edit" :errors="errors" :user="utilisateur" />
-        </div>
+        <UtilisateurDialogForm :errors="errors" />
       </div>
       <template #footer>
         <span class="dialog-footer">

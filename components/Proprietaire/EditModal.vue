@@ -9,8 +9,9 @@ const { dialog } = useDialogModelValue(props, emit);
 
 const { update, getOne } = useProprietaireStore();
 const { proprietaire, loading } = storeToRefs(useProprietaireStore());
-getOne(props.id);
+getOne(props.id).then(() => console.log("après", proprietaire.value));
 const { onSubmit } = useSubmitForm(update, dialog);
+console.log("avant", proprietaire.value);
 </script>
 
 <template>

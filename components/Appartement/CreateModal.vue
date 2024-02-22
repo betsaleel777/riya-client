@@ -6,12 +6,11 @@ const props = defineProps<{ modelValue: boolean }>();
 const emit = defineEmits<{ (event: "update:modelValue", payload: boolean): void }>();
 const { dialog } = useDialogModelValue(props, emit);
 const { create } = useAppartementStore();
-
 const { onSubmit } = useSubmitForm(create, dialog);
 </script>
 
 <template>
-  <Form class="form-horizontal" @submit="onSubmit" v-slot="{ isSubmitting, errors, values }">
+  <Form class="form-horizontal" @submit="onSubmit" v-slot="{ isSubmitting, errors }">
     <el-dialog
       v-model="dialog"
       title="Créer un appartement"
@@ -21,7 +20,6 @@ const { onSubmit } = useSubmitForm(create, dialog);
       scrollable
     >
       <AppartementDialogForm :errors="errors" />
-      <!-- <pre>{{ values }}</pre> -->
       <template #footer>
         <span class="dialog-footer">
           <el-button type="danger" @click="dialog = false" plain>Annuler</el-button>

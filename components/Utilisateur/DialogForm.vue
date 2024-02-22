@@ -1,22 +1,23 @@
 <script lang="ts" setup>
 import { Field, useField } from "vee-validate";
-import { Utilisateur } from "~/types/utilisateur";
+import { useUtilisateurStore } from "~/store/utilisateur";
 
-const props = defineProps<{ errors: any; user?: Utilisateur }>();
+const { utilisateur } = useUtilisateurStore();
+const props = defineProps<{ errors: any }>();
 let url = ref("");
 const image = ref();
-const edit = computed(() => Boolean(props.user));
+const edit = computed(() => Boolean(utilisateur?.id));
 const onInput = () => {
   const [file] = image.value.files;
   if (file) url.value = URL.createObjectURL(file);
 };
-let adminOptionDisabled = ref(!props.user?.roles.includes(rolesNames.admin));
+let adminOptionDisabled = ref(!utilisateur?.roles.includes(rolesNames.admin));
 const initialise = () => {
-  if (props.user?.roles.length === 0) {
+  if (utilisateur?.roles.length === 0) {
     adminOptionDisabled.value = false;
     return 0;
   } else {
-    return props.user?.roles.includes(rolesNames.admin) ? 1 : 2;
+    return utilisateur?.roles.includes(rolesNames.admin) ? 1 : 2;
   }
 };
 let limit = ref(initialise());

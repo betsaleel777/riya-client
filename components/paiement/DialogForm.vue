@@ -4,9 +4,7 @@ import { useAchatStore } from "~/store/achat";
 import { useLoyerStore } from "~/store/loyer";
 import { storeToRefs } from "pinia";
 
-const props = defineProps<{
-  errors: any;
-}>();
+const props = defineProps<{ errors: any }>();
 
 let type = reactive({ loyer: "Loyer", achat: "Achat" });
 let showSelect = reactive({ loyer: false, achat: false });
