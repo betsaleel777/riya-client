@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-// import { saveAs } from "file-saver";
 import { Contrat } from "~/types/contrat";
 import { useSocieteStore } from "~/store/societe";
 import { storeToRefs } from "pinia";
@@ -32,7 +31,7 @@ const imprimer = async () => {
 </script>
 
 <template>
-  <div class="flex flex-row-reverse mb-2">
+  <div class="d-flex flex-row-reverse mb-2">
     <el-button @click="imprimer" type="warning" plain :icon="Printer">imprimer</el-button>
   </div>
   <div v-if="!loading" v-loading="loading">
@@ -705,6 +704,9 @@ const imprimer = async () => {
         </div>
       </div>
     </div>
+  </div>
+  <div class="d-flex flex-row-reverse mb-2">
+    <el-button @click="imprimer" type="warning" plain :icon="Printer">imprimer</el-button>
   </div>
 </template>
 
