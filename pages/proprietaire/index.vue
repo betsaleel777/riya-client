@@ -3,7 +3,10 @@ import { storeToRefs } from "pinia";
 import { useProprietaireStore } from "~/store/proprietaire";
 
 useHead({ title: "Propriétaires" });
-definePageMeta({ middleware: "auth" });
+definePageMeta({
+  middleware: ["auth", "nuxt-permissions"],
+  roles: [rolesNames.employee, rolesNames.admin],
+});
 const links = [
   { path: "/", title: "Acceuil" },
   { path: "#", title: "Propriétaire" },
@@ -60,6 +63,7 @@ const { handleDelete, handleEdit, handleShow, modal } = useHandleCrudButtons(tra
                         ><i class="bx bx-edit"
                       /></el-button>
                       <el-button
+                        v-role="rolesNames.admin"
                         type="danger"
                         @click="
                           handleDelete(

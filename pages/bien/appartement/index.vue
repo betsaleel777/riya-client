@@ -4,7 +4,10 @@ import { useAppartementStore } from "~/store/appartement";
 import { statusBien } from "~/utils/constante";
 
 useHead({ title: "Appartements" });
-definePageMeta({ middleware: "auth" });
+definePageMeta({
+  middleware: ["auth", "nuxt-permissions"],
+  roles: [rolesNames.employee, rolesNames.admin],
+});
 const links = [
   { path: "/", title: "Acceuil" },
   { path: "#", title: "Appartements" },
@@ -80,6 +83,7 @@ const classType = (status: string) => {
                         ><i class="bx bx-edit"
                       /></el-button>
                       <el-button
+                        v-role="rolesNames.admin"
                         type="danger"
                         @click="
                           handleDelete(

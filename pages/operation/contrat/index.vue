@@ -4,7 +4,10 @@ import { useContratStore } from "~/store/contrat";
 import { NuxtLink } from "#components";
 
 useHead({ title: "Contrats" });
-definePageMeta({ middleware: "auth" });
+definePageMeta({
+  middleware: ["auth", "nuxt-permissions"],
+  roles: [rolesNames.employee, rolesNames.admin],
+});
 const links = [
   { path: "/", title: "Acceuil" },
   { path: "#", title: "Contrats" },
@@ -95,6 +98,7 @@ const activateDescriptionModal = (id: number, type: string) => {
                         ><i class="bx bx-printer"
                       /></el-button>
                       <el-button
+                        v-role="rolesNames.admin"
                         type="danger"
                         @click="
                           handleDelete(

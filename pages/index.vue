@@ -1,7 +1,7 @@
 <template>
   <div class="page-content">
-    <div class="container-fluid">
-      <div class="row" v-loading="loading.dashboard">
+    <div class="container-fluid" v-loading="loading.dashboard">
+      <div class="row" v-if="!loading.dashboard">
         <div class="col-lg-12">
           <div class="row">
             <div class="col-lg-2">
@@ -105,6 +105,10 @@ import { useDashboardStore } from "~/store/dashboard";
 useHead({ title: "Dashboard" });
 definePageMeta({ middleware: "auth" });
 
+const { user } = useAuth();
+const roles = useRoles();
+roles.value = user.roles;
+
 const { getAll } = useDashboardStore();
 const { loading, dashboard } = storeToRefs(useDashboardStore());
 
@@ -203,7 +207,7 @@ const proprietesOptions = computed(() => [
     ],
   },
 ]);
-await getAll();
+getAll();
 </script>
 
 <style scoped></style>

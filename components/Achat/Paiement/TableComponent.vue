@@ -73,6 +73,7 @@ const onContratCreated = async () => await getOne(achat.value?.id!);
         </template>
         <template #default="scope">
           <el-button
+            v-role="rolesNames.admin"
             v-if="scope.row.status === statusValidable.wait"
             type="success"
             @click="handleValidate(scope.row)"
@@ -89,6 +90,7 @@ const onContratCreated = async () => await getOne(achat.value?.id!);
             ><i class="bx bx-edit"
           /></el-button>
           <el-button
+            v-role="rolesNames.admin"
             type="danger"
             @click="
               handleDelete(

@@ -3,7 +3,10 @@ import { storeToRefs } from "pinia";
 import { useTerrainStore } from "~/store/terrain";
 
 useHead({ title: "Terrain" });
-definePageMeta({ middleware: "auth" });
+definePageMeta({
+  middleware: ["auth", "nuxt-permissions"],
+  roles: [rolesNames.employee, rolesNames.admin],
+});
 const links = [
   { path: "/", title: "Acceuil" },
   { path: "#", title: "Terrains" },
@@ -73,6 +76,7 @@ const classType = (status: string) => {
                         ><i class="bx bx-edit"
                       /></el-button>
                       <el-button
+                        v-role="rolesNames.admin"
                         type="danger"
                         @click="
                           handleDelete(

@@ -2,10 +2,13 @@
 import { storeToRefs } from "pinia";
 import { useSocieteStore } from "@/store/societe";
 useHead({ title: "Sociéte" });
-definePageMeta({ middleware: "auth" });
+definePageMeta({
+  middleware: ["auth", "nuxt-permissions"],
+  roles: [rolesNames.admin],
+});
 const { getOne, getCount } = useSocieteStore();
 const { societe, loading } = storeToRefs(useSocieteStore());
-onMounted(async () => {
+onMounted(() => {
   getOne();
   getCount();
 });

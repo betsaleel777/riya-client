@@ -2,7 +2,10 @@
 import { storeToRefs } from "pinia";
 import { useContratStore } from "~/store/contrat";
 
-definePageMeta({ middleware: "auth" });
+definePageMeta({
+  middleware: ["auth", "nuxt-permissions"],
+  roles: [rolesNames.employee, rolesNames.admin],
+});
 const { getOne } = useContratStore();
 const { contrat, loading } = storeToRefs(useContratStore());
 getOne(Number(useRoute().params.id)).then(() => {

@@ -3,7 +3,10 @@ import { storeToRefs } from "pinia";
 import { useTypeDepenseStore } from "~/store/depense";
 
 useHead({ title: "Types dépenses" });
-definePageMeta({ middleware: "auth" });
+definePageMeta({
+  middleware: ["auth", "nuxt-permissions"],
+  roles: [rolesNames.admin],
+});
 const links = [
   { path: "/", title: "Acceuil" },
   { path: "#", title: "Types d'appartements" },

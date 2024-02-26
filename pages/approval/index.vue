@@ -1,6 +1,9 @@
 <script setup>
 useHead({ title: "Validations" });
-definePageMeta({ middleware: "auth" });
+definePageMeta({
+  middleware: ["auth", "nuxt-permissions"],
+  roles: [rolesNames.admin],
+});
 </script>
 
 <template>

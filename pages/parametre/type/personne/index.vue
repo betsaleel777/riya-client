@@ -3,7 +3,10 @@ import { storeToRefs } from "pinia";
 import { useTypePersonneStore } from "~/store/personne";
 
 useHead({ title: "Types client" });
-definePageMeta({ middleware: "auth" });
+definePageMeta({
+  middleware: ["auth", "nuxt-permissions"],
+  roles: [rolesNames.admin],
+});
 const links = [
   { path: "/", title: "Acceuil" },
   { path: "#", title: "Types de personnes" },

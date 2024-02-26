@@ -4,7 +4,10 @@ import { useAchatStore } from "~/store/achat";
 import { NuxtLink } from "#components";
 
 useHead({ title: "Achats" });
-definePageMeta({ middleware: "auth" });
+definePageMeta({
+  middleware: ["auth", "nuxt-permissions"],
+  roles: [rolesNames.employee, rolesNames.admin],
+});
 const links = [
   { path: "/", title: "Acceuil" },
   { path: "#", title: "Achats" },

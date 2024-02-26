@@ -4,7 +4,10 @@ import { useVisiteStore } from "~/store/visite";
 import { statusValidable, statusAvance } from "~/utils/constante";
 
 useHead({ title: "Location" });
-definePageMeta({ middleware: "auth" });
+definePageMeta({
+  middleware: ["auth", "nuxt-permissions"],
+  roles: [rolesNames.employee, rolesNames.admin],
+});
 const links = [
   { path: "/", title: "Acceuil" },
   { path: "#", title: "Location" },
@@ -128,6 +131,7 @@ const classStatus = (status: string) => {
                         ><i class="bx bx-edit"
                       /></el-button>
                       <el-button
+                        v-role="rolesNames.admin"
                         type="danger"
                         @click="
                           handleDelete(

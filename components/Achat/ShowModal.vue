@@ -55,7 +55,13 @@ const onContratCreated = async () => {
       <div class="d-flex justify-content-between align-items-center">
         <span class="text-truncate">créer par {{ achat?.audit.user.name }}</span>
         <div class="d-flex flex-row-reverse">
-          <el-button v-if="pendingPaiement" @click="handleValidate" type="primary" text>
+          <el-button
+            v-role="rolesNames.admin"
+            v-if="pendingPaiement"
+            @click="handleValidate"
+            type="primary"
+            text
+          >
             valider le paiement en attente
           </el-button>
           <el-button @click="useAchatReceipt(achat!)" type="warning" text plain>

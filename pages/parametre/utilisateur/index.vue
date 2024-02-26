@@ -3,7 +3,10 @@ import { storeToRefs } from "pinia";
 import { useUtilisateurStore } from "~/store/utilisateur";
 
 useHead({ title: "Utilisateurs" });
-definePageMeta({ middleware: "auth" });
+definePageMeta({
+  middleware: ["auth", "nuxt-permissions"],
+  roles: [rolesNames.admin],
+});
 const links = [
   { path: "/", title: "Acceuil" },
   { path: "#", title: "Utilisateurs" },

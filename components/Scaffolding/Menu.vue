@@ -5,19 +5,19 @@
       <div id="sidebar-menu">
         <!-- Left Menu Start -->
         <ul class="metismenu list-unstyled" id="side-menu" ref="side">
-          <li class="">
+          <li v-role="[rolesNames.admin, rolesNames.employee]">
             <nuxt-link to="/proprietaire" class="waves-effect">
               <i class="bx bx-user-circle"></i>
               <span key="t-starter-page">Proprietaires</span>
             </nuxt-link>
           </li>
-          <li class="">
+          <li v-role="[rolesNames.admin, rolesNames.employee]">
             <nuxt-link to="/personne" class="waves-effect">
               <i class="bx bx-id-card"></i>
               <span key="t-starter-page">Clients</span>
             </nuxt-link>
           </li>
-          <li class="">
+          <li v-role="[rolesNames.admin]">
             <nuxt-link to="/approval" class="waves-effect">
               <i class="bx bx-id-card"></i>
               <span key="t-starter-page "> Validations </span>
@@ -29,7 +29,7 @@
               >
             </nuxt-link>
           </li>
-          <li>
+          <li v-role="[rolesNames.admin, rolesNames.employee]">
             <a
               href="javascript: void(0);"
               class="has-arrow waves-effect"
@@ -45,7 +45,7 @@
               <li><nuxt-link to="/bien/terrain" key="t-terrain">Terrains</nuxt-link></li>
             </ul>
           </li>
-          <li>
+          <li v-role="[rolesNames.admin, rolesNames.employee]">
             <a
               href="javascript: void(0);"
               class="has-arrow waves-effect"
@@ -63,7 +63,7 @@
               <li><nuxt-link to="/loyer" key="t-loyer">Loyers</nuxt-link></li>
             </ul>
           </li>
-          <li>
+          <li v-role="[rolesNames.admin, rolesNames.financial]">
             <a
               href="javascript: void(0);"
               class="has-arrow waves-effect"
@@ -80,7 +80,7 @@
               <li><nuxt-link to="/depense" key="t-depense">Dépenses</nuxt-link></li>
             </ul>
           </li>
-          <li>
+          <li v-role="[rolesNames.admin]">
             <a
               href="javascript: void(0);"
               class="has-arrow waves-effect"
@@ -124,7 +124,7 @@
 <script setup lang="ts">
 import MetisMenu from "metismenujs";
 import { storeToRefs } from "pinia";
-import { ButtonType, buttonTypes } from "element-plus";
+import { buttonTypes } from "element-plus";
 import { useDashboardStore } from "~/store/dashboard";
 const menu = ref({
   parametres: false,

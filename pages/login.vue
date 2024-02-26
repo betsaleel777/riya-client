@@ -63,7 +63,7 @@
                         :class="{ 'is-invalid': errors.password }"
                       />
                       <button
-                        @click="toggleShowPassword"
+                        @click="toggleShowPassword()"
                         class="btn btn-light"
                         type="button"
                         id="password-addon"
@@ -105,24 +105,18 @@
 
 <script setup lang="ts">
 import { useForm, Field, Form } from "vee-validate";
+
 useHead({ title: "Se connecter" });
 definePageMeta({ layout: false });
 
-const now: Number = new Date().getFullYear();
 const { $sanctumAuth } = useNuxtApp();
 const { errors, setErrors, resetForm } = useForm();
 const type = ref("password");
-
 const onSubmit = async (values: any) => {
   resetForm();
   await $sanctumAuth.login(values).catch((err) => {
     if (err.errors) setErrors(err.errors);
-    else
-      ElNotification({
-        title: "Erreur",
-        message: err.message,
-        type: "error",
-      });
+    else ElNotification({ title: "Erreur", message: err.message, type: "error" });
   });
 };
 const toggleShowPassword = () => {

@@ -2,7 +2,10 @@
 import { storeToRefs } from "pinia";
 import { useAchatStore } from "~/store/achat";
 
-definePageMeta({ middleware: "auth" });
+definePageMeta({
+  middleware: ["auth", "nuxt-permissions"],
+  roles: [rolesNames.employee, rolesNames.admin],
+});
 const { getOne } = useAchatStore();
 const { achat, loading } = storeToRefs(useAchatStore());
 getOne(Number(useRoute().params.id)).then(() => useHead({ title: "Achat " + achat?.value?.code }));

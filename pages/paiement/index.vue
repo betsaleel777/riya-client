@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
 import { usePaiementStore } from "~/store/paiement";
-import { Paiement } from "~/types/paiements";
-import { useAchatStore } from "~/store/achat";
 
 useHead({ title: "Paiements" });
-definePageMeta({ middleware: "auth" });
+definePageMeta({
+  middleware: ["auth", "nuxt-permissions"],
+  roles: [rolesNames.admin, rolesNames.financial],
+});
 const links = [
   { path: "/", title: "Acceuil" },
   { path: "#", title: "Paiements" },
@@ -93,6 +94,7 @@ const classStatus = (state: string) => {
                         ><i class="bx bx-edit"
                       /></el-button>
                       <el-button
+                        v-role="rolesNames.admin"
                         type="danger"
                         @click="
                           handleDelete(

@@ -39,6 +39,7 @@ const title = computed(() =>
     <div v-loading="loading.edit">
       <div class="d-flex flex-row-reverse">
         <el-button
+          v-role="rolesNames.admin"
           v-if="dette?.status === statusValidable.wait"
           @click="handleValidate"
           type="primary"

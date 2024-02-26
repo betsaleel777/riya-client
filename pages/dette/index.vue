@@ -5,7 +5,10 @@ import { statusPayable } from "~/utils/constante";
 import { Dette } from "~/types/dette";
 
 useHead({ title: "Dette" });
-definePageMeta({ middleware: "auth" });
+definePageMeta({
+  middleware: ["auth", "nuxt-permissions"],
+  roles: [rolesNames.financial, rolesNames.admin],
+});
 const links = [
   { path: "/", title: "Acceuil" },
   { path: "#", title: "Dettes" },

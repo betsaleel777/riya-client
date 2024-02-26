@@ -4,7 +4,10 @@ import { useLoyerStore } from "~/store/loyer";
 import { Loyer } from "~/types/loyer";
 
 useHead({ title: "Loyer" });
-definePageMeta({ middleware: "auth" });
+definePageMeta({
+  middleware: ["auth", "nuxt-permissions"],
+  roles: [rolesNames.employee, rolesNames.admin],
+});
 const links = [
   { path: "/", title: "Acceuil" },
   { path: "#", title: "Loyers" },
@@ -43,6 +46,7 @@ const openAvanceModal = ref(false);
 <template>
   <div class="page-content">
     <div class="container-fluid">
+      <pre class="text-white">{{ loading.index }}</pre>
       <div class="row">
         <div class="col-12">
           <div class="card">
@@ -125,6 +129,7 @@ const openAvanceModal = ref(false);
                         ><i class="bx bx-dollar"
                       /></el-button>
                       <el-button
+                        v-role="rolesNames.admin"
                         type="danger"
                         @click="
                           handleDelete(

@@ -18,7 +18,6 @@
   },
   "dependencies": {
     "@coders-tm/vue-number-format": "^3.34.0",
-    "@formkit/auto-animate": "^0.8.1",
     "@pinia/nuxt": "^0.4.9",
     "@types/numeral": "^2.0.5",
     "echarts": "^5.4.3",
@@ -28,6 +27,7 @@
     "maska": "^2.1.9",
     "metismenujs": "^1.4.0",
     "numeral": "^2.0.6",
+    "nuxt-permissions": "^0.2.4",
     "nuxt-sanctum-auth": "^0.4.7",
     "pinia": "^2.0.35",
     "vee-validate": "^4.8.6",

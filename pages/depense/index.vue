@@ -3,7 +3,10 @@ import { storeToRefs } from "pinia";
 import { useDepenseStore } from "~/store/depense";
 
 useHead({ title: "Depenses" });
-definePageMeta({ middleware: "auth" });
+definePageMeta({
+  middleware: ["auth", "nuxt-permissions"],
+  roles: [rolesNames.financial, rolesNames.admin],
+});
 const links = [
   { path: "/", title: "Acceuil" },
   { path: "#", title: "Dépenses" },
@@ -75,6 +78,7 @@ const statusClass = (status: string) => {
                         ><i class="bx bx-edit"
                       /></el-button>
                       <el-button
+                        v-role="rolesNames.admin"
                         type="danger"
                         @click="
                           handleDelete(

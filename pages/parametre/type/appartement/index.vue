@@ -3,7 +3,10 @@ import { storeToRefs } from "pinia";
 import { useTypeAppartementStore } from "@/store/appartement";
 
 useHead({ title: "Types appartements" });
-definePageMeta({ middleware: "auth" });
+definePageMeta({
+  middleware: ["auth", "nuxt-permissions"],
+  roles: [rolesNames.admin],
+});
 const links = [
   { path: "/", title: "Acceuil" },
   { path: "#", title: "Types d'appartements" },

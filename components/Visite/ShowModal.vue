@@ -75,7 +75,12 @@ const onContratCreated = async () => {
     center
   >
     <div class="d-flex flex-row-reverse align-items-baseline">
-      <el-button @click="handleValidate" v-if="validable" type="success" text
+      <el-button
+        v-role="rolesNames.admin"
+        @click="handleValidate"
+        v-if="validable"
+        type="success"
+        text
         >Valider la visite</el-button
       >
       <el-button @click="imprimer" v-if="validated" type="warning" text

@@ -6,7 +6,7 @@ export const useUtilisateurStore = defineStore("utilisateur", () => {
   const { $apiFetch } = useNuxtApp();
   let utilisateur = ref<Utilisateur>();
   let utilisateurs = ref<Utilisateurs>([]);
-  let loading = reactive({ index: true, edit: true });
+  let loading = reactive({ index: false, edit: false });
 
   const hydrateForm = (payload: Utilisateur) => {
     const formData = new FormData();
@@ -22,6 +22,7 @@ export const useUtilisateurStore = defineStore("utilisateur", () => {
 
   const getAll = async () => {
     try {
+      loading.index = true;
       utilisateurs.value = await $apiFetch<Utilisateurs>("api/users");
       loading.index = false;
     } catch (error) {
@@ -54,6 +55,7 @@ export const useUtilisateurStore = defineStore("utilisateur", () => {
 
   const getOne = async (id: number) => {
     try {
+      loading.edit = true;
       const response = await $apiFetch<Utilisateur>("api/users/" + id, { method: "get" });
       utilisateur.value = response;
       loading.edit = false;
