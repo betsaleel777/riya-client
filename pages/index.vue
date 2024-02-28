@@ -54,26 +54,19 @@
         <div class="col-lg-8">
           <DashboardStatistiqueComponent />
           <div class="row">
-            <div class="col-lg-4">
+            <div class="col-lg-6">
               <DashboardPieCardComponent
                 :size="200"
                 :series-option="proprietesOptions"
                 titre="Propriétés"
               ></DashboardPieCardComponent>
             </div>
-            <div class="col-lg-4">
+            <div class="col-lg-6">
               <DashboardPieCardComponent
                 :size="200"
                 :series-option="locatairesOptions"
                 titre="Encaissements Locataire"
               ></DashboardPieCardComponent>
-            </div>
-            <div class="col-lg-4">
-              <DashboardSunburstCardComponent
-                :colors="sunColorsTwo"
-                :series-option="uptodateOption"
-                titre="Loyers et Ventes"
-              />
             </div>
           </div>
         </div>
