@@ -75,6 +75,7 @@ const { handleDelete, modal } = useHandleCrudButtons(trash);
                       /></el-button>
                       <el-button
                         type="danger"
+                        v-role="rolesNames.admin"
                         @click="
                           handleDelete(
                             scope.row,

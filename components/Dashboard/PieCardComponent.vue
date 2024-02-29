@@ -20,6 +20,7 @@ const option = ref({
   },
   series: props.seriesOption,
 });
+const openDateModal = reactive({ range: false, date: false });
 </script>
 
 <template>
@@ -37,15 +38,16 @@ const option = ref({
             >
               <i class="mdi mdi-dots-horizontal"></i>
             </a>
-
             <div class="dropdown-menu dropdown-menu-end">
-              <a class="dropdown-item" href="#">Action</a>
-              <a class="dropdown-item" href="#">Another action</a>
-              <a class="dropdown-item" href="#">Something else here</a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="#">Separated link</a>
+              <a class="dropdown-item" href="#">Rafraîchir</a>
+              <a @click="openDateModal.date = true" class="dropdown-item" href="#"> Par date </a>
+              <a @click="openDateModal.range = true" class="dropdown-item" href="#"
+                >Par intervale de date</a
+              >
             </div>
           </div>
+          <DashboardDateRangeSelectorModal v-model="openDateModal.range" />
+          <DashboardDateSelectorModal v-model="openDateModal.date" />
         </div>
       </div>
       <v-chart :style="{ height: props.size + 'px' }" :option="option" />
