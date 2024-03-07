@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 const props = defineProps<{ type: string }>();
 const openDateModal = reactive({ range: false, date: false });
+provide("type", props.type);
 </script>
 
 <template>
@@ -15,7 +16,6 @@ const openDateModal = reactive({ range: false, date: false });
         <i class="mdi mdi-dots-horizontal"></i>
       </a>
       <div class="dropdown-menu dropdown-menu-end">
-        <a class="dropdown-item" href="#">Rafraîchir</a>
         <a @click="openDateModal.date = true" class="dropdown-item" href="#"> Par date </a>
         <a @click="openDateModal.range = true" class="dropdown-item" href="#"
           >Par intervale de date</a

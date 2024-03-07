@@ -4,12 +4,11 @@ import { CanvasRenderer } from "echarts/renderers";
 import { PieChart } from "echarts/charts";
 import type { PieSeriesOption } from "echarts/types/dist/shared";
 import { TitleComponent, TooltipComponent, LegendComponent } from "echarts/components";
-import VChart, { THEME_KEY } from "vue-echarts";
+import VChart from "vue-echarts";
 
 const props = defineProps<{ titre: string; seriesOption: PieSeriesOption; size: number }>();
 use([CanvasRenderer, PieChart, TitleComponent, TooltipComponent, LegendComponent]);
 const color = useColorMode();
-provide(THEME_KEY, color.preference);
 
 const option = ref({
   tooltip: {
@@ -29,7 +28,12 @@ const option = ref({
         <h4 class="card-title mb-4">{{ props.titre }}</h4>
         <slot name="options" />
       </div>
-      <v-chart :style="{ height: props.size + 'px' }" :option="option" />
+      <v-chart
+        :style="{ height: props.size + 'px' }"
+        :option="option"
+        autoresize
+        :theme="color.preference"
+      />
     </div>
   </div>
 </template>

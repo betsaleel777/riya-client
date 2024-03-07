@@ -5,10 +5,10 @@ const props = defineProps<{ errors: any }>();
 
 <template>
   <div class="mb-2">
-    <label for="dates" class="form-label">Dates</label>
-    <Field name="dates" v-slot="{ value, handleChange }">
+    <label for="date" class="form-label">Dates</label>
+    <Field name="date" v-slot="{ value, handleChange }">
       <el-date-picker
-        id="dates"
+        id="date"
         :model-value="value"
         @update:model-value="handleChange"
         style="width: 100%"
@@ -18,11 +18,9 @@ const props = defineProps<{ errors: any }>();
         end-placeholder="fin"
         format="DD-MM-YYYY"
         value-format="YYYY-MM-DD"
-        :class="{ 'is-invalid': props.errors.dates }"
+        :class="{ 'is-invalid': props.errors.date }"
       />
-      <div class="invalid-feedback" v-if="errors.dates">
-        {{ props.errors.dates }}
-      </div>
+      <div class="invalid-feedback" v-if="errors.date">{{ props.errors.date }}</div>
     </Field>
   </div>
 </template>

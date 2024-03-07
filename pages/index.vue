@@ -60,29 +60,14 @@
             titre="Statistiques des locations"
             :donnees="statistiquesLocationsOptions"
           />
-          <div class="row">
-            <div class="col-lg-6">
-              <DashboardPieCardComponent
-                :size="200"
-                :series-option="proprietesOptions"
-                titre="Propriétés"
-              ></DashboardPieCardComponent>
-            </div>
-            <div class="col-lg-6">
-              <DashboardPieCardComponent
-                :size="200"
-                :series-option="locatairesOptions"
-                titre="Statut des contrats"
-              >
-              </DashboardPieCardComponent>
-            </div>
-          </div>
+          <!-- ici tableau de compte d'exploitation -->
         </div>
         <div class="col-lg-4">
           <DashboardAmountCardComponent
             titre="Chiffre d'affaire"
             :montant="dashboard?.chiffres"
             icon="bx bx-money"
+            v-loading="loading.chiffre"
             ><template #options>
               <DashboardOptionComponent type="chiffres" />
             </template>
@@ -91,6 +76,7 @@
             titre="Dépenses"
             :montant="dashboard?.depenses"
             icon="bx bx-dollar"
+            v-loading="loading.depense"
           >
             <template #options>
               <DashboardOptionComponent type="depenses" />
@@ -100,11 +86,23 @@
             titre="Dettes"
             :montant="dashboard?.remboursements"
             icon="bx bx-wallet"
+            v-loading="loading.dette"
           >
             <template #options>
               <DashboardOptionComponent type="dettes" />
             </template>
           </DashboardAmountCardComponent>
+          <DashboardPieCardComponent
+            :size="250"
+            :series-option="proprietesOptions"
+            titre="Propriétés"
+          ></DashboardPieCardComponent>
+          <DashboardPieCardComponent
+            :size="250"
+            :series-option="locatairesOptions"
+            titre="Statut des contrats"
+          >
+          </DashboardPieCardComponent>
         </div>
       </div>
     </div>

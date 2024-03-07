@@ -8,11 +8,10 @@ const props = defineProps<{ errors: any }>();
     <label for="date" class="form-label">Date</label>
     <Field name="date" v-slot="{ value, handleChange }">
       <el-date-picker
-        id="dates"
+        id="date"
         :model-value="value"
         @update:model-value="handleChange"
         style="width: 100%"
-        range-separator="-"
         format="DD-MM-YYYY"
         value-format="YYYY-MM-DD"
         :class="{ 'is-invalid': props.errors.date }"

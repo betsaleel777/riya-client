@@ -25,55 +25,49 @@ export const useDashboardStore = defineStore("dashboard", () => {
     }
   };
 
-  const getChiffres = async (date: string | string[]) => {
-    try {
-      loading.chiffre = true;
-      dashboard.value
-        ? (dashboard.value.chiffres = await $apiFetch<Dashboard["chiffres"]>(
-            "api/dashboard-count/chiffres",
-            { method: "get", params: { date } }
-          ))
-        : null;
-      loading.chiffre = false;
-    } catch (error) {
-      if (error instanceof FetchError && error.statusCode === 401) navigateTo("/login");
-    }
+  const getChiffres = async (payload: { date: string | string[] }) => {
+    const data = typeof payload.date === "string" ? payload.date : payload.date.join(",");
+    loading.chiffre = true;
+    dashboard.value
+      ? (dashboard.value.chiffres = await $apiFetch<Dashboard["chiffres"]>(
+          `api/dashboard-count/chiffres`,
+          { method: "get", params: { date: data } }
+        ))
+      : null;
+    loading.chiffre = false;
+    return "Chiffre d'affaire mis à jour selon le critère de recherche" as string;
   };
 
-  const getDettes = async (date: string | string[]) => {
-    try {
-      loading.dette = true;
-      dashboard.value
-        ? (dashboard.value.remboursements = await $apiFetch<Dashboard["remboursements"]>(
-            "api/dashboard-count/dettes",
-            { method: "get", params: { date } }
-          ))
-        : null;
-      loading.dette = false;
-    } catch (error) {
-      if (error instanceof FetchError && error.statusCode === 401) navigateTo("/login");
-    }
+  const getDettes = async (payload: { date: string | string[] }) => {
+    const data = typeof payload.date === "string" ? payload.date : payload.date.join(",");
+    loading.dette = true;
+    dashboard.value
+      ? (dashboard.value.remboursements = await $apiFetch<Dashboard["remboursements"]>(
+          "api/dashboard-count/dettes",
+          { method: "get", params: { date: data } }
+        ))
+      : null;
+    loading.dette = false;
+    return "Dettes mises à jour selon le critère de recherche" as string;
   };
 
-  const getDepenses = async (date: string | string[]) => {
-    try {
-      loading.depense = true;
-      dashboard.value
-        ? (dashboard.value.depenses = await $apiFetch<Dashboard["depenses"]>(
-            "api/dashboard-count/depenses",
-            { method: "get", params: { date } }
-          ))
-        : null;
-      loading.depense = false;
-    } catch (error) {
-      if (error instanceof FetchError && error.statusCode === 401) navigateTo("/login");
-    }
+  const getDepenses = async (payload: { date: string | string[] }) => {
+    const data = typeof payload.date === "string" ? payload.date : payload.date.join(",");
+    loading.depense = true;
+    dashboard.value
+      ? (dashboard.value.depenses = await $apiFetch<Dashboard["depenses"]>(
+          "api/dashboard-count/depenses",
+          { method: "get", params: { date: data } }
+        ))
+      : null;
+    loading.depense = false;
+    return "Dépenses mises à jour selon le critère de recherche" as string;
   };
 
-  const getSwitch = (payload: { date: string | string[]; type: string }) => {
-    if (payload.type === "depenses") getDepenses(payload.date);
-    else if (payload.type === "dettes") getDettes(payload.date);
-    else getChiffres(payload.date);
+  const getSwitch = (type: string) => {
+    if (type === "depenses") return getDepenses;
+    else if (type === "dettes") return getDettes;
+    else return getChiffres;
   };
 
   const getPendings = async () => {

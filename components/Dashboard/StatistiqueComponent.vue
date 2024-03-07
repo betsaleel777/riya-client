@@ -9,7 +9,7 @@ import {
   LegendComponent,
   GridComponent,
 } from "echarts/components";
-import VChart, { THEME_KEY } from "vue-echarts";
+import VChart from "vue-echarts";
 
 const props = defineProps<{
   donnees: { dates: string[]; series: BarSeriesOption };
@@ -19,7 +19,6 @@ const props = defineProps<{
 use([CanvasRenderer, BarChart, TitleComponent, TooltipComponent, LegendComponent, GridComponent]);
 
 const color = useColorMode();
-provide(THEME_KEY, color.preference);
 
 const option = ref({
   title: { left: "center" },
@@ -37,7 +36,7 @@ const option = ref({
       <div class="d-sm-flex flex-wrap">
         <h4 class="card-title mb-4">{{ props.titre }}</h4>
       </div>
-      <v-chart class="chart" :option="option" />
+      <v-chart class="chart" :option="option" :theme="color.preference" autoresize />
     </div>
   </div>
 </template>
