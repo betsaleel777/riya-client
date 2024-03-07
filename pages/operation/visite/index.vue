@@ -180,7 +180,6 @@ const classStatus = (status: string) => {
 <style scoped>
 .el-dropdown-link {
   cursor: pointer;
-  /* color: var(--el-color-primary); */
   display: flex;
   align-items: center;
   font-size: 2.3em;

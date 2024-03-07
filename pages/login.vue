@@ -55,7 +55,7 @@
                     <div class="input-group auth-pass-inputgroup">
                       <Field
                         name="password"
-                        :type="type"
+                        type="password"
                         class="form-control"
                         placeholder="mot de passe"
                         aria-label="Password"
@@ -86,7 +86,8 @@
           <div class="mt-5 text-center">
             <div>
               <p>
-                ©{{ now }} Riya-Immobiler with <i class="mdi mdi-heart text-danger"></i> by
+                ©{{ $dayjs().format("YYYY") }} Riya-Immobiler with
+                <i class="mdi mdi-heart text-danger"></i> by
                 <a href="https://syitech-group.com" target="_blank" rel="noopener">syitech-group</a>
               </p>
             </div>
