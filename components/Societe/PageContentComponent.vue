@@ -49,7 +49,7 @@ const onInput = () => {
                 />
                 <img
                   v-else
-                  src="/images/users/avatar-1.jpg"
+                  src="/images/users/avatar.jpg"
                   alt="logo-empty"
                   class="img-thumbnail rounded-circle"
                 />
