@@ -62,15 +62,6 @@
                         aria-describedby="password-addon"
                         :class="{ 'is-invalid': errors.password }"
                       />
-                      <button
-                        @click="toggleShowPassword()"
-                        class="btn btn-light"
-                        type="button"
-                        id="password-addon"
-                      >
-                        <i v-if="type === 'password'" class="mdi mdi-eye-outline"></i>
-                        <i v-else class="mdi mdi-eye-off-outline"></i>
-                      </button>
                       <div class="invalid-feedback" v-if="errors.password">
                         {{ errors.password }}
                       </div>
@@ -94,7 +85,10 @@
           </div>
           <div class="mt-5 text-center">
             <div>
-              <p>©{{ now }} Riya-Immobiler with <i class="mdi mdi-heart text-danger"></i> by ...</p>
+              <p>
+                ©{{ now }} Riya-Immobiler with <i class="mdi mdi-heart text-danger"></i> by
+                <a href="https://syitech-group.com" target="_blank" rel="noopener">syitech-group</a>
+              </p>
             </div>
           </div>
         </div>
@@ -111,17 +105,12 @@ definePageMeta({ layout: false });
 
 const { $sanctumAuth } = useNuxtApp();
 const { errors, setErrors, resetForm } = useForm();
-const type = ref("password");
 const onSubmit = async (values: any) => {
   resetForm();
   await $sanctumAuth.login(values).catch((err) => {
     if (err.errors) setErrors(err.errors);
     else ElNotification({ title: "Erreur", message: err.message, type: "error" });
   });
-};
-const toggleShowPassword = () => {
-  if (type.value === "password") type.value = "text";
-  if (type.value === "text") type.value = "password";
 };
 </script>
 

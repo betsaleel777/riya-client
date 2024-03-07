@@ -4,7 +4,10 @@
       <div class="row">
         <div class="col-sm-6">{{ year }}© Riya Immobilier</div>
         <div class="col-sm-6">
-          <div class="text-sm-end d-none d-sm-block">Design & Develop by ...</div>
+          <div class="text-sm-end d-none d-sm-block">
+            Design & Develop by
+            <a href="https://syitech-group.com" target="_blank" rel="noopener">syitech-group</a>
+          </div>
         </div>
       </div>
     </div>
