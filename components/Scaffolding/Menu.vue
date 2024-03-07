@@ -19,7 +19,7 @@
           </li>
           <li v-role="[rolesNames.admin]">
             <nuxt-link to="/approval" class="waves-effect">
-              <i class="bx bx-id-card"></i>
+              <i class="bx bx-check-shield"></i>
               <span key="t-starter-page "> Validations </span>
               <span
                 v-if="!loading.pendings && Number(pendings) !== 0"
@@ -69,7 +69,7 @@
               class="has-arrow waves-effect"
               @click="menu.caisse = true"
             >
-              <i class="bx bx-dollar"></i>
+              <i class="bx bx-credit-card"></i>
               <span key="t-caisse">Caisses</span>
             </a>
             <ul class="sub-menu" :aria-expanded="menu.caisse">

@@ -22,7 +22,7 @@
                 <nuxt-link to="/" class="auth-logo-light">
                   <div class="avatar-md profile-user-wid mb-4">
                     <span class="avatar-title rounded-circle bg-light">
-                      <img src="/images/logo-light.svg" alt="" class="rounded-circle" height="34" />
+                      <img src="/images/logo-light.jpg" alt="" class="rounded-circle" height="34" />
                     </span>
                   </div>
                 </nuxt-link>
@@ -30,7 +30,7 @@
                 <nuxt-link to="/" class="auth-logo-dark">
                   <div class="avatar-md profile-user-wid mb-4">
                     <span class="avatar-title rounded-circle bg-light">
-                      <img src="/images/logo.svg" alt="" class="rounded-circle" height="34" />
+                      <img src="/images/logo-dark.jpg" alt="" class="rounded-circle" height="34" />
                     </span>
                   </div>
                 </nuxt-link>
