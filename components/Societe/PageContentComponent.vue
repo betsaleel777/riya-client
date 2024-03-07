@@ -24,8 +24,8 @@ const onInput = () => {
           <div class="row">
             <div class="col-7">
               <div class="text-primary p-3">
-                <h5 class="text-primary">Welcome Back !</h5>
-                <p>It will seem like simplified</p>
+                <h5 class="text-primary">Bienvenue !</h5>
+                <p>Configuration de la société</p>
               </div>
             </div>
             <div class="col-5 align-self-end">
