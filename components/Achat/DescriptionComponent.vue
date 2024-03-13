@@ -3,10 +3,10 @@ import { Achat } from "~/types/achat";
 const props = defineProps<{
   achat?: Achat;
 }>();
-console.log(props.achat);
 </script>
 
 <template>
+  <PersonneDescriptionComponent :personne="props.achat?.personne" />
   <el-descriptions direction="horizontal" :column="2" size="large">
     <el-descriptions-item v-if="props.achat?.code" label="Code:"
       >{{ props.achat?.code }}

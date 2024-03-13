@@ -16,12 +16,13 @@ payableType.value = "Achat";
   <Field name="payable_id" hidden />
   <Field name="payable_type" hidden />
   <div class="mb-3">
+    <label for="montant" class="form-label">Montant</label>
     <Field name="montant" v-slot="{ value, handleChange }">
       <vue-number
         id="montant"
         class="form-control"
         v-bind="numberConfig"
-        :model-value="value"
+        :model-value="value ?? 0"
         @update:model-value="handleChange"
         :class="{ 'is-invalid': props.errors.montant }"
       ></vue-number>
@@ -29,7 +30,6 @@ payableType.value = "Achat";
         {{ props.errors.montant }}
       </div>
     </Field>
-    <div class="invalid-feedback" v-if="props.errors.montant">{{ props.errors.montant }}</div>
   </div>
 </template>
 

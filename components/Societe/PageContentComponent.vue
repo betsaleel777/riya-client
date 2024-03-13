@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
-import { Societe } from "~/types/societe";
+import { type Societe } from "~/types/societe";
 import { useSocieteStore } from "@/store/societe";
 import { Field, Form } from "vee-validate";
 

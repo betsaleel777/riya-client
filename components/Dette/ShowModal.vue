@@ -29,13 +29,10 @@ const handleValidate = () => {
     });
   });
 };
-const title = computed(() =>
-  props.fromValidationPage ? "Détails de remboursement" : "Détails de dette"
-);
 </script>
 
 <template>
-  <el-dialog v-model="dialog" :title="title" width="40%" destroy-on-close center>
+  <el-dialog v-model="dialog" title="Détails de dette" width="40%" destroy-on-close center>
     <div v-loading="loading.edit">
       <div class="d-flex flex-row-reverse">
         <el-button

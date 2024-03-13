@@ -4,6 +4,7 @@ const props = defineProps<{ loyer: Loyer }>();
 </script>
 
 <template>
+  <PersonneDescriptionComponent :personne="props.loyer?.personne" />
   <el-descriptions direction="horizontal" :column="2" size="large">
     <el-descriptions-item v-if="props.loyer?.code" label="Code:"
       >{{ props.loyer?.code }}
@@ -17,9 +18,6 @@ const props = defineProps<{ loyer: Loyer }>();
     <el-descriptions-item v-if="props.loyer?.created_at" label="Date:"
       >{{ props.loyer?.created_at }}
     </el-descriptions-item>
-    <el-descriptions-item v-if="props.loyer?.personne" label="Client :">{{
-      props.loyer?.personne.nom_complet
-    }}</el-descriptions-item>
     <el-descriptions-item v-if="props.loyer?.bien" label="Bien :">{{
       props.loyer?.bien.nom
     }}</el-descriptions-item>

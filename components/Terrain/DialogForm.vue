@@ -63,48 +63,50 @@ onMounted(async () => {
       <div class="mb-2">
         <label for="montant_location" class="form-label">Montant Location</label>
         <Field name="montant_location" v-slot="{ handleChange, value }">
-          <el-input
-            id="montant_location"
+          <vue-number
+            id="montant_location_location"
+            class="form-control"
+            v-bind="numberConfig"
             :model-value="value"
             @update:model-value="handleChange"
-            v-maska
-            data-maska="##########"
             :class="{ 'is-invalid': props.errors.montant_location }"
-          />
+          ></vue-number>
+          <div class="invalid-feedback" v-if="errors.montant_location">
+            {{ props.errors.montant_location }}
+          </div>
         </Field>
-        <div class="invalid-feedback" v-if="errors.montant_location">
-          {{ props.errors.montant_location }}
-        </div>
       </div>
       <div class="mb-2">
         <label for="montant_investit" class="form-label">Montant investit</label>
         <Field name="montant_investit" v-slot="{ handleChange, value }">
-          <el-input
+          <vue-number
             id="montant_investit"
+            class="form-control"
+            v-bind="numberConfig"
             :model-value="value"
             @update:model-value="handleChange"
-            v-number="numberConfig"
             :class="{ 'is-invalid': props.errors.montant_investit }"
-          />
+          ></vue-number>
+          <div class="invalid-feedback" v-if="errors.montant_investit">
+            {{ props.errors.montant_investit }}
+          </div>
         </Field>
-        <div class="invalid-feedback" v-if="errors.montant_investit">
-          {{ props.errors.montant_investit }}
-        </div>
       </div>
       <div class="mb-2">
         <label for="cout_achat" class="form-label">Coût d'achat</label>
         <Field name="cout_achat" v-slot="{ handleChange, value }">
-          <el-input
+          <vue-number
             id="cout_achat"
+            class="form-control"
+            v-bind="numberConfig"
             :model-value="value"
             @update:model-value="handleChange"
-            v-number="numberConfig"
             :class="{ 'is-invalid': props.errors.cout_achat }"
-          />
+          ></vue-number>
+          <div class="invalid-feedback" v-if="errors.cout_achat">
+            {{ props.errors.cout_achat }}
+          </div>
         </Field>
-        <div class="invalid-feedback" v-if="errors.cout_achat">
-          {{ props.errors.cout_achat }}
-        </div>
       </div>
       <div class="mb-2">
         <label for="superficie" class="form-label">Superficie</label>
@@ -113,7 +115,6 @@ onMounted(async () => {
             id="superficie"
             :model-value="value"
             @update:model-value="handleChange"
-            v-number="numberConfig"
             :class="{ 'is-invalid': props.errors.superficie }"
           />
         </Field>

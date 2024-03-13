@@ -71,7 +71,9 @@ const onContratCreated = async () => {
       </div>
       <el-divider class="mt-0" />
       <AchatDescriptionComponent :achat="achat" />
-      <AchatPaiementTimelineComponent :paiements="achat?.paiements" />
+      <el-scrollbar :max-height="170">
+        <AchatPaiementTimelineComponent :paiements="achat?.paiements" />
+      </el-scrollbar>
     </div>
     <ContratCreateModal
       :operation-id="achat?.id || 0"
