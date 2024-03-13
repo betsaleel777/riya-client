@@ -3,6 +3,7 @@ import { Contrat } from "./contrat";
 import { Entity, Media } from "./global";
 import { Paiements } from "./paiements";
 import { Client } from "./personne";
+import { Proprietaire } from "./proprietaire";
 
 interface Loyer extends Entity {
   code: string;
@@ -17,6 +18,7 @@ interface Loyer extends Entity {
   paid: number;
   pending: boolean;
   paiements: Paiements;
+  proprietaire?: Proprietaire;
 }
 
 interface LoyerValidation extends Entity {

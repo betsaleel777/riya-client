@@ -5,6 +5,16 @@ const props = defineProps<{ loyer: Loyer }>();
 
 <template>
   <PersonneDescriptionComponent :personne="props.loyer?.personne" />
+  <el-divider content-position="center"
+    ><el-text type="primary">Détails du propriétaire</el-text></el-divider
+  >
+  <LazyProprietaireDescriptionComponent
+    v-if="props.loyer?.proprietaire"
+    :proprietaire="props.loyer?.proprietaire"
+  />
+  <el-divider content-position="center"
+    ><el-text type="primary">Détails de la dette</el-text></el-divider
+  >
   <el-descriptions direction="horizontal" :column="2" size="large">
     <el-descriptions-item v-if="props.loyer?.code" label="Code:"
       >{{ props.loyer?.code }}

@@ -8,7 +8,7 @@
               <DashboardCounterCardComponent
                 titre="Clients"
                 :nombre="dashboard?.clients"
-                icon="bx bxs-book-bookmark"
+                icon="bx bxs-user"
               />
             </div>
             <div class="col-lg-2">
@@ -21,14 +21,14 @@
             <div class="col-lg-2">
               <DashboardCounterCardComponent
                 :nombre="dashboard?.biens"
-                icon="bx bxs-book-bookmark"
+                icon="bx bxs-home"
                 titre="Biens"
               />
             </div>
             <div class="col-lg-2">
               <DashboardCounterCardComponent
                 :nombre="dashboard?.visites"
-                icon="bx bxs-book-bookmark"
+                icon="bx bxs-card"
                 titre="Visites"
               />
             </div>
@@ -64,6 +64,7 @@
         </div>
         <div class="col-lg-4">
           <DashboardAmountCardComponent
+            v-role="[rolesNames.admin, rolesNames.financial]"
             titre="Chiffre d'affaire"
             :montant="dashboard?.chiffres"
             icon="bx bx-money"
@@ -73,6 +74,7 @@
             </template>
           </DashboardAmountCardComponent>
           <DashboardAmountCardComponent
+            v-role="[rolesNames.admin, rolesNames.financial]"
             titre="Dépenses"
             :montant="dashboard?.depenses"
             icon="bx bx-dollar"
@@ -83,6 +85,7 @@
             </template>
           </DashboardAmountCardComponent>
           <DashboardAmountCardComponent
+            v-role="[rolesNames.admin, rolesNames.financial]"
             titre="Dettes"
             :montant="dashboard?.remboursements"
             icon="bx bx-wallet"

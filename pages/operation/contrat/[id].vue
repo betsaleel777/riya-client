@@ -33,7 +33,14 @@ getOne(Number(useRoute().params.id)).then(() => {
         </div>
       </div>
       <div class="row">
-        <LazyContratVisitePrint v-if="!loading.edit" :contrat="contrat" />
+        <LazyContratVisitePrint
+          v-if="!loading.edit && contrat?.operation_type === typeContrat.visite"
+          :contrat="contrat"
+        />
+        <el-empty
+          v-if="!loading.edit && contrat?.operation_type === typeContrat.achat"
+          description="Aucun exemplaire de contrat n'as été fournit pour l'instant."
+        ></el-empty>
       </div>
     </div>
   </div>

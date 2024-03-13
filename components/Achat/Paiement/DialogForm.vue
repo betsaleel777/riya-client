@@ -8,7 +8,7 @@ const { achat } = storeToRefs(useAchatStore());
 const { value: payableId } = useField("payable_id");
 const { value: payableType } = useField("payable_type");
 payableId.value = achat.value?.id;
-payableType.value = "Achat";
+payableType.value = typePaiement.purchase;
 </script>
 
 <template>

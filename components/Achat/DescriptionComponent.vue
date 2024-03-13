@@ -7,6 +7,9 @@ const props = defineProps<{
 
 <template>
   <PersonneDescriptionComponent :personne="props.achat?.personne" />
+  <el-divider content-position="center"
+    ><el-text type="primary">Détails de l'achat</el-text></el-divider
+  >
   <el-descriptions direction="horizontal" :column="2" size="large">
     <el-descriptions-item v-if="props.achat?.code" label="Code:"
       >{{ props.achat?.code }}

@@ -1,13 +1,15 @@
 import { defineStore } from "pinia";
 import { FetchError } from "ofetch";
 import { Achat, AchatValidations, Achats } from "~/types/achat";
+import { useDashboardStore } from "./dashboard";
 
 export const useAchatStore = defineStore("achat", () => {
   const { $apiFetch } = useNuxtApp();
+  const { getPendings } = useDashboardStore();
 
   let achats = ref<Achats>([]);
   let achat = ref<Achat>();
-  let pendingValidations = ref<AchatValidations>([])
+  let pendingValidations = ref<AchatValidations>([]);
   let loading = reactive({ index: false, edit: false });
 
   const unsales = computed<Achats>(() => achats.value.filter((achat) => achat.reste > 0));
@@ -35,6 +37,7 @@ export const useAchatStore = defineStore("achat", () => {
   const create = async (payload: Achat) => {
     const response = await $apiFetch<string>("api/achats", { method: "post", body: payload });
     await getAll();
+    await getPendings();
     return response;
   };
 
@@ -43,6 +46,7 @@ export const useAchatStore = defineStore("achat", () => {
       method: "delete",
     });
     await getAll();
+    await getPendings();
     return response;
   };
 
@@ -59,13 +63,14 @@ export const useAchatStore = defineStore("achat", () => {
 
   const valider = async (id: number) => {
     try {
-      const response = await $apiFetch<string>('api/achats/validate/' + id, { method: "PATCH" })
-      await getPending()
-      return response
+      const response = await $apiFetch<string>("api/achats/validate/" + id, { method: "PATCH" });
+      await getPending();
+      await getPendings();
+      return response;
     } catch (error) {
       if (error instanceof FetchError && error.statusCode === 401) navigateTo("/login");
     }
-  }
+  };
 
   return {
     achat,
@@ -78,6 +83,6 @@ export const useAchatStore = defineStore("achat", () => {
     trash,
     getPending,
     pendingValidations,
-    valider
+    valider,
   };
 });

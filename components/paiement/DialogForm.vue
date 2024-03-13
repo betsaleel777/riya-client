@@ -6,7 +6,7 @@ import { storeToRefs } from "pinia";
 
 const props = defineProps<{ errors: any }>();
 
-let type = reactive({ loyer: "Loyer", achat: "Achat" });
+let type = reactive({ loyer: typePaiement.rent, achat: typePaiement.purchase });
 let showSelect = reactive({ loyer: false, achat: false });
 const { unsales: achats } = storeToRefs(useAchatStore());
 const { impayes: loyers } = storeToRefs(useLoyerStore());
@@ -22,7 +22,6 @@ onMounted(async () => {
 
 const { value: id } = useField<number>("id");
 const edit = computed<boolean>(() => id.value !== undefined);
-console.log(edit.value, id.value);
 const onChangeSelect = () => {
   payableId.value = null;
 };

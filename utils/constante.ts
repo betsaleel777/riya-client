@@ -39,7 +39,7 @@ const rolesNames = {
   admin: "Administrateur",
   financial: "Finance",
   employee: "Employé",
-};
+} as const;
 
 const numberConfig = { suffix: " FCFA", separator: " ", decimal: ",", precision: 0 } as const;
 

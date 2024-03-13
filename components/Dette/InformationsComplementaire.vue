@@ -13,9 +13,9 @@ const { paiement, loading: paiementLoading } = storeToRefs(usePaiementStore());
 const { loyer, loading: loyerLoading } = storeToRefs(useLoyerStore());
 const { getOne: getLoyer } = useLoyerStore();
 const { dette } = useDetteStore();
-if (props.type === "Visite") {
+if (props.type === typeContrat.visite) {
   getVisite(props.origine);
-} else if (props.type === "Loyer") {
+} else if (props.type === typePaiement.rent) {
   getLoyer(props.origine);
 } else {
   getPaiement(props.origine);
@@ -23,7 +23,7 @@ if (props.type === "Visite") {
 </script>
 
 <template>
-  <div v-if="props.type === 'Visite'" v-loading="visiteLoading.edit">
+  <div v-if="props.type === typeContrat.visite" v-loading="visiteLoading.edit">
     <el-collapse accordion class="my-4">
       <el-collapse-item title="Informations de la visite" name="visite">
         <VisiteDescriptionComponent :visite="visite!" />
@@ -36,7 +36,7 @@ if (props.type === "Visite") {
       </el-collapse-item>
     </el-collapse>
   </div>
-  <div v-else-if="props.type === 'Loyer'" v-loading="loyerLoading.edit">
+  <div v-else-if="props.type === typePaiement.rent" v-loading="loyerLoading.edit">
     <LoyerDescriptionComponent :loyer="loyer" />
     <el-alert v-if="loyer?.status === statusPayable.unpaid" type="error"
       >La validation du paiement de cette dette se fera sur vos fonds propres à hauteur de

@@ -127,7 +127,7 @@ const onContratCreated = async () => await getOne(achat.value?.id!);
     :operation-id="contratForm.operation"
     v-model="contratForm.modal"
     :paiement-id="contratForm.paiement"
-    type="Achat"
+    :type="typeContrat.achat"
     @contrat-created="onContratCreated()"
   />
 </template>

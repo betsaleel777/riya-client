@@ -79,7 +79,7 @@ const onContratCreated = async () => {
       :operation-id="achat?.id || 0"
       v-model="contratForm.modal"
       :paiement-id="contratForm.paiement"
-      type="Achat"
+      :type="typeContrat.achat"
       @contrat-created="onContratCreated()"
     />
   </el-dialog>
