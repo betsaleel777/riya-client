@@ -6,11 +6,11 @@ import { useLoyerStore } from "~/store/loyer";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 
 const props = defineProps<{ errors: any }>();
-const { getRentProcessing } = useContratStore();
+const { getRentAvanceProcessing } = useContratStore();
 const { getLastPaid } = useLoyerStore();
 const { contrats, loading } = storeToRefs(useContratStore());
 const { loyer } = storeToRefs(useLoyerStore());
-getRentProcessing();
+getRentAvanceProcessing();
 const { value: id } = useField<number>("contrat_id");
 const disabledDate = computed(() => !Boolean(id.value));
 const onSelected = () => {

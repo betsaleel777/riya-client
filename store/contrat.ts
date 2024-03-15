@@ -56,6 +56,18 @@ export const useContratStore = defineStore("contrat", () => {
     }
   };
 
+  const getRentAvanceProcessing = async () => {
+    try {
+      loading.index = true;
+      contrats.value = await $apiFetch<Contrats>("api/contrats/active-avance-bail", {
+        method: "get",
+      });
+      loading.index = false;
+    } catch (error) {
+      if (error instanceof FetchError && error.statusCode === 401) navigateTo("/login");
+    }
+  };
+
   const validerContrat = async (payload: Contrat) => {
     const response = await $apiFetch<string>(`api/contrats/validate`, {
       method: "post",
@@ -74,6 +86,7 @@ export const useContratStore = defineStore("contrat", () => {
     getOne,
     trash,
     getRentProcessing,
+    getRentAvanceProcessing,
     validerContrat,
   };
 });

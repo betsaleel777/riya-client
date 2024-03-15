@@ -79,7 +79,7 @@ onMounted(async () => {
             id="montant_location"
             class="form-control"
             v-bind="numberConfig"
-            :model-value="value"
+            :model-value="value ?? 0"
             @update:model-value="handleChange"
             :class="{ 'is-invalid': props.errors.montant_location }"
           ></vue-number>
@@ -95,7 +95,7 @@ onMounted(async () => {
             id="montant_investit"
             class="form-control"
             v-bind="numberConfig"
-            :model-value="value"
+            :model-value="value ?? 0"
             @update:model-value="handleChange"
             :class="{ 'is-invalid': props.errors.montant_investit }"
           ></vue-number>
@@ -111,7 +111,7 @@ onMounted(async () => {
             id="cout_achat"
             class="form-control"
             v-bind="numberConfig"
-            :model-value="value"
+            :model-value="value ?? 0"
             @update:model-value="handleChange"
             :class="{ 'is-invalid': props.errors.cout_achat }"
           ></vue-number>
