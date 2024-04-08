@@ -6,18 +6,20 @@ const props = defineProps<{
 </script>
 
 <template>
-  <Field name="id" hidden />
-  <div class="mb-3">
-    <label for="nom" class="form-label">Nom</label>
-    <Field
-      name="nom"
-      type="text"
-      class="form-control"
-      id="nom"
-      placeholder="nom"
-      :class="{ 'is-invalid': props.errors.nom }"
-    />
-    <div class="invalid-feedback" v-if="props.errors.nom">{{ props.errors.nom }}</div>
+  <div class="container">
+    <Field name="id" hidden />
+    <div class="mb-3">
+      <label for="nom" class="form-label">Nom</label>
+      <Field
+        name="nom"
+        type="text"
+        class="form-control"
+        id="nom"
+        placeholder="nom"
+        :class="{ 'is-invalid': props.errors.nom }"
+      />
+      <div class="invalid-feedback" v-if="props.errors.nom">{{ props.errors.nom }}</div>
+    </div>
   </div>
 </template>
 

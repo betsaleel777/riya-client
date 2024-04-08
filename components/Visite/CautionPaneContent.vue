@@ -24,7 +24,7 @@ const { onSubmit } = useSubmitFormSimple(action);
     :initial-values="initials"
     v-slot="{ isSubmitting, errors }"
   >
-    <VisiteCautionForm :errors="errors" :loyer="loyer" />
+    <VisiteCautionForm v-loading="isSubmitting" :errors="errors" :loyer="loyer" />
     <el-button
       style="float: right"
       class="my-2"

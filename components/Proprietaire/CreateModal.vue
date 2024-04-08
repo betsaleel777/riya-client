@@ -12,10 +12,12 @@ const { onSubmit } = useSubmitForm(create, dialog);
 <template>
   <Form class="form-horizontal" @submit="onSubmit" v-slot="{ isSubmitting, errors }">
     <el-dialog v-model="dialog" title="Créer propriétaire" width="35%" destroy-on-close center>
-      <ProprietaireDialogForm :errors="errors" />
+      <ProprietaireDialogForm v-loading="isSubmitting" :errors="errors" />
       <template #footer>
         <span class="dialog-footer">
-          <el-button type="danger" @click="dialog = false" plain>Annuler</el-button>
+          <el-button type="danger" :disabled="isSubmitting" @click="dialog = false" plain
+            >Annuler</el-button
+          >
           <el-button type="primary" :disabled="isSubmitting" native-type="submit">
             enregistrer
           </el-button>

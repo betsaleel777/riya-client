@@ -19,10 +19,12 @@ const { onSubmit } = useSubmitForm(cashed, dialog);
     :initial-values="{ id: props.id }"
   >
     <el-dialog v-model="dialog" title="Montant du loyer" width="40%" destroy-on-close center>
-      <LoyerAmountForm :id="props.id" :errors="errors" />
+      <LoyerAmountForm v-loading="isSubmitting" :id="props.id" :errors="errors" />
       <template #footer>
         <span class="dialog-footer">
-          <el-button type="danger" @click="dialog = false" plain>Annuler</el-button>
+          <el-button type="danger" :disabled="isSubmitting" @click="dialog = false" plain
+            >Annuler</el-button
+          >
           <el-button type="primary" :disabled="isSubmitting" native-type="submit">
             enregistrer
           </el-button>

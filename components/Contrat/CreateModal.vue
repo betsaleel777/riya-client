@@ -22,8 +22,8 @@ const dialog = computed({
     emit("update:modelValue", newValue);
   },
 });
-const onSubmit = (values: any, actions: any) => {
-  validerContrat(values)
+const onSubmit = async (values: any, actions: any) => {
+  return validerContrat(values)
     .then((message) => {
       ElNotification.success({ title: "succès", message });
       if (dialog !== undefined) dialog.value = false;
@@ -47,6 +47,7 @@ const onSubmit = (values: any, actions: any) => {
       scrollable
     >
       <ContratDialogForm
+        v-loading="isSubmitting"
         :errors="errors"
         :operation-id="operationId"
         :paiement-id="paiementId"
@@ -54,7 +55,9 @@ const onSubmit = (values: any, actions: any) => {
       />
       <template #footer>
         <span class="dialog-footer">
-          <el-button type="danger" @click="dialog = false" plain>Annuler</el-button>
+          <el-button type="danger" :disabled="isSubmitting" @click="dialog = false" plain
+            >Annuler</el-button
+          >
           <el-button type="primary" :disabled="isSubmitting" native-type="submit">
             enregistrer
           </el-button>

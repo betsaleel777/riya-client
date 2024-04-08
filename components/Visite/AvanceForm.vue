@@ -9,22 +9,24 @@ watch(mois, (newValue) => {
 </script>
 
 <template>
-  <Field name="id" hidden />
-  <Field name="visite_id" hidden />
-  <Field name="type" value="avances" hidden />
-  <div class="mb-3">
-    <label for="mois" class="form-label">Nombre de mois pour l'avance</label>
-    <Field
-      name="mois"
-      class="form-control"
-      id="mois"
-      placeholder="mois"
-      v-maska
-      data-maska="#"
-      :class="{ 'is-invalid': props.errors.mois }"
-    />
-    <div class="invalid-feedback" v-if="props.errors.mois">{{ props.errors.mois }}</div>
-    <p>{{ montant }} FCFA</p>
+  <div class="container">
+    <Field name="id" hidden />
+    <Field name="visite_id" hidden />
+    <Field name="type" value="avances" hidden />
+    <div class="mb-3">
+      <label for="mois" class="form-label">Nombre de mois pour l'avance</label>
+      <Field
+        name="mois"
+        class="form-control"
+        id="mois"
+        placeholder="mois"
+        v-maska
+        data-maska="#"
+        :class="{ 'is-invalid': props.errors.mois }"
+      />
+      <div class="invalid-feedback" v-if="props.errors.mois">{{ props.errors.mois }}</div>
+      <p>{{ montant }} FCFA</p>
+    </div>
   </div>
 </template>
 

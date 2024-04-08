@@ -2,8 +2,8 @@ export const useSubmitForm = (
   action: (values: any) => Promise<string | undefined>,
   dialog?: Ref<boolean>
 ) => {
-  const onSubmit = (values: any, actions: any) => {
-    action(values)
+  const onSubmit = async (values: any, actions: any) => {
+    return action(values)
       .then((message) => {
         ElNotification.success({ title: "succès", message });
         if (dialog !== undefined) dialog.value = false;

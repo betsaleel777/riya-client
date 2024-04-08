@@ -20,10 +20,14 @@ const { onSubmit } = useSubmitForm(create, dialog);
       center
       scrollable
     >
-      <TerrainDialogForm :errors="errors" />
+      <div v-loading="isSubmitting">
+        <TerrainDialogForm :errors="errors" />
+      </div>
       <template #footer>
         <span class="dialog-footer">
-          <el-button type="danger" @click="dialog = false" plain>Annuler</el-button>
+          <el-button type="danger" :disabled="isSubmitting" @click="dialog = false" plain
+            >Annuler</el-button
+          >
           <el-button type="primary" :disabled="isSubmitting" native-type="submit">
             enregistrer
           </el-button>
