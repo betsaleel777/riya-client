@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { Contrat } from "~/types/contrat";
+import { type Contrat } from "~/types/contrat";
 import { useSocieteStore } from "~/store/societe";
 import { storeToRefs } from "pinia";
 import { Printer } from "@element-plus/icons-vue";

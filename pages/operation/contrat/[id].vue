@@ -24,7 +24,7 @@ getOne(Number(useRoute().params.id)).then(() => {
               <ol class="breadcrumb m-0">
                 <li class="breadcrumb-item"><nuxt-link to="/">Acceuil</nuxt-link></li>
                 <li class="breadcrumb-item">
-                  <nuxt-link to="/operation/purchase">Contrats</nuxt-link>
+                  <nuxt-link to="/operation/contrat">Contrats</nuxt-link>
                 </li>
                 <li class="breadcrumb-item active">{{ contrat?.code }}</li>
               </ol>

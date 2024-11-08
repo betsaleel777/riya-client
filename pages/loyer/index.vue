@@ -3,6 +3,7 @@ import { storeToRefs } from "pinia";
 import { useLoyerStore } from "~/store/loyer";
 import { Loyer } from "~/types/loyer";
 
+
 useHead({ title: "Loyer" });
 definePageMeta({
   middleware: ["auth", "nuxt-permissions"],
@@ -45,8 +46,7 @@ const openAvanceModal = ref(false);
 
 <template>
   <div class="page-content">
-    <div class="container-fluid">
-      <pre class="text-white">{{ loading.index }}</pre>
+    <div class="container-fluid">     
       <div class="row">
         <div class="col-12">
           <div class="card">
