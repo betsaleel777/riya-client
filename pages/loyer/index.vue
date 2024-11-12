@@ -3,7 +3,6 @@ import { storeToRefs } from "pinia";
 import { useLoyerStore } from "~/store/loyer";
 import { Loyer } from "~/types/loyer";
 
-
 useHead({ title: "Loyer" });
 definePageMeta({
   middleware: ["auth", "nuxt-permissions"],
@@ -13,10 +12,20 @@ const links = [
   { path: "/", title: "Acceuil" },
   { path: "#", title: "Loyers" },
 ];
-const { getAll, trash } = useLoyerStore();
-const { loyers, loading } = storeToRefs(useLoyerStore());
-getAll();
-const { filterTableData, setPage, search, total, pageSize } = useLoyerFilterPagination(loyers);
+const { getPaginate, getSearch, trash } = useLoyerStore();
+const { liste, loading } = storeToRefs(useLoyerStore());
+getPaginate();
+const {
+  setPage,
+  setRefresh,
+  search,
+  currentPage,
+  searchExists,
+  loadedSearch,
+  total,
+  pageSize,
+  toSearch,
+} = useServerPagination(liste, getPaginate, getSearch);
 const { handleDelete, handleShow, modal } = useHandleCrudButtons(trash);
 const cashing = reactive({ active: false, id: 0 });
 const classStatus = (status: string) => {
@@ -46,7 +55,7 @@ const openAvanceModal = ref(false);
 
 <template>
   <div class="page-content">
-    <div class="container-fluid">     
+    <div class="container-fluid">
       <div class="row">
         <div class="col-12">
           <div class="card">
@@ -57,30 +66,20 @@ const openAvanceModal = ref(false);
                     >Avance sur loyer</el-button
                   >
                 </template>
-                <el-row class="mt-1 mb-2" justify="end">
-                  <el-col :span="12">
-                    <el-input v-model="search" placeholder="Rechercher" />
-                  </el-col>
-                  <el-col :span="11"></el-col>
-                  <el-col :span="1">
-                    <el-dropdown>
-                      <span class="el-dropdown-link">
-                        <i class="bx bx-filter"></i>
-                      </span>
-                      <template #dropdown>
-                        <el-dropdown-menu>
-                          <el-dropdown-item>payés</el-dropdown-item>
-                          <el-dropdown-item>impayés</el-dropdown-item>
-                          <el-dropdown-item>en attente</el-dropdown-item>
-                        </el-dropdown-menu>
-                      </template>
-                    </el-dropdown>
-                  </el-col>
-                </el-row>
+                <StructureSearchServer
+                  :loaded-search="loadedSearch"
+                  :search-exists="searchExists"
+                  @on-search="search"
+                  @on-refresh="setRefresh"
+                >
+                  <template #searching>
+                    <el-input v-model="toSearch" placeholder="Code, Client, Bien, Date et statut" />
+                  </template>
+                </StructureSearchServer>
                 <el-table
                   v-loading="loading.index"
-                  :data="filterTableData"
-                  style="width: 100%"
+                  :data="liste?.data"
+                  class="w-100"
                   empty-text="aucun Loyer"
                 >
                   <el-table-column prop="code" label="Code" width="100" />
@@ -106,9 +105,13 @@ const openAvanceModal = ref(false);
                   <el-table-column prop="paid" label="Versé" align="center" width="150" sortable>
                     <template #default="scope"> {{ useCurrency(scope.row.paid) }} </template>
                   </el-table-column>
-                  <el-table-column prop="status" label="Statut" width="150"
-                    ><template #default="scope">
-                      <el-tag :type="classStatus(scope.row.status)">{{ scope.row.status }}</el-tag>
+                  <el-table-column prop="status" label="Statut" width="150">
+                    <template #default="scope">
+                      <el-tag
+                        :type="classStatus(scope.row.status) as '' | 'warning' | 'success' | 'danger' | 'info'"
+                      >
+                        {{ scope.row.status }}
+                      </el-tag>
                     </template>
                   </el-table-column>
                   <el-table-column prop="created_at" label="Date" width="150" />
@@ -152,6 +155,7 @@ const openAvanceModal = ref(false);
                   class="mt-4"
                   justify="center"
                   v-model:page-size="pageSize"
+                  v-model:current-page="currentPage"
                   @current-change="setPage"
                   hide-on-single-page
                 />

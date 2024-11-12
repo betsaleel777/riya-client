@@ -13,10 +13,20 @@ const links = [
   { path: "/", title: "Acceuil" },
   { path: "#", title: "Dettes" },
 ];
-const { getAll, repay } = useDetteStore();
-const { dettes, loading } = storeToRefs(useDetteStore());
-getAll();
-const { filterTableData, setPage, search, total, pageSize } = useDetteFilterPagination(dettes);
+const { getPaginate, getSearch, repay } = useDetteStore();
+const { liste, loading } = storeToRefs(useDetteStore());
+getPaginate();
+const {
+  setPage,
+  setRefresh,
+  search,
+  currentPage,
+  searchExists,
+  loadedSearch,
+  total,
+  pageSize,
+  toSearch,
+} = useServerPagination(liste, getPaginate, getSearch);
 const classStatus = (status: string) => {
   const classes = {
     [statusPayable.pending as string]: "warning",
@@ -51,28 +61,19 @@ const { runShowModal, show } = useShowModal();
           <div class="card">
             <div class="card-body">
               <StructurePageHeader :breadcrumbs="links" title="Dettes">
-                <el-row class="mt-1 mb-2" justify="end">
-                  <el-col :span="12">
-                    <el-input v-model="search" placeholder="Rechercher" />
-                  </el-col>
-                  <el-col :span="11"></el-col>
-                  <el-col :span="1">
-                    <el-dropdown>
-                      <span class="el-dropdown-link">
-                        <i class="bx bx-filter"></i>
-                      </span>
-                      <template #dropdown>
-                        <el-dropdown-menu>
-                          <el-dropdown-item>payés</el-dropdown-item>
-                          <el-dropdown-item>impayés</el-dropdown-item>
-                        </el-dropdown-menu>
-                      </template>
-                    </el-dropdown>
-                  </el-col>
-                </el-row>
+                <StructureSearchServer
+                  :loaded-search="loadedSearch"
+                  :search-exists="searchExists"
+                  @on-search="search"
+                  @on-refresh="setRefresh"
+                >
+                  <template #searching>
+                    <el-input v-model="toSearch" placeholder="Code, Contrat, Date et statut" />
+                  </template>
+                </StructureSearchServer>
                 <el-table
                   v-loading="loading.index"
-                  :data="filterTableData"
+                  :data="liste?.data"
                   style="width: 100%"
                   empty-text="Aucune dette"
                 >
@@ -92,9 +93,12 @@ const { runShowModal, show } = useShowModal();
                       {{ useCurrency(scope.row.montant) }}
                     </template>
                   </el-table-column>
-                  <el-table-column prop="status" label="Statut"
-                    ><template #default="scope">
-                      <el-tag :type="classStatus(scope.row.status)">{{ scope.row.status }}</el-tag>
+                  <el-table-column prop="status" label="Statut">
+                    <template #default="scope">
+                      <el-tag
+                        :type="classStatus(scope.row.status) as '' | 'success' | 'warning' | 'info' | 'danger'"
+                        >{{ scope.row.status }}</el-tag
+                      >
                     </template>
                   </el-table-column>
                   <el-table-column prop="created_at" label="Date" sortable />
@@ -125,6 +129,7 @@ const { runShowModal, show } = useShowModal();
                   class="mt-4"
                   justify="center"
                   v-model:page-size="pageSize"
+                  v-model:current-page="currentPage"
                   @current-change="setPage"
                   hide-on-single-page
                 />

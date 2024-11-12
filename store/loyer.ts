@@ -3,6 +3,7 @@ import { FetchError } from "ofetch";
 import { AvanceLoyerForm, Loyer, LoyerValidations, Loyers } from "~/types/loyer";
 import { statusPayable } from "~/utils/constante";
 import { useDashboardStore } from "./dashboard";
+import { DataPaginate, SearchData } from "~/types/global";
 
 export const useLoyerStore = defineStore("loyer", () => {
   const { $apiFetch } = useNuxtApp();
@@ -10,6 +11,7 @@ export const useLoyerStore = defineStore("loyer", () => {
 
   let loyers = ref<Loyers>([]);
   let loyer = ref<Loyer>();
+  let liste = ref<DataPaginate>();
   let pendingValidations = ref<LoyerValidations>([]);
   let loading = reactive({ index: false, edit: false });
 
@@ -21,6 +23,26 @@ export const useLoyerStore = defineStore("loyer", () => {
     try {
       loading.index = true;
       loyers.value = await $apiFetch<Loyers>("api/loyers");
+      loading.index = false;
+    } catch (error) {
+      if (error instanceof FetchError && error.statusCode === 401) navigateTo("/login");
+    }
+  };
+
+  const getPaginate = async (page: number = 1): Promise<void> => {
+    try {
+      loading.index = true;
+      liste.value = await $apiFetch<DataPaginate>("api/loyers/paginate", { params: { page } });
+      loading.index = false;
+    } catch (error) {
+      if (error instanceof FetchError && error.statusCode === 401) navigateTo("/login");
+    }
+  };
+
+  const getSearch = async (payload: SearchData): Promise<void> => {
+    try {
+      loading.index = true;
+      liste.value = await $apiFetch<DataPaginate>("api/loyers/search", { params: payload });
       loading.index = false;
     } catch (error) {
       if (error instanceof FetchError && error.statusCode === 401) navigateTo("/login");
@@ -92,6 +114,7 @@ export const useLoyerStore = defineStore("loyer", () => {
   };
 
   return {
+    liste,
     loyers,
     loyer,
     impayes,
@@ -104,6 +127,8 @@ export const useLoyerStore = defineStore("loyer", () => {
     getPending,
     avancer,
     getLastPaid,
+    getPaginate,
+    getSearch,
     pendingValidations,
   };
 });

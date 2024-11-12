@@ -1,6 +1,6 @@
 import { Appartement } from "./appartement";
 import { Contrat } from "./contrat";
-import { Entity, Media } from "./global";
+import { Entity, Links, Media, MetaPaginate } from "./global";
 import { Paiements } from "./paiements";
 import { Client } from "./personne";
 import { Proprietaire } from "./proprietaire";
