@@ -8,10 +8,10 @@ export const usePaiementStore = defineStore("paiement", () => {
   const { $apiFetch } = useNuxtApp();
   const { getOne: getAchat } = useAchatStore();
   const { getPendings } = useDashboardStore();
-
   let paiements = ref<Paiements>([]);
   let paiement = ref<Paiement>();
   let loading = reactive({ index: false, edit: false });
+  const { getPaginate, getSearch, liste } = usePaginationMethods("api/paiements", $apiFetch, loading);
 
   const getAll = async () => {
     try {
@@ -35,7 +35,7 @@ export const usePaiementStore = defineStore("paiement", () => {
       method: "post",
       body: payload,
     });
-    await getAll();
+    await getPaginate();
     await getPendings();
     return response;
   };
@@ -54,13 +54,13 @@ export const usePaiementStore = defineStore("paiement", () => {
       method: "put",
       body: payload,
     });
-    await getAll();
+    await getPaginate();
     return response;
   };
 
   const trash = async (id: number) => {
     const response = await $apiFetch<string>("api/paiements/" + id, { method: "delete" });
-    await getAll();
+    await getPaginate();
     return response;
   };
 
@@ -87,7 +87,7 @@ export const usePaiementStore = defineStore("paiement", () => {
     const response = await $apiFetch<string>(`api/paiements/validate/${payload.id}`, {
       method: "PATCH",
     });
-    await getAll();
+    await getPaginate();
     await getPendings();
     return response;
   };
@@ -102,6 +102,7 @@ export const usePaiementStore = defineStore("paiement", () => {
     paiement,
     paiements,
     loading,
+    liste,
     getAll,
     create,
     createDirect,
@@ -112,5 +113,7 @@ export const usePaiementStore = defineStore("paiement", () => {
     valider,
     validerPaiement,
     getByPayable,
+    getPaginate,
+    getSearch,
   };
 });

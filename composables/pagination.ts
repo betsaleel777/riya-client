@@ -1,8 +1,10 @@
 import { DataPaginate, SearchData } from "~/types/global";
+import { FetchError, FetchRequest, FetchOptions } from "ofetch";
 type PaginateFunction = (id?: number) => Promise<void>;
 type SearchFunction = (data: SearchData) => Promise<void>;
+type ApiFetch = <T>(endpoint: FetchRequest, options?: FetchOptions) => Promise<T>;
 
-export const useServerPagination = (
+const useServerPagination = (
   liste: Ref<DataPaginate | undefined>,
   getPaginate: PaginateFunction,
   getSearch: SearchFunction
@@ -41,3 +43,28 @@ export const useServerPagination = (
     loadedSearch,
   };
 };
+const usePaginationMethods = (path: string, fetch: ApiFetch, loading: any) => {
+  let liste = ref<DataPaginate>();
+  const getPaginate = async (page: number = 1): Promise<void> => {
+    try {
+      loading.index = true;
+      liste.value = await fetch<DataPaginate>(path + "/paginate", { params: { page } });
+      loading.index = false;
+    } catch (error) {
+      if (error instanceof FetchError && error.statusCode === 401) navigateTo("/login");
+    }
+  };
+
+  const getSearch = async (payload: SearchData): Promise<void> => {
+    try {
+      loading.index = true;
+      liste.value = await fetch<DataPaginate>(path + "/search", { params: payload });
+      loading.index = false;
+    } catch (error) {
+      if (error instanceof FetchError && error.statusCode === 401) navigateTo("/login");
+    }
+  };
+  return { liste, getSearch, getPaginate };
+};
+
+export { useServerPagination, usePaginationMethods };

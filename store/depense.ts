@@ -54,14 +54,15 @@ const useTypeDepenseStore = defineStore("type-depense", () => {
 
   return { types, type, loading, getAll, create, update, getOne, trash };
 });
+
 const useDepenseStore = defineStore("depense", () => {
   const { $apiFetch } = useNuxtApp();
   const { getPendings } = useDashboardStore();
-
   let depenses = ref<Depenses>([]);
   let depense = ref<Depense>();
   let pending = ref<DepenseValidations>([]);
   let loading = reactive({ index: false, edit: false });
+  const { getPaginate, getSearch, liste } = usePaginationMethods("api/depenses", $apiFetch, loading);
 
   const getAll = async () => {
     try {
@@ -85,7 +86,7 @@ const useDepenseStore = defineStore("depense", () => {
 
   const create = async (payload: Depense) => {
     const response = await $apiFetch<string>("api/depenses", { method: "post", body: payload });
-    await getAll();
+    await getPaginate();
     await getPendings();
     return response;
   };
@@ -95,13 +96,13 @@ const useDepenseStore = defineStore("depense", () => {
       method: "put",
       body: payload,
     });
-    await getAll();
+    await getPaginate();
     return response;
   };
 
   const trash = async (id: number) => {
     const response = await $apiFetch<string>("api/depenses/" + id, { method: "delete" });
-    await getAll();
+    await getPaginate();
     return response;
   };
 
@@ -136,7 +137,10 @@ const useDepenseStore = defineStore("depense", () => {
     trash,
     validate,
     getPending,
+    getPaginate,
+    getSearch,
     pending,
+    liste,
   };
 });
 

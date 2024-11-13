@@ -3,17 +3,15 @@ import { FetchError } from "ofetch";
 import { AvanceLoyerForm, Loyer, LoyerValidations, Loyers } from "~/types/loyer";
 import { statusPayable } from "~/utils/constante";
 import { useDashboardStore } from "./dashboard";
-import { DataPaginate, SearchData } from "~/types/global";
 
 export const useLoyerStore = defineStore("loyer", () => {
   const { $apiFetch } = useNuxtApp();
   const { getPendings } = useDashboardStore();
-
   let loyers = ref<Loyers>([]);
   let loyer = ref<Loyer>();
-  let liste = ref<DataPaginate>();
   let pendingValidations = ref<LoyerValidations>([]);
   let loading = reactive({ index: false, edit: false });
+  const { getPaginate, getSearch, liste } = usePaginationMethods("api/loyers", $apiFetch, loading);
 
   const impayes = computed<Loyers>(() =>
     loyers.value.filter((loyer) => loyer.status === statusPayable.unpaid)
@@ -23,26 +21,6 @@ export const useLoyerStore = defineStore("loyer", () => {
     try {
       loading.index = true;
       loyers.value = await $apiFetch<Loyers>("api/loyers");
-      loading.index = false;
-    } catch (error) {
-      if (error instanceof FetchError && error.statusCode === 401) navigateTo("/login");
-    }
-  };
-
-  const getPaginate = async (page: number = 1): Promise<void> => {
-    try {
-      loading.index = true;
-      liste.value = await $apiFetch<DataPaginate>("api/loyers/paginate", { params: { page } });
-      loading.index = false;
-    } catch (error) {
-      if (error instanceof FetchError && error.statusCode === 401) navigateTo("/login");
-    }
-  };
-
-  const getSearch = async (payload: SearchData): Promise<void> => {
-    try {
-      loading.index = true;
-      liste.value = await $apiFetch<DataPaginate>("api/loyers/search", { params: payload });
       loading.index = false;
     } catch (error) {
       if (error instanceof FetchError && error.statusCode === 401) navigateTo("/login");
@@ -74,7 +52,7 @@ export const useLoyerStore = defineStore("loyer", () => {
 
   const trash = async (id: number) => {
     const response = await $apiFetch<string>("api/loyers/" + id, { method: "delete" });
-    await getAll();
+    await getPaginate();
     return response;
   };
 
@@ -94,21 +72,21 @@ export const useLoyerStore = defineStore("loyer", () => {
       method: "PATCH",
       params: { id, montant },
     });
-    await getAll();
+    await getPaginate();
     await getPendings();
     return response;
   };
 
   const valider = async (id: number, fromValidationPage: boolean) => {
     const response = await $apiFetch<string>(`api/loyers/validate/${id}`, { method: "PATCH" });
-    fromValidationPage ? await getPending() : await getAll();
+    fromValidationPage ? await getPending() : await getPaginate();
     await getPendings();
     return response;
   };
 
   const avancer = async (avance: AvanceLoyerForm) => {
     const response = await $apiFetch<string>("api/loyers/avance", { method: "post", body: avance });
-    await getAll();
+    await getPaginate();
     await getPendings();
     return response;
   };

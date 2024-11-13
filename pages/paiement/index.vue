@@ -11,11 +11,20 @@ const links = [
   { path: "/", title: "Acceuil" },
   { path: "#", title: "Paiements" },
 ];
-const { getAll, trash } = usePaiementStore();
-const { paiements, loading } = storeToRefs(usePaiementStore());
-getAll();
-const { filterTableData, setPage, search, total, pageSize } =
-  usePaiementFilterPagination(paiements);
+const { getPaginate, getSearch, trash } = usePaiementStore();
+const { liste, loading } = storeToRefs(usePaiementStore());
+getPaginate();
+const {
+  setPage,
+  setRefresh,
+  search,
+  currentPage,
+  searchExists,
+  loadedSearch,
+  total,
+  pageSize,
+  toSearch,
+} = useServerPagination(liste, getPaginate, getSearch);
 const { handleDelete, handleEdit, handleShow, modal } = useHandleCrudButtons(trash);
 
 const classStatus = (state: string) => {
@@ -35,28 +44,19 @@ const classStatus = (state: string) => {
                 <template #options>
                   <el-button @click="modal.create = true" plain type="primary">Ajouter</el-button>
                 </template>
-                <el-row class="mt-1 mb-2" justify="end">
-                  <el-col :span="12">
-                    <el-input v-model="search" placeholder="Rechercher" />
-                  </el-col>
-                  <el-col :span="11"></el-col>
-                  <el-col :span="1">
-                    <el-dropdown>
-                      <span class="el-dropdown-link">
-                        <i class="bx bx-filter"></i>
-                      </span>
-                      <template #dropdown>
-                        <el-dropdown-menu>
-                          <el-dropdown-item>validées</el-dropdown-item>
-                          <el-dropdown-item>en attente</el-dropdown-item>
-                        </el-dropdown-menu>
-                      </template>
-                    </el-dropdown>
-                  </el-col>
-                </el-row>
+                <StructureSearchServer
+                  :loaded-search="loadedSearch"
+                  :search-exists="searchExists"
+                  @on-search="search"
+                  @on-refresh="setRefresh"
+                >
+                  <template #searching>
+                    <el-input v-model="toSearch" placeholder="code, statut, date" />
+                  </template>
+                </StructureSearchServer>
                 <el-table
                   v-loading="loading.index"
-                  :data="filterTableData"
+                  :data="liste?.data"
                   style="width: 100%"
                   empty-text="aucun paiement"
                 >
@@ -117,6 +117,7 @@ const classStatus = (state: string) => {
                   class="mt-4"
                   justify="center"
                   v-model:page-size="pageSize"
+                  v-model:current-page="currentPage"
                   @current-change="setPage"
                   hide-on-single-page
                 />
@@ -141,12 +142,3 @@ const classStatus = (state: string) => {
     <!-- container-fluid -->
   </div>
 </template>
-
-<style scoped>
-.el-dropdown-link {
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  font-size: 2.3em;
-}
-</style>
