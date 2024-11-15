@@ -73,6 +73,7 @@ type DataPaginate = {
   meta: MetaPaginate;
 };
 type SearchData = { search: string; page: number };
+type Variant = '' | 'success' | 'warning' | 'info' | 'danger'
 
 export {
   Entity,
@@ -89,4 +90,5 @@ export {
   MetaPaginate,
   DataPaginate,
   SearchData,
+  Variant,
 };

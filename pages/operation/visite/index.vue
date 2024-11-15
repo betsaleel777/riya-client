@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
 import { useVisiteStore } from "~/store/visite";
+import { Variant } from "~/types/global";
 import { statusValidable, statusAvance } from "~/utils/constante";
 
 useHead({ title: "Location" });
@@ -96,7 +97,7 @@ const classStatus = (status: string) => {
                     <template #default="scope">
                       <el-tag
                         class="text-truncated"
-                        :type="classStatus(scope.row.avanceStatus) as '' | 'success' | 'warning' | 'info' | 'danger'"
+                        :type="classStatus(scope.row.avanceStatus) as Variant"
                         >{{ scope.row.avanceStatus }}</el-tag
                       >
                     </template>

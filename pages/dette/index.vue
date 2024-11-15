@@ -3,6 +3,7 @@ import { storeToRefs } from "pinia";
 import { useDetteStore } from "~/store/dette";
 import { statusPayable } from "~/utils/constante";
 import { Dette } from "~/types/dette";
+import { Variant } from "~/types/global";
 
 useHead({ title: "Dette" });
 definePageMeta({
@@ -50,6 +51,7 @@ const handleRepay = (dette: Dette) => {
   });
 };
 const { runShowModal, show } = useShowModal();
+const { runOperationShowModal, details } = useOperationShowModal();
 </script>
 
 <template>
@@ -73,14 +75,23 @@ const { runShowModal, show } = useShowModal();
                 </StructureSearchServer>
                 <el-table
                   v-loading="loading.index"
-                  :data="liste?.data"
+                  :data="liste?.data as Dette[]"
                   style="width: 100%"
                   empty-text="Aucune dette"
                 >
                   <el-table-column prop="code" label="Code" width="100" />
                   <el-table-column prop="origine_code" label="Contrat">
-                    <template #default="scope">
-                      <el-link type="primary">{{ scope.row.origine_code }}</el-link>
+                    <template #default="{ row }">
+                      <el-link
+                        @click="
+                          runOperationShowModal(
+                            parseInt(row.origine_id),
+                            row.origine_type.toLowerCase()
+                          )
+                        "
+                        type="primary"
+                        >{{ row.origine_code }}</el-link
+                      >
                     </template>
                   </el-table-column>
                   <el-table-column prop="origine_type" label="Dette sur">
@@ -95,10 +106,9 @@ const { runShowModal, show } = useShowModal();
                   </el-table-column>
                   <el-table-column prop="status" label="Statut">
                     <template #default="scope">
-                      <el-tag
-                        :type="classStatus(scope.row.status) as '' | 'success' | 'warning' | 'info' | 'danger'"
-                        >{{ scope.row.status }}</el-tag
-                      >
+                      <el-tag :type="classStatus(scope.row.status) as Variant">{{
+                        scope.row.status
+                      }}</el-tag>
                     </template>
                   </el-table-column>
                   <el-table-column prop="created_at" label="Date" sortable />
@@ -135,6 +145,23 @@ const { runShowModal, show } = useShowModal();
                 />
               </StructurePageHeader>
               <LazyDetteShowModal :id="show.id" v-model="show.enable" v-if="show.enable" />
+              <LazyLoyerShowModal
+                :id="details.loyer.id"
+                v-if="details.loyer.dialog"
+                v-model="details.loyer.dialog"
+              />
+              <LazyAchatShowModal
+                :id="details.achat.id"
+                v-if="details.achat.dialog"
+                v-model="details.achat.dialog"
+                :from-validation-page="false"
+              />
+              <LazyVisiteShowModal
+                :id="details.visite.id"
+                v-if="details.visite.dialog"
+                v-model="details.visite.dialog"
+                :from-validation-page="true"
+              />
             </div>
           </div>
         </div>

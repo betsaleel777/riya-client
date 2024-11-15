@@ -2,6 +2,7 @@
 import { storeToRefs } from "pinia";
 import { useContratStore } from "~/store/contrat";
 import { NuxtLink } from "#components";
+import { Variant } from "~/types/global";
 
 useHead({ title: "Contrats" });
 definePageMeta({
@@ -78,7 +79,7 @@ const activateDescriptionModal = (id: number, type: string) => {
                   <el-table-column prop="status" label="Statut" width="120">
                     <template #default="scope">
                       <el-tag
-                        :type="classTypeStatus(scope.row.status) as '' | 'success' | 'warning' | 'info' | 'danger'"
+                        :type="classTypeStatus(scope.row.status) as Variant"
                         >{{ scope.row.status }}</el-tag
                       >
                     </template>
