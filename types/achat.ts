@@ -6,8 +6,8 @@ import { Terrain } from "./terrain";
 
 interface Achat extends Entity {
   code: string;
-  personne: Client;
-  bien: Appartement | Terrain;
+  personne: Client & string;
+  bien: Appartement & Terrain & string;
   personne_id: number;
   bien_id: number;
   montant: number;

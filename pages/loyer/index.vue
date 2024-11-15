@@ -83,16 +83,8 @@ const openAvanceModal = ref(false);
                   empty-text="aucun Loyer"
                 >
                   <el-table-column prop="code" label="Code" width="100" />
-                  <el-table-column prop="client" label="Client" sortable>
-                    <template #default="scope">
-                      <el-text truncated>{{ scope.row.client }}</el-text>
-                    </template>
-                  </el-table-column>
-                  <el-table-column prop="bien" label="Bien" sortable>
-                    <template #default="scope">
-                      <el-text truncated>{{ scope.row.bien }}</el-text>
-                    </template>
-                  </el-table-column>
+                  <el-table-column show-overflow-tooltip prop="client" label="Client" />
+                  <el-table-column show-overflow-tooltip prop="bien" label="Bien" />
                   <el-table-column
                     prop="montant"
                     label="Montant"

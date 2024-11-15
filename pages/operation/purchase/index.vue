@@ -31,7 +31,11 @@ const { handleDelete, modal } = useHandleCrudButtons(trash);
                 <template #options>
                   <el-button @click="modal.create = true" plain type="primary">Ajouter</el-button>
                 </template>
-                <el-input v-model="search" class="w-50 mt-1 mb-2" placeholder="Rechercher" />
+                <el-input
+                  v-model="search"
+                  class="w-50 mt-1 mb-2"
+                  placeholder="Code, client, bien"
+                />
                 <el-table
                   v-loading="loading.index"
                   :data="filterTableData"
@@ -39,17 +43,15 @@ const { handleDelete, modal } = useHandleCrudButtons(trash);
                   empty-text="aucun achat"
                 >
                   <el-table-column prop="code" label="Code" width="120" />
-                  <el-table-column prop="personne" label="Client" sortable>
-                    <template #default="scope">
-                      <el-text truncated>{{ scope.row.personne }}</el-text>
-                    </template>
-                  </el-table-column>
-                  <el-table-column prop="bien" label="Bien">
-                    <template #default="scope">
-                      <el-text truncated>{{ scope.row.bien }}</el-text>
-                    </template>
-                  </el-table-column>
-                  <el-table-column prop="total" label="Payé" width="150" sortable>
+                  <el-table-column prop="personne" label="Client" />
+                  <el-table-column show-overflow-tooltip prop="bien" label="Bien" />
+                  <el-table-column
+                    show-overflow-tooltip
+                    prop="total"
+                    label="Payé"
+                    width="150"
+                    sortable
+                  >
                     <template #default="scope">
                       {{ useCurrency(scope.row.total) }}
                     </template>

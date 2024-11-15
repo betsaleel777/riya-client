@@ -33,19 +33,20 @@ const classType = (status: string) => {
                 <template #options>
                   <el-button @click="modal.create = true" plain type="primary">Ajouter</el-button>
                 </template>
-                <el-input v-model="search" class="w-50 mt-1 mb-2" placeholder="Rechercher" />
-                <el-table v-loading="loading.index" :data="filterTableData" style="width: 100%">
-                  <el-table-column prop="nom" label="Nom" sortable>
-                    <template #default="scope">
-                      <el-text truncated>{{ scope.row.nom.toUpperCase() }}</el-text>
-                    </template>
-                  </el-table-column>
-                  <el-table-column prop="quartier" label="Quartier" width="200" sortable>
-                    <template #default="scope">
-                      <el-text truncated>{{ scope.row.quartier }}</el-text>
-                    </template>
-                  </el-table-column>
-                  <el-table-column prop="type" label="Type" sortable width="200">
+                <el-input
+                  v-model="search"
+                  class="w-50 mt-1 mb-2"
+                  placeholder="Nom, quartier, propriétaire, statut"
+                />
+                <el-table v-loading="loading.index" :data="filterTableData" class="w-100">
+                  <el-table-column show-overflow-tooltip prop="nom" label="Nom" />
+                  <el-table-column
+                    show-overflow-tooltip
+                    prop="quartier"
+                    label="Quartier"
+                    width="200"
+                  />
+                  <el-table-column prop="type" label="Type" width="200">
                     <template #default="scope">
                       <el-tag class="text-truncate" v-if="scope.row.type">{{
                         scope.row.type
@@ -53,11 +54,7 @@ const classType = (status: string) => {
                       <el-tag v-else type="info">Aucun type</el-tag>
                     </template>
                   </el-table-column>
-                  <el-table-column prop="proprietaire" label="proprietaire">
-                    <template #default="scope">
-                      <el-text truncated>{{ scope.row.proprietaire }}</el-text>
-                    </template>
-                  </el-table-column>
+                  <el-table-column show-overflow-tooltip prop="proprietaire" label="Proprietaire" />
                   <el-table-column prop="status" label="Statut" width="150">
                     <template #default="scope">
                       <el-tag :type="classType(scope.row.status)">{{ scope.row.status }}</el-tag>

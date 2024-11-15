@@ -30,20 +30,20 @@ const { handleDelete, handleEdit, handleShow, modal } = useHandleCrudButtons(tra
                 <template #options>
                   <el-button @click="modal.create = true" plain type="primary">Ajouter</el-button>
                 </template>
-                <el-input v-model="search" class="w-50 mt-1 mb-2" placeholder="Rechercher" />
+                <el-input
+                  v-model="search"
+                  class="w-50 mt-1 mb-2"
+                  placeholder="Nom complet, téléphone, cni"
+                />
                 <el-table
                   v-loading="loading.index"
                   :data="filterTableData"
-                  style="width: 100%"
+                  class="w-100"
                   empty-text="aucun client"
                 >
-                  <el-table-column prop="nom_complet" label="Nom" sortable>
-                    <template #default="scope">
-                      {{ scope.row.nom_complet.toUpperCase() }}
-                    </template>
-                  </el-table-column>
-                  <el-table-column prop="telephone" label="Téléphone" width="200" sortable />
-                  <el-table-column prop="email" label="Email" sortable>
+                  <el-table-column show-overflow-tooltip prop="nom_complet" label="Nom complet" />
+                  <el-table-column prop="telephone" label="Téléphone" width="200" />
+                  <el-table-column prop="email" label="Email">
                     <template #default="scope">
                       <span v-if="scope.row.email">{{ scope.row.email }}</span>
                       <el-tag v-else type="info">Aucun email</el-tag>

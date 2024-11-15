@@ -42,37 +42,22 @@ const classStatus = (status: string) => {
                   <el-button @click="modal.create = true" plain type="primary">Ajouter</el-button>
                 </template>
                 <el-row class="mt-1 mb-2" justify="end">
-                  <el-col :span="12">
-                    <el-input v-model="search" placeholder="Rechercher" />
-                  </el-col>
-                  <el-col :span="11"></el-col>
-                  <el-col :span="1">
-                    <el-dropdown>
-                      <span class="el-dropdown-link">
-                        <i class="bx bx-filter"></i>
-                      </span>
-                      <template #dropdown>
-                        <el-dropdown-menu>
-                          <el-dropdown-item>validée</el-dropdown-item>
-                          <el-dropdown-item>avance en cours</el-dropdown-item>
-                          <el-dropdown-item>simple visite</el-dropdown-item>
-                        </el-dropdown-menu>
-                      </template>
-                    </el-dropdown>
+                  <el-col :span="24">
+                    <el-input
+                      class="w-50"
+                      v-model="search"
+                      placeholder="code, client, statut, statut avance"
+                    />
                   </el-col>
                 </el-row>
                 <el-table
                   v-loading="loading.index"
                   :data="filterTableData"
-                  style="width: 100%"
+                  class="w-100"
                   empty-text="aucune Location"
                 >
                   <el-table-column prop="code" label="Code" width="100" />
-                  <el-table-column prop="personne" label="Client" sortable>
-                    <template #default="scope">
-                      <el-text truncated>{{ scope.row.personne }}</el-text>
-                    </template>
-                  </el-table-column>
+                  <el-table-column show-overflow-tooltip prop="personne" label="Client" />
                   <el-table-column
                     prop="frais"
                     label="Frais agence"
@@ -107,11 +92,13 @@ const classStatus = (status: string) => {
                       }}</el-tag>
                     </template>
                   </el-table-column>
-                  <el-table-column prop="avanceStatus" label="Status avance" width="150"
-                    ><template #default="scope">
-                      <el-tag class="text-truncated" :type="classStatus(scope.row.avanceStatus)">{{
-                        scope.row.avanceStatus
-                      }}</el-tag>
+                  <el-table-column prop="avanceStatus" label="Statut avance" width="150">
+                    <template #default="scope">
+                      <el-tag
+                        class="text-truncated"
+                        :type="classStatus(scope.row.avanceStatus) as '' | 'success' | 'warning' | 'info' | 'danger'"
+                        >{{ scope.row.avanceStatus }}</el-tag
+                      >
                     </template>
                   </el-table-column>
                   <el-table-column width="150" align="right">

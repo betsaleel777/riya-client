@@ -16,13 +16,11 @@ const { getAll, trash } = useContratStore();
 const { contrats, loading } = storeToRefs(useContratStore());
 getAll();
 const { filterTableData, setPage, search, total, pageSize } = useContratFilterPagination(contrats);
-const { handleDelete, modal } = useHandleCrudButtons(trash);
+const { handleDelete } = useHandleCrudButtons(trash);
 const classTypeStatus = (status: string) => {
   return status === statusContrat.notuptodate ? "danger" : "success";
 };
-const classTypeState = (state: string) => {
-  return state === stateContrat.using ? "" : "danger";
-};
+const classTypeState = (state: string) => (state === stateContrat.using ? "" : "danger");
 const showDescription = reactive({
   visite: { id: 0, modal: false },
   achat: { id: 0, modal: false },
@@ -47,11 +45,15 @@ const activateDescriptionModal = (id: number, type: string) => {
           <div class="card">
             <div class="card-body">
               <StructurePageHeader :breadcrumbs="links" title="Contrats">
-                <el-input v-model="search" class="w-50 mt-1 mb-2" placeholder="Rechercher" />
+                <el-input
+                  v-model="search"
+                  class="w-50 mt-1 mb-2"
+                  placeholder="Code, client, bien, statut, etat"
+                />
                 <el-table
                   v-loading="loading.index"
                   :data="filterTableData"
-                  style="width: 100%"
+                  class="w-100"
                   empty-text="aucun contrat"
                 >
                   <el-table-column prop="code" label="Code" width="150" align="left">
@@ -65,18 +67,20 @@ const activateDescriptionModal = (id: number, type: string) => {
                       >
                     </template>
                   </el-table-column>
-                  <el-table-column prop="bien" label="Bien" align="center" sortable>
-                    <template #default="scope">
-                      <el-text truncated>{{ scope.row.bien }}</el-text>
-                    </template>
-                  </el-table-column>
-                  <el-table-column prop="client" label="Client" align="center" sortable />
+                  <el-table-column
+                    show-overflow-tooltip
+                    prop="client"
+                    label="Client"
+                    align="center"
+                  />
+                  <el-table-column show-overflow-tooltip prop="bien" label="Bien" align="center" />
                   <el-table-column prop="debut" label="Debut" width="130" align="center" sortable />
                   <el-table-column prop="status" label="Statut" width="120">
                     <template #default="scope">
-                      <el-tag :type="classTypeStatus(scope.row.status)">{{
-                        scope.row.status
-                      }}</el-tag>
+                      <el-tag
+                        :type="classTypeStatus(scope.row.status) as '' | 'success' | 'warning' | 'info' | 'danger'"
+                        >{{ scope.row.status }}</el-tag
+                      >
                     </template>
                   </el-table-column>
                   <el-table-column prop="etat" label="Etat" width="100">
