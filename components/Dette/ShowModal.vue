@@ -17,31 +17,26 @@ const { dette, loading } = storeToRefs(useDetteStore());
 const { getOne, valider } = useDetteStore();
 await getOne(props.id);
 const handleValidate = () => {
-  ElMessageBox.confirm(
-    `Cette action est irréversible, voulez réelement valider le remboursement de la dette ${dette.value?.code}?`,
-    "Attention",
-    {
-      confirmButtonText: "Confirmer",
-      cancelButtonText: "Abandonner",
-      type: "warning",
-    }
-  ).then(() => {
+  const message = `Cette action est irréversible, voulez réelement valider le remboursement de la dette ${dette.value?.code}?`;
+  ElMessageBox.confirm(message, "Attention", {
+    confirmButtonText: "Confirmer",
+    cancelButtonText: "Abandonner",
+    type: "warning",
+  }).then(() => {
     valider(dette.value?.id!, props.fromValidationPage).then((message) => {
       ElNotification.success({ title: "succès", message });
       dialog.value = false;
     });
   });
 };
-const title = computed(() =>
-  props.fromValidationPage ? "Détails de remboursement" : "Détails de dette"
-);
 </script>
 
 <template>
-  <el-dialog v-model="dialog" :title="title" width="40%" destroy-on-close center>
+  <el-dialog v-model="dialog" title="Détails de dette" width="40%" destroy-on-close center>
     <div v-loading="loading.edit">
       <div class="d-flex flex-row-reverse">
         <el-button
+          v-role="rolesNames.admin"
           v-if="dette?.status === statusValidable.wait"
           @click="handleValidate"
           type="primary"

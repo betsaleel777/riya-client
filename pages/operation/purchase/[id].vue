@@ -2,13 +2,13 @@
 import { storeToRefs } from "pinia";
 import { useAchatStore } from "~/store/achat";
 
-definePageMeta({ middleware: "auth" });
+definePageMeta({
+  middleware: ["auth", "nuxt-permissions"],
+  roles: [rolesNames.employee, rolesNames.admin],
+});
 const { getOne } = useAchatStore();
 const { achat, loading } = storeToRefs(useAchatStore());
-onMounted(async () => {
-  await getOne(Number(useRoute().params.id));
-  useHead({ title: "Achat " + achat?.value?.code });
-});
+getOne(Number(useRoute().params.id)).then(() => useHead({ title: "Achat " + achat?.value?.code }));
 </script>
 
 <template>
@@ -46,7 +46,7 @@ onMounted(async () => {
               <div class="card">
                 <div class="card-body">
                   <div class="table-responsive">
-                    <AchatPaiementTableComponent :paiements="achat?.paiements!" />
+                    <AchatPaiementTableComponent :achat="achat" />
                   </div>
                 </div>
               </div>
@@ -72,11 +72,14 @@ onMounted(async () => {
                     <el-descriptions-item label="Montant versé:"
                       >{{ useCurrency(achat?.total!) }}
                     </el-descriptions-item>
-                    <el-descriptions-item label="Reste à payer :">{{
-                      useCurrency(achat?.reste!)
-                    }}</el-descriptions-item>
-                    <el-descriptions-item label="Date :">{{
-                      achat?.created_at
+                    <el-descriptions-item label="Reste à payer :">
+                      {{ useCurrency(achat?.reste!) }}</el-descriptions-item
+                    >
+                    <el-descriptions-item label="Date :">
+                      {{ achat?.created_at }}</el-descriptions-item
+                    >
+                    <el-descriptions-item label="Auteur :">{{
+                      achat?.audit.user.name
                     }}</el-descriptions-item>
                   </el-descriptions>
                 </div>

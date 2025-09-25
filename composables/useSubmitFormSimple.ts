@@ -1,6 +1,6 @@
 export const useSubmitFormSimple = (action: (values: any) => Promise<string | undefined>) => {
-  const onSubmit = (values: any, actions: any) => {
-    action(values)
+  const onSubmit = async (values: any, actions: any) => {
+    return action(values)
       .then((message) => {
         ElNotification.success({ title: "succès", message });
       })

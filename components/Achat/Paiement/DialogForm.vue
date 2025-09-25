@@ -8,25 +8,30 @@ const { achat } = storeToRefs(useAchatStore());
 const { value: payableId } = useField("payable_id");
 const { value: payableType } = useField("payable_type");
 payableId.value = achat.value?.id;
-payableType.value = "Achat";
+payableType.value = typePaiement.purchase;
 </script>
 
 <template>
-  <Field name="id" hidden />
-  <Field name="payable_id" hidden />
-  <Field name="payable_type" hidden />
-  <div class="mb-3">
-    <label for="montant" class="form-label">Montant</label>
-    <Field
-      name="montant"
-      type="text"
-      class="form-control"
-      id="montant"
-      placeholder="montant"
-      :class="{ 'is-invalid': props.errors.montant }"
-      v-number="numberConfig"
-    />
-    <div class="invalid-feedback" v-if="props.errors.montant">{{ props.errors.montant }}</div>
+  <div class="container">
+    <Field name="id" hidden />
+    <Field name="payable_id" hidden />
+    <Field name="payable_type" hidden />
+    <div class="mb-3">
+      <label for="montant" class="form-label">Montant</label>
+      <Field name="montant" v-slot="{ value, handleChange }">
+        <vue-number
+          id="montant"
+          class="form-control"
+          v-bind="numberConfig"
+          :model-value="value ?? 0"
+          @update:model-value="handleChange"
+          :class="{ 'is-invalid': props.errors.montant }"
+        ></vue-number>
+        <div class="invalid-feedback" v-if="errors.montant">
+          {{ props.errors.montant }}
+        </div>
+      </Field>
+    </div>
   </div>
 </template>
 

@@ -45,7 +45,7 @@ const { runShowModal, show } = useShowModal();
                             lazy
                           ></el-image>
                         </el-tooltip>
-                        <el-tooltip v-else :content="visite?.personne" placement="top">
+                        <el-tooltip v-else :content="visite?.personne.nom_complet" placement="top">
                           <el-avatar class="bg-transparent" size="large">{{
                             visite?.personne.nom_complet.substring(0, 2)
                           }}</el-avatar>

@@ -1,10 +1,14 @@
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
 import { useVisiteStore } from "~/store/visite";
+import { Variant } from "~/types/global";
 import { statusValidable, statusAvance } from "~/utils/constante";
 
 useHead({ title: "Location" });
-definePageMeta({ middleware: "auth" });
+definePageMeta({
+  middleware: ["auth", "nuxt-permissions"],
+  roles: [rolesNames.employee, rolesNames.admin],
+});
 const links = [
   { path: "/", title: "Acceuil" },
   { path: "#", title: "Location" },
@@ -13,7 +17,6 @@ const { getAll, trash } = useVisiteStore();
 const { visites, loading } = storeToRefs(useVisiteStore());
 getAll();
 const { filterTableData, setPage, search, total, pageSize } = useVisiteFilterPagination(visites);
-const { onPrint } = useVisitePrinter(visites);
 const { handleDelete, handleEdit, handleShow, modal } = useHandleCrudButtons(trash);
 const classType = (status: string) => {
   return status === statusValidable.wait ? "warning" : "success";
@@ -35,45 +38,27 @@ const classStatus = (status: string) => {
         <div class="col-12">
           <div class="card">
             <div class="card-body">
-              <StructurePageHeader
-                :breadcrumbs="links"
-                title="Locations"
-                :extra="{ exist: true, create: true, print: true }"
-                @print="onPrint"
-                @create="modal.create = true"
-              >
+              <StructurePageHeader :breadcrumbs="links" title="Locations">
+                <template #options>
+                  <el-button @click="modal.create = true" plain type="primary">Ajouter</el-button>
+                </template>
                 <el-row class="mt-1 mb-2" justify="end">
-                  <el-col :span="12">
-                    <el-input v-model="search" placeholder="Rechercher" />
-                  </el-col>
-                  <el-col :span="11"></el-col>
-                  <el-col :span="1">
-                    <el-dropdown>
-                      <span class="el-dropdown-link">
-                        <i class="bx bx-filter"></i>
-                      </span>
-                      <template #dropdown>
-                        <el-dropdown-menu>
-                          <el-dropdown-item>validée</el-dropdown-item>
-                          <el-dropdown-item>avance en cours</el-dropdown-item>
-                          <el-dropdown-item>simple visite</el-dropdown-item>
-                        </el-dropdown-menu>
-                      </template>
-                    </el-dropdown>
+                  <el-col :span="24">
+                    <el-input
+                      class="w-50"
+                      v-model="search"
+                      placeholder="code, client, statut, statut avance"
+                    />
                   </el-col>
                 </el-row>
                 <el-table
                   v-loading="loading.index"
                   :data="filterTableData"
-                  style="width: 100%"
+                  class="w-100"
                   empty-text="aucune Location"
                 >
                   <el-table-column prop="code" label="Code" width="100" />
-                  <el-table-column prop="personne" label="Client" sortable>
-                    <template #default="scope">
-                      <el-text truncated>{{ scope.row.personne }}</el-text>
-                    </template>
-                  </el-table-column>
+                  <el-table-column show-overflow-tooltip prop="personne" label="Client" />
                   <el-table-column
                     prop="frais"
                     label="Frais agence"
@@ -108,11 +93,13 @@ const classStatus = (status: string) => {
                       }}</el-tag>
                     </template>
                   </el-table-column>
-                  <el-table-column prop="avanceStatus" label="Status avance" width="150"
-                    ><template #default="scope">
-                      <el-tag class="text-truncated" :type="classStatus(scope.row.avanceStatus)">{{
-                        scope.row.avanceStatus
-                      }}</el-tag>
+                  <el-table-column prop="avanceStatus" label="Statut avance" width="150">
+                    <template #default="scope">
+                      <el-tag
+                        class="text-truncated"
+                        :type="classStatus(scope.row.avanceStatus) as Variant"
+                        >{{ scope.row.avanceStatus }}</el-tag
+                      >
                     </template>
                   </el-table-column>
                   <el-table-column width="150" align="right">
@@ -132,6 +119,7 @@ const classStatus = (status: string) => {
                         ><i class="bx bx-edit"
                       /></el-button>
                       <el-button
+                        v-role="rolesNames.admin"
                         type="danger"
                         @click="
                           handleDelete(
@@ -180,7 +168,6 @@ const classStatus = (status: string) => {
 <style scoped>
 .el-dropdown-link {
   cursor: pointer;
-  /* color: var(--el-color-primary); */
   display: flex;
   align-items: center;
   font-size: 2.3em;

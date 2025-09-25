@@ -22,7 +22,7 @@
                 <nuxt-link to="/" class="auth-logo-light">
                   <div class="avatar-md profile-user-wid mb-4">
                     <span class="avatar-title rounded-circle bg-light">
-                      <img src="/images/logo-light.svg" alt="" class="rounded-circle" height="34" />
+                      <img src="/images/logo-light.jpg" alt="" class="rounded-circle" height="34" />
                     </span>
                   </div>
                 </nuxt-link>
@@ -30,7 +30,7 @@
                 <nuxt-link to="/" class="auth-logo-dark">
                   <div class="avatar-md profile-user-wid mb-4">
                     <span class="avatar-title rounded-circle bg-light">
-                      <img src="/images/logo.svg" alt="" class="rounded-circle" height="34" />
+                      <img src="/images/logo-dark.jpg" alt="" class="rounded-circle" height="34" />
                     </span>
                   </div>
                 </nuxt-link>
@@ -55,22 +55,13 @@
                     <div class="input-group auth-pass-inputgroup">
                       <Field
                         name="password"
-                        :type="type"
+                        type="password"
                         class="form-control"
                         placeholder="mot de passe"
                         aria-label="Password"
                         aria-describedby="password-addon"
                         :class="{ 'is-invalid': errors.password }"
                       />
-                      <button
-                        @click="toggleShowPassword"
-                        class="btn btn-light"
-                        type="button"
-                        id="password-addon"
-                      >
-                        <i v-if="type === 'password'" class="mdi mdi-eye-outline"></i>
-                        <i v-else class="mdi mdi-eye-off-outline"></i>
-                      </button>
                       <div class="invalid-feedback" v-if="errors.password">
                         {{ errors.password }}
                       </div>
@@ -94,7 +85,11 @@
           </div>
           <div class="mt-5 text-center">
             <div>
-              <p>©{{ now }} Riya-Immobiler with <i class="mdi mdi-heart text-danger"></i> by ...</p>
+              <p>
+                ©{{ $dayjs().format("YYYY") }} Riya-Immobiler with
+                <i class="mdi mdi-heart text-danger"></i> by
+                <a href="https://syitech-group.com" target="_blank" rel="noopener">syitech-group</a>
+              </p>
             </div>
           </div>
         </div>
@@ -105,29 +100,18 @@
 
 <script setup lang="ts">
 import { useForm, Field, Form } from "vee-validate";
+
 useHead({ title: "Se connecter" });
 definePageMeta({ layout: false });
 
-const now: Number = new Date().getFullYear();
 const { $sanctumAuth } = useNuxtApp();
 const { errors, setErrors, resetForm } = useForm();
-const type = ref("password");
-
 const onSubmit = async (values: any) => {
   resetForm();
   await $sanctumAuth.login(values).catch((err) => {
     if (err.errors) setErrors(err.errors);
-    else
-      ElNotification({
-        title: "Erreur",
-        message: err.message,
-        type: "error",
-      });
+    else ElNotification({ title: "Erreur", message: err.message, type: "error" });
   });
-};
-const toggleShowPassword = () => {
-  if (type.value === "password") type.value = "text";
-  if (type.value === "text") type.value = "password";
 };
 </script>
 

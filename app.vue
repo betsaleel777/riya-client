@@ -15,7 +15,7 @@ import { useConfigStore } from "~/store";
 const { collapsed, enabledRightBar } = storeToRefs(useConfigStore());
 useHead({
   bodyAttrs: {
-    "data-sidebar": "dark",
+    "data-sidebar": color.preference,
     "data-layout-mode": color.preference,
     class: { "sidebar-enable vertical-collpsed": collapsed, "right-bar-enabled": enabledRightBar },
   },

@@ -6,7 +6,7 @@
         <div class="navbar-brand-box">
           <nuxt-link to="/" class="logo logo-dark">
             <span class="logo-sm">
-              <img src="/images/logo.svg" alt="" height="22" />
+              <img src="/images/logo-dark.jpg" alt="" height="22" />
             </span>
             <span class="logo-lg">
               <img src="/images/logo-dark.png" alt="" height="17" />
@@ -15,7 +15,7 @@
 
           <nuxt-link to="/" class="logo logo-light">
             <span class="logo-sm">
-              <img src="/images/logo-light.svg" alt="" height="22" />
+              <img src="/images/logo-light.jpg" alt="" height="22" />
             </span>
             <span class="logo-lg">
               <img src="/images/logo-light.png" alt="" height="19" />
@@ -106,10 +106,14 @@ const isDark = ref(color.value === "dark");
 watch(isDark, (darkMode) => {
   if (darkMode) {
     color.preference = "dark";
-    useHead({ bodyAttrs: { "data-layout-mode": color.preference } });
+    useHead({
+      bodyAttrs: { "data-layout-mode": color.preference, "data-sidebar": color.preference },
+    });
   } else {
     color.preference = "light";
-    useHead({ bodyAttrs: { "data-layout-mode": color.preference } });
+    useHead({
+      bodyAttrs: { "data-layout-mode": color.preference, "data-sidebar": color.preference },
+    });
   }
 });
 const logout = async () => {

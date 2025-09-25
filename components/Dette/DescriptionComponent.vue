@@ -4,6 +4,7 @@ const props = defineProps<{ dette: Dette }>();
 </script>
 
 <template>
+  <DetteInformationsComplementaire :type="dette?.origine_type" :origine="dette.origine?.id" />
   <el-descriptions direction="horizontal" :column="2" size="large">
     <el-descriptions-item v-if="props.dette?.code" label="Code:"
       >{{ props.dette?.code }}
@@ -24,7 +25,6 @@ const props = defineProps<{ dette: Dette }>();
       >{{ props.dette?.contrat?.commission }} %
     </el-descriptions-item>
   </el-descriptions>
-  <DetteInformationsComplementaire :type="dette?.origine_type" :origine="dette.origine?.id" />
 </template>
 
 <style scoped></style>

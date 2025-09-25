@@ -1,5 +1,5 @@
 import { Contrat } from "./contrat";
-import { Audit, Entity } from "./global";
+import { Audit, Entity, Personne } from "./global";
 import { Paiement } from "./paiements";
 import { Visite } from "./visite";
 
@@ -17,12 +17,12 @@ interface Dette extends Entity {
 interface DetteValidation extends Entity {
   code: string;
   montant: number;
-  created_at: string
+  created_at: string;
   origine: string;
-  audit: Audit
+  audit: Audit;
 }
 
 type Dettes = Array<Dette>;
-type DetteValidations = Array<DetteValidation>
+type DetteValidations = Array<DetteValidation>;
 
 export { Dettes, Dette, DetteValidation, DetteValidations };

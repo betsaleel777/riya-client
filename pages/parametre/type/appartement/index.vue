@@ -3,7 +3,10 @@ import { storeToRefs } from "pinia";
 import { useTypeAppartementStore } from "@/store/appartement";
 
 useHead({ title: "Types appartements" });
-definePageMeta({ middleware: "auth" });
+definePageMeta({
+  middleware: ["auth", "nuxt-permissions"],
+  roles: [rolesNames.admin],
+});
 const links = [
   { path: "/", title: "Acceuil" },
   { path: "#", title: "Types d'appartements" },
@@ -12,7 +15,6 @@ const { getAll, trash } = useTypeAppartementStore();
 const { types, loading } = storeToRefs(useTypeAppartementStore());
 getAll();
 const { filterTableData, setPage, search, total, pageSize } = useTypeFilterPagination(types);
-const { onPrint } = useTypePrinter(types);
 const { handleDelete, handleEdit, modal } = useHandleCrudButtons(trash);
 </script>
 
@@ -28,10 +30,10 @@ const { handleDelete, handleEdit, modal } = useHandleCrudButtons(trash);
                 :breadcrumbs="links"
                 title="Appartements"
                 subtitle="riya-immobiler"
-                :extra="{ exist: true, create: true, print: true }"
-                @print="onPrint"
-                @create="modal.create = true"
               >
+                <template #options>
+                  <el-button @click="modal.create = true" plain type="primary">Ajouter</el-button>
+                </template>
                 <el-input v-model="search" class="w-50 mt-1 mb-2" placeholder="Rechercher" />
                 <el-table
                   v-loading="loading.index"

@@ -3,15 +3,28 @@ import { storeToRefs } from "pinia";
 import { useDepenseStore } from "~/store/depense";
 
 useHead({ title: "Depenses" });
-definePageMeta({ middleware: "auth" });
+definePageMeta({
+  middleware: ["auth", "nuxt-permissions"],
+  roles: [rolesNames.financial, rolesNames.admin],
+});
 const links = [
   { path: "/", title: "Acceuil" },
   { path: "#", title: "Dépenses" },
 ];
-const { getAll, trash } = useDepenseStore();
-const { depenses, loading } = storeToRefs(useDepenseStore());
-getAll();
-const { filterTableData, setPage, search, total, pageSize } = useDepenseFilterPagination(depenses);
+const { getPaginate, getSearch, trash } = useDepenseStore();
+const { liste, loading } = storeToRefs(useDepenseStore());
+getPaginate();
+const {
+  setPage,
+  setRefresh,
+  search,
+  currentPage,
+  searchExists,
+  loadedSearch,
+  total,
+  pageSize,
+  toSearch,
+} = useServerPagination(liste, getPaginate, getSearch);
 const { handleDelete, handleEdit, handleShow, modal } = useHandleCrudButtons(trash);
 const statusClass = (status: string) => {
   return status === statusValidable.wait ? "warning" : "success";
@@ -26,16 +39,23 @@ const statusClass = (status: string) => {
         <div class="col-12">
           <div class="card">
             <div class="card-body">
-              <StructurePageHeader
-                :breadcrumbs="links"
-                title="Dépenses"
-                :extra="{ exist: true, create: true }"
-                @create="modal.create = true"
-              >
-                <el-input v-model="search" class="w-50 mt-1 mb-2" placeholder="Rechercher" />
+              <StructurePageHeader :breadcrumbs="links" title="Dépenses">
+                <template #options>
+                  <el-button @click="modal.create = true" plain type="primary">Ajouter</el-button>
+                </template>
+                <StructureSearchServer
+                  :loaded-search="loadedSearch"
+                  :search-exists="searchExists"
+                  @on-search="search"
+                  @on-refresh="setRefresh"
+                >
+                  <template #searching>
+                    <el-input v-model="toSearch" placeholder="titre, type, statut, date" />
+                  </template>
+                </StructureSearchServer>
                 <el-table
                   v-loading="loading.index"
-                  :data="filterTableData"
+                  :data="liste?.data"
                   style="width: 100%"
                   empty-text="aucune dépense"
                 >
@@ -77,6 +97,7 @@ const statusClass = (status: string) => {
                         ><i class="bx bx-edit"
                       /></el-button>
                       <el-button
+                        v-role="rolesNames.admin"
                         type="danger"
                         @click="
                           handleDelete(
@@ -99,6 +120,7 @@ const statusClass = (status: string) => {
                   class="mt-4"
                   justify="center"
                   v-model:page-size="pageSize"
+                  v-model:current-page="currentPage"
                   @current-change="setPage"
                   hide-on-single-page
                 />

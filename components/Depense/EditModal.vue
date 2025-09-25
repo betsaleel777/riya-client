@@ -20,13 +20,15 @@ const { onSubmit } = useSubmitForm(update, dialog);
     :initial-values="depense"
     v-slot="{ isSubmitting, errors }"
   >
-    <el-dialog v-model="dialog" title="Modifier proprietaire" width="35%" destroy-on-close center>
-      <div v-loading="loading.edit">
+    <el-dialog v-model="dialog" title="Modifier la dépense" width="35%" destroy-on-close center>
+      <div v-loading="loading.edit || isSubmitting">
         <DepenseDialogForm :errors="errors" />
       </div>
       <template #footer>
         <span class="dialog-footer">
-          <el-button type="danger" @click="dialog = false" plain>Annuler</el-button>
+          <el-button type="danger" :disabled="isSubmitting" @click="dialog = false" plain
+            >Annuler</el-button
+          >
           <el-button type="primary" :disabled="isSubmitting" native-type="submit">
             modifier
           </el-button>

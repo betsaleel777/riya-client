@@ -50,10 +50,45 @@ interface TypePutForm extends TypePostForm {
 }
 type Types = Array<Type>;
 interface Media extends Entity {
-  url: string
+  url: string;
 }
 interface Audit extends Entity {
-  user: User
+  user: User;
 }
+type Links = {
+  first: string;
+  last: string;
+  prev: string;
+  next: string;
+};
+type MetaPaginate = {
+  per_page: number;
+  total: number;
+  current_page: number;
+  path: string;
+};
+type DataPaginate = {
+  data: Array<unknown>;
+  links: Links;
+  meta: MetaPaginate;
+};
+type SearchData = { search: string; page: number };
+type Variant = '' | 'success' | 'warning' | 'info' | 'danger'
 
-export { Entity, Type, Types, TypePostForm, TypePutForm, Personne, Bien, User, Media, Audit };
+export {
+  Entity,
+  Type,
+  Types,
+  TypePostForm,
+  TypePutForm,
+  Personne,
+  Bien,
+  User,
+  Media,
+  Audit,
+  Links,
+  MetaPaginate,
+  DataPaginate,
+  SearchData,
+  Variant,
+};

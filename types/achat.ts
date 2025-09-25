@@ -1,13 +1,13 @@
 import { Appartement } from "./appartement";
-import { Entity, Media } from "./global";
+import { Audit, Entity, Media } from "./global";
 import { Paiements } from "./paiements";
 import { Client } from "./personne";
 import { Terrain } from "./terrain";
 
 interface Achat extends Entity {
   code: string;
-  personne: Client;
-  bien: Appartement | Terrain;
+  personne: Client & string;
+  bien: Appartement & Terrain & string;
   personne_id: number;
   bien_id: number;
   montant: number;
@@ -17,6 +17,7 @@ interface Achat extends Entity {
   bien_type: string;
   paiements?: Paiements;
   contractible: boolean
+  audit: Audit
 }
 
 interface AchatValidation extends Entity {
@@ -27,6 +28,7 @@ interface AchatValidation extends Entity {
   cout: number;
   montant: number;
   avatar: Media
+  audit: Audit
 }
 
 type Achats = Array<Achat>;

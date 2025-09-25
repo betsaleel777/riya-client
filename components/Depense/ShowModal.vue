@@ -41,6 +41,7 @@ const handleValidate = () => {
     <div v-loading="loading.edit">
       <div class="d-flex flex-row-reverse">
         <el-button
+          v-role="rolesNames.admin"
           v-if="depense?.status === statusValidable.wait"
           @click="handleValidate"
           type="primary"

@@ -2,54 +2,31 @@
 import { use } from "echarts/core";
 import { CanvasRenderer } from "echarts/renderers";
 import { BarChart } from "echarts/charts";
+import type { BarSeriesOption } from "echarts";
 import {
   TitleComponent,
   TooltipComponent,
   LegendComponent,
   GridComponent,
 } from "echarts/components";
-import VChart, { THEME_KEY } from "vue-echarts";
+import VChart from "vue-echarts";
+
+const props = defineProps<{
+  donnees: { dates: string[]; series: BarSeriesOption };
+  titre: string;
+}>();
 
 use([CanvasRenderer, BarChart, TitleComponent, TooltipComponent, LegendComponent, GridComponent]);
 
 const color = useColorMode();
-provide(THEME_KEY, color.preference);
 
 const option = ref({
   title: { left: "center" },
   legend: {},
   tooltip: {},
   yAxis: { type: "value" },
-  xAxis: { type: "category", data: ["09-2023", "10-2023", "11-2023", "12-2023"] },
-  series: [
-    {
-      type: "bar",
-      name: "ventes",
-      data: [89.3, 92.1, 94.4, 85.4],
-      emphasis: {
-        focus: "series",
-      },
-      barWidth: 10,
-    },
-    {
-      type: "bar",
-      name: "locations",
-      data: [97.7, 83.1, 92.5, 78.1],
-      emphasis: {
-        focus: "series",
-      },
-      barWidth: 10,
-    },
-    {
-      type: "bar",
-      name: "loyers",
-      data: [95.8, 89.4, 91.2, 76.9],
-      emphasis: {
-        focus: "series",
-      },
-      barWidth: 10,
-    },
-  ],
+  xAxis: { type: "category", data: props.donnees.dates },
+  series: props.donnees.series,
 });
 </script>
 
@@ -57,29 +34,9 @@ const option = ref({
   <div class="card">
     <div class="card-body">
       <div class="d-sm-flex flex-wrap">
-        <h4 class="card-title mb-4">Statistiques d'applications</h4>
-        <div class="ms-auto">
-          <div class="dropdown ms-auto">
-            <a
-              class="text-muted font-size-16"
-              role="button"
-              data-bs-toggle="dropdown"
-              aria-haspopup="true"
-            >
-              <i class="mdi mdi-dots-horizontal"></i>
-            </a>
-
-            <div class="dropdown-menu dropdown-menu-end">
-              <a class="dropdown-item" href="#">Action</a>
-              <a class="dropdown-item" href="#">Another action</a>
-              <a class="dropdown-item" href="#">Something else here</a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="#">Separated link</a>
-            </div>
-          </div>
-        </div>
+        <h4 class="card-title mb-4">{{ props.titre }}</h4>
       </div>
-      <v-chart class="chart" :option="option" />
+      <v-chart class="chart" :option="option" :theme="color.preference" autoresize />
     </div>
   </div>
 </template>

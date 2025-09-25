@@ -9,6 +9,7 @@ interface Utilisateur extends Entity {
   created_at?: string;
   photo?: string;
   image?: Blob;
+  roles: string[];
 }
 type Utilisateurs = Array<Utilisateur>;
 export { Utilisateur, Utilisateurs };

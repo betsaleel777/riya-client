@@ -1,4 +1,5 @@
 import { Bien, Type } from "./global";
+import { Proprietaire } from "./proprietaire";
 
 interface Appartement extends Bien {
   cours_commune: boolean;
@@ -11,7 +12,8 @@ interface Appartement extends Bien {
   cie: boolean;
   socdeci: boolean;
   cloture: boolean;
-  type?: string;
+  type?: string & Type;
+  proprietaire?: string & Proprietaire;
   type_appartement_id?: number;
   observation?: string;
 }

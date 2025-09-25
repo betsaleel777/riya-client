@@ -26,9 +26,11 @@ const { onSubmit } = useSubmitFormSimple(action);
     :initial-values="initials"
     v-slot="{ isSubmitting }"
   >
-    <div v-loading="loading">
-      <VisiteDossierForm :loyer="loyer" :frais-percent="percent" />
-    </div>
+    <VisiteDossierForm
+      v-loading="loading || isSubmitting"
+      :loyer="loyer"
+      :frais-percent="percent"
+    />
     <el-button
       style="float: right"
       class="my-2"

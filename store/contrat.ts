@@ -1,13 +1,11 @@
 import { defineStore } from "pinia";
 import { FetchError } from "ofetch";
 import { Contrat, Contrats } from "~/types/contrat";
-import { useVisiteStore } from "./visite";
-import { useAchatStore } from "./achat";
+import { useDashboardStore } from "./dashboard";
 
 export const useContratStore = defineStore("contrat", () => {
   const { $apiFetch } = useNuxtApp();
-  const { getAll: getVisites, getOne: getVisite, getPending } = useVisiteStore();
-  const { getOne: getAchat } = useAchatStore();
+  const { getPendings } = useDashboardStore();
 
   let contrats = ref<Contrats>([]);
   let contrat = ref<Contrat>();
@@ -48,11 +46,34 @@ export const useContratStore = defineStore("contrat", () => {
     }
   };
 
+  const getRentProcessing = async () => {
+    try {
+      loading.index = true;
+      contrats.value = await $apiFetch<Contrats>("api/contrats/active-bail", { method: "get" });
+      loading.index = false;
+    } catch (error) {
+      if (error instanceof FetchError && error.statusCode === 401) navigateTo("/login");
+    }
+  };
+
+  const getRentAvanceProcessing = async () => {
+    try {
+      loading.index = true;
+      contrats.value = await $apiFetch<Contrats>("api/contrats/active-avance-bail", {
+        method: "get",
+      });
+      loading.index = false;
+    } catch (error) {
+      if (error instanceof FetchError && error.statusCode === 401) navigateTo("/login");
+    }
+  };
+
   const validerContrat = async (payload: Contrat) => {
     const response = await $apiFetch<string>(`api/contrats/validate`, {
       method: "post",
       body: payload,
     });
+    await getPendings();
     return response;
   };
 
@@ -64,6 +85,8 @@ export const useContratStore = defineStore("contrat", () => {
     update,
     getOne,
     trash,
+    getRentProcessing,
+    getRentAvanceProcessing,
     validerContrat,
   };
 });

@@ -3,7 +3,10 @@ import { storeToRefs } from "pinia";
 import { useUtilisateurStore } from "~/store/utilisateur";
 
 useHead({ title: "Utilisateurs" });
-definePageMeta({ middleware: "auth" });
+definePageMeta({
+  middleware: ["auth", "nuxt-permissions"],
+  roles: [rolesNames.admin],
+});
 const links = [
   { path: "/", title: "Acceuil" },
   { path: "#", title: "Utilisateurs" },
@@ -12,7 +15,6 @@ const { getAll, trash } = useUtilisateurStore();
 const { utilisateurs, loading } = storeToRefs(useUtilisateurStore());
 getAll();
 const { filterTableData, setPage, search, total, pageSize } = useUserFilterPagination(utilisateurs);
-const { onPrint } = useUserPrinter(utilisateurs);
 const { handleDelete, handleEdit, modal } = useHandleCrudButtons(trash);
 </script>
 
@@ -24,13 +26,10 @@ const { handleDelete, handleEdit, modal } = useHandleCrudButtons(trash);
         <div class="col-12">
           <div class="card">
             <div class="card-body">
-              <StructurePageHeader
-                :breadcrumbs="links"
-                title="Utilisateurs"
-                :extra="{ exist: true, create: true, print: true }"
-                @print="onPrint"
-                @create="modal.create = true"
-              >
+              <StructurePageHeader :breadcrumbs="links" title="Utilisateurs">
+                <template #options>
+                  <el-button @click="modal.create = true" plain type="primary">Ajouter</el-button>
+                </template>
                 <el-input v-model="search" class="w-50 mt-1 mb-2" placeholder="Rechercher" />
                 <el-table
                   v-loading="loading.index"

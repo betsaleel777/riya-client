@@ -15,6 +15,7 @@ export const useUtilisateurStore = defineStore("utilisateur", () => {
     formData.append("password", payload.password ?? "");
     formData.append("password_confirmation", payload.password_confirmation ?? "");
     formData.append("oldPassword", payload.oldPassword ?? "");
+    formData.append("roles", payload.roles.join(",") ?? "");
     if (payload.image !== undefined) formData.append("image", payload.image, payload.image.name);
     return formData;
   };

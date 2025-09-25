@@ -2,7 +2,10 @@
 import { storeToRefs } from "pinia";
 import { useContratStore } from "~/store/contrat";
 
-definePageMeta({ middleware: "auth" });
+definePageMeta({
+  middleware: ["auth", "nuxt-permissions"],
+  roles: [rolesNames.employee, rolesNames.admin],
+});
 const { getOne } = useContratStore();
 const { contrat, loading } = storeToRefs(useContratStore());
 getOne(Number(useRoute().params.id)).then(() => {
@@ -21,7 +24,7 @@ getOne(Number(useRoute().params.id)).then(() => {
               <ol class="breadcrumb m-0">
                 <li class="breadcrumb-item"><nuxt-link to="/">Acceuil</nuxt-link></li>
                 <li class="breadcrumb-item">
-                  <nuxt-link to="/operation/purchase">Contrats</nuxt-link>
+                  <nuxt-link to="/operation/contrat">Contrats</nuxt-link>
                 </li>
                 <li class="breadcrumb-item active">{{ contrat?.code }}</li>
               </ol>
@@ -30,7 +33,14 @@ getOne(Number(useRoute().params.id)).then(() => {
         </div>
       </div>
       <div class="row">
-        <LazyContratVisitePrint v-if="!loading.edit" :contrat="contrat" />
+        <LazyContratVisitePrint
+          v-if="!loading.edit && contrat?.operation_type === typeContrat.visite"
+          :contrat="contrat"
+        />
+        <el-empty
+          v-if="!loading.edit && contrat?.operation_type === typeContrat.achat"
+          description="Aucun exemplaire de contrat n'as été fournit pour l'instant."
+        ></el-empty>
       </div>
     </div>
   </div>

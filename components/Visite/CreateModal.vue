@@ -18,10 +18,12 @@ const { onSubmit } = useSubmitForm(create, dialog);
       center
       scrollable
     >
-      <VisiteDialogForm :errors="errors" />
+      <VisiteDialogForm v-loading="isSubmitting" :errors="errors" />
       <template #footer>
         <span class="dialog-footer">
-          <el-button type="danger" @click="dialog = false" plain>Annuler</el-button>
+          <el-button type="danger" :disabled="isSubmitting" @click="dialog = false" plain
+            >Annuler</el-button
+          >
           <el-button type="primary" :disabled="isSubmitting" native-type="submit">
             enregistrer
           </el-button>

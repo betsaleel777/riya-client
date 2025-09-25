@@ -9,9 +9,7 @@ const { dialog } = useDialogModelValue(props, emit);
 
 const { update, getOne } = useVisiteStore();
 const { visite, loading } = storeToRefs(useVisiteStore());
-onMounted(async () => {
-  await getOne(props.id);
-});
+getOne(props.id);
 const { onSubmit } = useSubmitForm(update, dialog);
 </script>
 
@@ -23,9 +21,7 @@ const { onSubmit } = useSubmitForm(update, dialog);
     v-slot="{ isSubmitting, errors }"
   >
     <el-dialog v-model="dialog" title="Modifier la visite" width="35%" destroy-on-close center>
-      <div v-loading="loading.edit">
-        <VisiteDialogForm :errors="errors" :visite="visite" />
-      </div>
+      <VisiteDialogForm v-loading="loading.edit || isSubmitting" :errors="errors" />
       <template #footer>
         <span class="dialog-footer">
           <el-button type="danger" @click="dialog = false" plain>Annuler</el-button>

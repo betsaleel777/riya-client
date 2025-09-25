@@ -1,64 +1,64 @@
 <script lang="ts" setup>
-import { Contrat } from "~/types/contrat";
+import { type Contrat } from "~/types/contrat";
 import { useSocieteStore } from "~/store/societe";
 import { storeToRefs } from "pinia";
+import { Printer } from "@element-plus/icons-vue";
 import customParseFormat from "dayjs/plugin/customParseFormat";
+
 const dayjs = useDayjs();
 dayjs.extend(customParseFormat);
 const props = defineProps<{ contrat: Contrat }>();
 const { societe, loading } = storeToRefs(useSocieteStore());
 const { getOne } = useSocieteStore();
-await getOne();
+let url = ref("");
+getOne().then(async () => {
+  const blob = await useDownloadFile(societe.value?.logo!);
+  if (blob) url.value = URL.createObjectURL(blob);
+});
 const dateStart = computed(() =>
   dayjs(props.contrat?.debut, "DD-MM-YYYY", "fr").format("YYYY-MM-DD")
 );
-const infosSuplementaire = reactive({
-  date_piece: "",
-  location_bureau: "",
-  personne_urgence: "",
-  contact_urgence: "",
-  garantie_facture: 0,
-});
+const printzone = ref<HTMLElement>();
+const imprimer = async () => {
+  const loading = ElLoading.service({
+    lock: true,
+    text: "L'impression du contrat est en cours",
+  });
+  const html = printzone.value!;
+  await domPrinter(html);
+  loading.close();
+};
 </script>
 
 <template>
-  <div v-loading="loading">
-    <div class="col-lg-12">
-      <el-row :gutter="20">
-        <el-col :span="12">
-          <el-form-item label="Pièce établie le">
-            <el-input class="w-100" type="date" v-model="infosSuplementaire.date_piece" />
-          </el-form-item>
-          <el-form-item label="Lieu du bureau">
-            <el-input class="w-100" v-model="infosSuplementaire.location_bureau" />
-          </el-form-item>
-          <el-form-item label="Personne à contacter en cas d'urgence">
-            <el-input class="w-100" v-model="infosSuplementaire.personne_urgence" />
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="Personne à contacter en cas d'urgence">
-            <el-input class="w-100" v-model="infosSuplementaire.contact_urgence" />
-          </el-form-item>
-          <el-form-item label="Garantie facture">
-            <el-input class="w-100" v-model="infosSuplementaire.garantie_facture" />
-          </el-form-item>
-        </el-col>
-      </el-row>
-    </div>
-    <div class="col-lg-12">
+  <div class="d-flex flex-row-reverse mb-2">
+    <el-button @click="imprimer" type="warning" plain :icon="Printer">imprimer</el-button>
+  </div>
+  <div v-if="!loading" v-loading="loading">
+    <div ref="printzone" class="col-lg-12">
       <div class="card">
         <div class="card-body pe-5 ps-5">
-          <div class="d-flex justify-content-between px-5">
-            <el-image :src="societe.logo" style="height: 150px; width: 269px" />
-            <el-image src="/images/eccuissonci.png" style="height: 140px; width: 140px" />
-            <div class="d-flex flex-column align-items-center py-4">
-              <h4>République de Côte d'ivoire</h4>
-              <span>Union-Discipline-Travail</span>
-              <el-image fit="fill" src="/images/ci-flag.png" style="height: 15px; width: 100%" />
+          <div class="row text-center">
+            <div class="col-4">
+              <el-image
+                fit="fill"
+                v-if="url.length > 0"
+                :src="url"
+                style="height: 80%; width: 90%"
+              />
+            </div>
+            <div class="col-4">
+              <el-image src="/images/eccuissonci.png" style="height: 140px; width: 140px" />
+            </div>
+            <div class="col-4">
+              <div class="d-flex flex-column py-4">
+                <h4>République de Côte d'ivoire</h4>
+                <span>Union-Discipline-Travail</span>
+                <el-image fit="fill" src="/images/ci-flag.png" style="height: 15px; width: 100%" />
+              </div>
             </div>
           </div>
-          <div style="width: 70%" class="container">
+          <div style="width: 80%" class="container">
             <div class="text-center">
               <div class="d-flex justify-content-center align-baseline my-3">
                 <h2 class="rounded border border-primary p-2 text-uppercase text-warning">
@@ -93,7 +93,7 @@ const infosSuplementaire = reactive({
               {{ props.contrat?.operation?.personne?.nom_complet }}<br />
               Référence identité (CNI- Passeport- RCCM) N°{{
                 props.contrat.operation?.personne?.cni
-              }}. Etablie le {{ infosSupplementaire.date_piece }}<br />
+              }}. Etablie le ...<br />
               Profession : {{ props.contrat?.operation?.personne?.fonctions }}.<br />
               Tel. Domicile :{{ props.contrat?.operation?.personne?.telephone }}, Tel. Bureau
               .....<br />
@@ -124,6 +124,7 @@ const infosSuplementaire = reactive({
               {{ contrat.operation?.appartement?.ville }}. Le PRENEUR déclare connaître parfaitement
               le bien loué ou l’avoir vu et visité en vue du présent bail.
             </p>
+            <div class="html2pdf__page-break"></div>
             <div class="d-flex justify-content-center align-baseline my-3">
               <h4 class="rounded border border-primary p-2 text-uppercase text-warning">
                 état des lieux
@@ -142,8 +143,10 @@ const infosSuplementaire = reactive({
               lieux dans leur état primitif (agencement, enduit, peinture intérieure (mur, plafond,
               porte, fenêtre, etc…) et extérieure, etc).
             </p>
-            <hr class="mb-0" />
-            <div class="d-flex flex-row-reverse font-weight-bolder mb-3">Page 1</div>
+            <!-- <div class="hidden-print">
+              <hr class="mb-0" />
+              <div class="d-flex flex-row-reverse font-weight-bolder mb-3">Page 1</div>
+            </div> -->
             <div class="d-flex justify-content-center align-baseline">
               <h4 class="rounded border border-primary p-2 text-uppercase text-warning">
                 TITRE I: CONCLUSION DU BAIL ET FIXATION DU LOYER
@@ -199,6 +202,7 @@ const infosSuplementaire = reactive({
             <div class="text-center">
               <u>Clause pénale</u> : 10% de pénalité de retard à partir du 6ème jour
             </div>
+            <div class="html2pdf__page-break"></div>
             <h6 class="font-weight-bold my-3">ARTICLE 3 – REVISION DU LOYER</h6>
             <span
               >Le loyer peut être révisé à la hausse ou à la baisse tous les
@@ -243,8 +247,7 @@ const infosSuplementaire = reactive({
               fin de contrat.
             </p>
             <p>Le dépôt de garantie n’est pas productif d’intérêt.</p>
-            <hr class="mb-0" />
-            <div class="d-flex flex-row-reverse font-weight-bolder mb-3">Page 2</div>
+
             <div class="text-danger text-center my-3">
               Le locataire ne peut se servir du dépôt de garantie au paiement des loyers, même en
               fin de contrat.
@@ -302,7 +305,8 @@ const infosSuplementaire = reactive({
                   .format("MMMM YYYY")
               }}
             </p>
-            <div class="d-flex justify-content-center align-baseline">
+            <div class="html2pdf__page-break"></div>
+            <div class="d-flex justify-content-center align-baseline mt-1">
               <h4 class="rounded border border-primary p-2 text-uppercase text-warning">
                 TITRE II: OBLIGATION DES PARTIES
               </h4>
@@ -313,7 +317,7 @@ const infosSuplementaire = reactive({
             </h6>
             <span>Le BAILLEUR est tenu:</span>
             <ul class="mb-0">
-              <li>De délivrer au LOCATAIRE l’immeuble ou le local loué </li>
+              <li>De délivrer au LOCATAIRE l’immeuble ou le local loué</li>
               <li>
                 D’entretenir l’immeuble ou le local à usage d’habitation en état de servir à l’usage
                 pour
@@ -353,8 +357,6 @@ const infosSuplementaire = reactive({
               les installations encastrées, les ascenseurs, les escaliers, les planchers, la vétusté
               de
             </p>
-            <hr class="mb-0" />
-            <div class="d-flex flex-row-reverse font-weight-bolder mb-3">Page 3</div>
             <p class="text-justify">
               l’immeuble ou du local, le ravalement des façades de l’immeuble ou du local loué, et
               également tous travaux rendus nécessaires par un cas de force majeurs.<br />
@@ -370,6 +372,7 @@ const infosSuplementaire = reactive({
               En cas d’urgence, le LOCATAIRE est fondé à faire les travaux incombant au BAILLEUR
               après l’avoir informé par tous moyens.
             </p>
+            <div class="html2pdf__page-break"></div>
             <p class="text-justify">
               Le LOCATAIRE peut demander en justice la résiliation du bail pour défaut des travaux
               incombant au BAILLEUR. La juridiction compétente, qui prononce la résiliation du bail
@@ -438,8 +441,7 @@ const infosSuplementaire = reactive({
                 que le LOCATAIRE puisse réclamer une indemnisation
               </li>
             </ul>
-            <hr class="mb-0" />
-            <div class="d-flex flex-row-reverse font-weight-bolder mb-3">Page 4</div>
+            <div class="html2pdf__page-break"></div>
             <h6 class="font-weight-bold my-3">ARTICLE 12– DÉGRADATIONS ET VOLS</h6>
             <p class="text-justify">
               Le PRENEUR est responsable des dégradations ou vols quelconques qui pourraient être
@@ -469,7 +471,8 @@ const infosSuplementaire = reactive({
               ci-dessus fixé, de toutes les charges, les impôts fonciers restant à la charge du
               BAILLEUR.
             </p>
-            <div class="d-flex justify-content-center align-baseline">
+            <div class="html2pdf__page-break"></div>
+            <div class="d-flex justify-content-center align-baseline mt-1">
               <h4 class="rounded border border-primary p-2 text-uppercase text-warning">
                 TITRE III: FIN DU BAIL
               </h4>
@@ -543,8 +546,7 @@ const infosSuplementaire = reactive({
               <li>A ne pas se bagarrer ou injurier ses voisins ou faire scandale.</li>
               <li>A vider les fosses septiques à ses frais et sans avoir recours au Bailleur.</li>
             </ul>
-            <hr class="mb-0" />
-            <div class="d-flex flex-row-reverse font-weight-bolder mb-3">Page 5</div>
+            <div class="html2pdf__page-break"></div>
             <h6 class="font-weight-bold my-3">ARTICLE 16 – LES CAUSES DE RÉSILIATION DU BAIL</h6>
             <p class="text-justify mb-0">
               Le bail à usage d’habitation peut être légitimement résilier avant son terme ou
@@ -599,6 +601,7 @@ const infosSuplementaire = reactive({
               intérêts, et aussi l’autorisation de vendre aux enchères publiques les biens du
               LOCATAIRE trouvés dans l’immeuble ou le local loué.
             </p>
+            <div class="html2pdf__page-break"></div>
             <h6 class="font-weight-bold my-3">ARTICLE 18 – DÉCÈS DU LOCATAIRE</h6>
             <p class="text-justify mb-0">
               En cas de décès du LOCATAIRE, le bail à usage d’habitation continue jusqu’à son terme:
@@ -626,8 +629,6 @@ const infosSuplementaire = reactive({
               A défaut de personnes remplissant les conditions prévues ci-dessus ou à défaut de
               personnes désirant continuer le bail, le bail est résilié de plein droit.
             </p>
-            <hr class="mb-0" />
-            <div class="d-flex flex-row-reverse font-weight-bolder mb-3">Page 6</div>
             <h6 class="font-weight-bold my-3">
               ARTICLE 19 – DROIT DE PRÉEMPTION DU LOCATAIRE EN CAS DE VENTE
             </h6>
@@ -653,7 +654,8 @@ const infosSuplementaire = reactive({
               Le BAILLEUR peut vendre l’immeuble ou le local loué à un tiers si celui-ci offre un
               prix supérieur à celui proposé par le LOCATAIRE dûment informé.
             </p>
-            <div class="d-flex justify-content-center align-baseline">
+            <div class="html2pdf__page-break"></div>
+            <div class="d-flex justify-content-center align-baseline mt-1">
               <h4 class="rounded border border-primary p-2 text-uppercase text-warning">
                 TITRE IV : COPROPRIETE – ELECTION DE DOMICILE
               </h4>
@@ -702,6 +704,9 @@ const infosSuplementaire = reactive({
         </div>
       </div>
     </div>
+  </div>
+  <div class="d-flex flex-row-reverse mb-2">
+    <el-button @click="imprimer" type="warning" plain :icon="Printer">imprimer</el-button>
   </div>
 </template>
 

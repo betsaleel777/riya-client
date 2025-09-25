@@ -1,31 +1,34 @@
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
 import { usePaiementStore } from "~/store/paiement";
-import { Paiement } from "~/types/paiements";
-import { useAchatStore } from "~/store/achat";
 
 useHead({ title: "Paiements" });
-definePageMeta({ middleware: "auth" });
+definePageMeta({
+  middleware: ["auth", "nuxt-permissions"],
+  roles: [rolesNames.admin, rolesNames.financial],
+});
 const links = [
   { path: "/", title: "Acceuil" },
   { path: "#", title: "Paiements" },
 ];
-const { getAll, trash } = usePaiementStore();
-const { paiements, loading } = storeToRefs(usePaiementStore());
-getAll();
-const { filterTableData, setPage, search, total, pageSize } =
-  usePaiementRefFilterPagination(paiements);
-const { onPrint } = usePaiementRefPrinter(paiements);
+const { getPaginate, getSearch, trash } = usePaiementStore();
+const { liste, loading } = storeToRefs(usePaiementStore());
+getPaginate();
+const {
+  setPage,
+  setRefresh,
+  search,
+  currentPage,
+  searchExists,
+  loadedSearch,
+  total,
+  pageSize,
+  toSearch,
+} = useServerPagination(liste, getPaginate, getSearch);
 const { handleDelete, handleEdit, handleShow, modal } = useHandleCrudButtons(trash);
 
 const classStatus = (state: string) => {
   return state === statusValidable.wait ? "warning" : "success";
-};
-const printReceipt = async (paiement: Paiement) => {
-  const { getOne } = useAchatStore();
-  const { achat } = storeToRefs(useAchatStore());
-  await getOne(paiement.payable_id);
-  await usePaiementReceipt(paiement, achat.value!);
 };
 </script>
 
@@ -37,35 +40,23 @@ const printReceipt = async (paiement: Paiement) => {
         <div class="col-12">
           <div class="card">
             <div class="card-body">
-              <StructurePageHeader
-                :breadcrumbs="links"
-                title="Paiements"
-                :extra="{ exist: true, create: true, print: true }"
-                @print="onPrint"
-                @create="modal.create = true"
-              >
-                <el-row class="mt-1 mb-2" justify="end">
-                  <el-col :span="12">
-                    <el-input v-model="search" placeholder="Rechercher" />
-                  </el-col>
-                  <el-col :span="11"></el-col>
-                  <el-col :span="1">
-                    <el-dropdown>
-                      <span class="el-dropdown-link">
-                        <i class="bx bx-filter"></i>
-                      </span>
-                      <template #dropdown>
-                        <el-dropdown-menu>
-                          <el-dropdown-item>validées</el-dropdown-item>
-                          <el-dropdown-item>en attente</el-dropdown-item>
-                        </el-dropdown-menu>
-                      </template>
-                    </el-dropdown>
-                  </el-col>
-                </el-row>
+              <StructurePageHeader :breadcrumbs="links" title="Paiements">
+                <template #options>
+                  <el-button @click="modal.create = true" plain type="primary">Ajouter</el-button>
+                </template>
+                <StructureSearchServer
+                  :loaded-search="loadedSearch"
+                  :search-exists="searchExists"
+                  @on-search="search"
+                  @on-refresh="setRefresh"
+                >
+                  <template #searching>
+                    <el-input v-model="toSearch" placeholder="code, statut, date" />
+                  </template>
+                </StructureSearchServer>
                 <el-table
                   v-loading="loading.index"
-                  :data="filterTableData"
+                  :data="liste?.data"
                   style="width: 100%"
                   empty-text="aucun paiement"
                 >
@@ -95,14 +86,6 @@ const printReceipt = async (paiement: Paiement) => {
                         ><i class="bx bx-show"
                       /></el-button>
                       <el-button
-                        v-if="scope.row.status === statusValidable.valid"
-                        type="warning"
-                        @click="printReceipt(scope.row)"
-                        plain
-                        circle
-                        ><i class="bx bx-printer"
-                      /></el-button>
-                      <el-button
                         type="primary"
                         v-if="scope.row.status === statusValidable.wait"
                         @click="handleEdit(scope.row)"
@@ -111,6 +94,7 @@ const printReceipt = async (paiement: Paiement) => {
                         ><i class="bx bx-edit"
                       /></el-button>
                       <el-button
+                        v-role="rolesNames.admin"
                         type="danger"
                         @click="
                           handleDelete(
@@ -133,6 +117,7 @@ const printReceipt = async (paiement: Paiement) => {
                   class="mt-4"
                   justify="center"
                   v-model:page-size="pageSize"
+                  v-model:current-page="currentPage"
                   @current-change="setPage"
                   hide-on-single-page
                 />
@@ -157,13 +142,3 @@ const printReceipt = async (paiement: Paiement) => {
     <!-- container-fluid -->
   </div>
 </template>
-
-<style scoped>
-.el-dropdown-link {
-  cursor: pointer;
-  /* color: var(--el-color-primary); */
-  display: flex;
-  align-items: center;
-  font-size: 2.3em;
-}
-</style>

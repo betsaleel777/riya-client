@@ -18,7 +18,7 @@ interface Operation extends Entity {
 interface Visite extends Entity {
   code: string;
   personne_id: number;
-  personne?: Client;
+  personne?: Client & String;
   appartement_id: number;
   appartement?: Appartement;
   montant: number;

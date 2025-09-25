@@ -1,9 +1,11 @@
 import { defineStore } from "pinia";
 import { FetchError } from "ofetch";
 import { Operation, Visite, VisiteValidations, Visites } from "~/types/visite";
+import { useDashboardStore } from "./dashboard";
 
 export const useVisiteStore = defineStore("visite", () => {
   const { $apiFetch } = useNuxtApp();
+  const { getPendings } = useDashboardStore();
 
   let visites = ref<Visites>([]);
   let visite = ref<Visite>();
@@ -31,11 +33,9 @@ export const useVisiteStore = defineStore("visite", () => {
   };
 
   const create = async (payload: Visite) => {
-    const response = await $apiFetch<string>("api/visites", {
-      method: "post",
-      body: payload,
-    });
+    const response = await $apiFetch<string>("api/visites", { method: "post", body: payload });
     await getAll();
+    await getPendings();
     return response;
   };
 
@@ -65,37 +65,40 @@ export const useVisiteStore = defineStore("visite", () => {
   };
 
   const validerDirectement = async (id: number, fromValidationPage: boolean) => {
-    const response = await $apiFetch<string>(`api/visites/direct-validate/${ id }`, { method: "PATCH" });
+    const response = await $apiFetch<string>(`api/visites/direct-validate/${id}`, {
+      method: "PATCH",
+    });
     fromValidationPage ? await getPending() : await getAll();
+    await getPendings();
     return response;
   };
 
-  const fraisPatch = async (payload: { id: number, frais_dossier: number }) => {
-    const response = await $apiFetch<string>(`api/visites/frais-dossier/${ payload.id }`, {
+  const fraisPatch = async (payload: { id: number; frais_dossier: number }) => {
+    const response = await $apiFetch<string>(`api/visites/frais-dossier/${payload.id}`, {
       method: "PATCH",
-      body: payload
+      body: payload,
     });
     await getOne(payload.id);
     return response;
   };
 
   const createOperation = async (payload: Operation) => {
-    const response = await $apiFetch<string>(`api/${ payload.type }`, {
+    const response = await $apiFetch<string>(`api/${payload.type}`, {
       method: "post",
       body: payload,
     });
     await getOne(payload.visite_id);
-    await getAll()
+    await getAll();
     return response;
   };
 
   const updateOperation = async (payload: Operation) => {
-    const response = await $apiFetch<string>(`api/${ payload.type }/${ payload.id }`, {
+    const response = await $apiFetch<string>(`api/${payload.type}/${payload.id}`, {
       method: "put",
       body: payload,
     });
     await getOne(payload.visite_id);
-    await getAll()
+    await getAll();
     return response;
   };
 

@@ -4,7 +4,10 @@ import { useAchatStore } from "~/store/achat";
 import { NuxtLink } from "#components";
 
 useHead({ title: "Achats" });
-definePageMeta({ middleware: "auth" });
+definePageMeta({
+  middleware: ["auth", "nuxt-permissions"],
+  roles: [rolesNames.employee, rolesNames.admin],
+});
 const links = [
   { path: "/", title: "Acceuil" },
   { path: "#", title: "Achats" },
@@ -13,7 +16,6 @@ const { getAll, trash } = useAchatStore();
 const { achats, loading } = storeToRefs(useAchatStore());
 getAll();
 const { filterTableData, setPage, search, total, pageSize } = usePurchaseFilterPagination(achats);
-const { onPrint } = useAchatPrinter(achats);
 const { handleDelete, modal } = useHandleCrudButtons(trash);
 </script>
 
@@ -25,14 +27,15 @@ const { handleDelete, modal } = useHandleCrudButtons(trash);
         <div class="col-12">
           <div class="card">
             <div class="card-body">
-              <StructurePageHeader
-                :breadcrumbs="links"
-                title="Achats"
-                :extra="{ exist: true, create: true, print: true }"
-                @print="onPrint"
-                @create="modal.create = true"
-              >
-                <el-input v-model="search" class="w-50 mt-1 mb-2" placeholder="Rechercher" />
+              <StructurePageHeader :breadcrumbs="links" title="Achats">
+                <template #options>
+                  <el-button @click="modal.create = true" plain type="primary">Ajouter</el-button>
+                </template>
+                <el-input
+                  v-model="search"
+                  class="w-50 mt-1 mb-2"
+                  placeholder="Code, client, bien"
+                />
                 <el-table
                   v-loading="loading.index"
                   :data="filterTableData"
@@ -40,17 +43,15 @@ const { handleDelete, modal } = useHandleCrudButtons(trash);
                   empty-text="aucun achat"
                 >
                   <el-table-column prop="code" label="Code" width="120" />
-                  <el-table-column prop="personne" label="Client" sortable>
-                    <template #default="scope">
-                      <el-text truncated>{{ scope.row.personne }}</el-text>
-                    </template>
-                  </el-table-column>
-                  <el-table-column prop="bien" label="Bien">
-                    <template #default="scope">
-                      <el-text truncated>{{ scope.row.bien }}</el-text>
-                    </template>
-                  </el-table-column>
-                  <el-table-column prop="total" label="Payé" width="150" sortable>
+                  <el-table-column prop="personne" label="Client" />
+                  <el-table-column show-overflow-tooltip prop="bien" label="Bien" />
+                  <el-table-column
+                    show-overflow-tooltip
+                    prop="total"
+                    label="Payé"
+                    width="150"
+                    sortable
+                  >
                     <template #default="scope">
                       {{ useCurrency(scope.row.total) }}
                     </template>
@@ -76,6 +77,7 @@ const { handleDelete, modal } = useHandleCrudButtons(trash);
                       /></el-button>
                       <el-button
                         type="danger"
+                        v-role="rolesNames.admin"
                         @click="
                           handleDelete(
                             scope.row,

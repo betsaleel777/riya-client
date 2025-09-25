@@ -3,18 +3,31 @@ import { storeToRefs } from "pinia";
 import { useDetteStore } from "~/store/dette";
 import { statusPayable } from "~/utils/constante";
 import { Dette } from "~/types/dette";
+import { Variant } from "~/types/global";
 
 useHead({ title: "Dette" });
-definePageMeta({ middleware: "auth" });
+definePageMeta({
+  middleware: ["auth", "nuxt-permissions"],
+  roles: [rolesNames.financial, rolesNames.admin],
+});
 const links = [
   { path: "/", title: "Acceuil" },
   { path: "#", title: "Dettes" },
 ];
-const { getAll, repay } = useDetteStore();
-const { dettes, loading } = storeToRefs(useDetteStore());
-getAll();
-const { filterTableData, setPage, search, total, pageSize } = useDetteFilterPagination(dettes);
-const { onPrint } = useDettePrinter(dettes);
+const { getPaginate, getSearch, repay } = useDetteStore();
+const { liste, loading } = storeToRefs(useDetteStore());
+getPaginate();
+const {
+  setPage,
+  setRefresh,
+  search,
+  currentPage,
+  searchExists,
+  loadedSearch,
+  total,
+  pageSize,
+  toSearch,
+} = useServerPagination(liste, getPaginate, getSearch);
 const classStatus = (status: string) => {
   const classes = {
     [statusPayable.pending as string]: "warning",
@@ -38,6 +51,7 @@ const handleRepay = (dette: Dette) => {
   });
 };
 const { runShowModal, show } = useShowModal();
+const { runOperationShowModal, details } = useOperationShowModal();
 </script>
 
 <template>
@@ -48,42 +62,36 @@ const { runShowModal, show } = useShowModal();
         <div class="col-12">
           <div class="card">
             <div class="card-body">
-              <StructurePageHeader
-                :breadcrumbs="links"
-                title="Dettes"
-                :extra="{ exist: true, create: false, print: true }"
-                @print="onPrint"
-                @create="modal.create = true"
-              >
-                <el-row class="mt-1 mb-2" justify="end">
-                  <el-col :span="12">
-                    <el-input v-model="search" placeholder="Rechercher" />
-                  </el-col>
-                  <el-col :span="11"></el-col>
-                  <el-col :span="1">
-                    <el-dropdown>
-                      <span class="el-dropdown-link">
-                        <i class="bx bx-filter"></i>
-                      </span>
-                      <template #dropdown>
-                        <el-dropdown-menu>
-                          <el-dropdown-item>payés</el-dropdown-item>
-                          <el-dropdown-item>impayés</el-dropdown-item>
-                        </el-dropdown-menu>
-                      </template>
-                    </el-dropdown>
-                  </el-col>
-                </el-row>
+              <StructurePageHeader :breadcrumbs="links" title="Dettes">
+                <StructureSearchServer
+                  :loaded-search="loadedSearch"
+                  :search-exists="searchExists"
+                  @on-search="search"
+                  @on-refresh="setRefresh"
+                >
+                  <template #searching>
+                    <el-input v-model="toSearch" placeholder="Code, Contrat, Date et statut" />
+                  </template>
+                </StructureSearchServer>
                 <el-table
                   v-loading="loading.index"
-                  :data="filterTableData"
+                  :data="liste?.data as Dette[]"
                   style="width: 100%"
                   empty-text="Aucune dette"
                 >
                   <el-table-column prop="code" label="Code" width="100" />
                   <el-table-column prop="origine_code" label="Contrat">
-                    <template #default="scope">
-                      <el-link type="primary">{{ scope.row.origine_code }}</el-link>
+                    <template #default="{ row }">
+                      <el-link
+                        @click="
+                          runOperationShowModal(
+                            parseInt(row.origine_id),
+                            row.origine_type.toLowerCase()
+                          )
+                        "
+                        type="primary"
+                        >{{ row.origine_code }}</el-link
+                      >
                     </template>
                   </el-table-column>
                   <el-table-column prop="origine_type" label="Dette sur">
@@ -96,9 +104,11 @@ const { runShowModal, show } = useShowModal();
                       {{ useCurrency(scope.row.montant) }}
                     </template>
                   </el-table-column>
-                  <el-table-column prop="status" label="Statut"
-                    ><template #default="scope">
-                      <el-tag :type="classStatus(scope.row.status)">{{ scope.row.status }}</el-tag>
+                  <el-table-column prop="status" label="Statut">
+                    <template #default="scope">
+                      <el-tag :type="classStatus(scope.row.status) as Variant">{{
+                        scope.row.status
+                      }}</el-tag>
                     </template>
                   </el-table-column>
                   <el-table-column prop="created_at" label="Date" sortable />
@@ -129,11 +139,29 @@ const { runShowModal, show } = useShowModal();
                   class="mt-4"
                   justify="center"
                   v-model:page-size="pageSize"
+                  v-model:current-page="currentPage"
                   @current-change="setPage"
                   hide-on-single-page
                 />
               </StructurePageHeader>
               <LazyDetteShowModal :id="show.id" v-model="show.enable" v-if="show.enable" />
+              <LazyLoyerShowModal
+                :id="details.loyer.id"
+                v-if="details.loyer.dialog"
+                v-model="details.loyer.dialog"
+              />
+              <LazyAchatShowModal
+                :id="details.achat.id"
+                v-if="details.achat.dialog"
+                v-model="details.achat.dialog"
+                :from-validation-page="false"
+              />
+              <LazyVisiteShowModal
+                :id="details.visite.id"
+                v-if="details.visite.dialog"
+                v-model="details.visite.dialog"
+                :from-validation-page="true"
+              />
             </div>
           </div>
         </div>
@@ -147,7 +175,6 @@ const { runShowModal, show } = useShowModal();
 <style scoped>
 .el-dropdown-link {
   cursor: pointer;
-  /* color: var(--el-color-primary); */
   display: flex;
   align-items: center;
   font-size: 2.3em;

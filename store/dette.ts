@@ -1,14 +1,17 @@
 import { defineStore } from "pinia";
 import { FetchError } from "ofetch";
 import { Dette, DetteValidations, Dettes } from "~/types/dette";
+import { useDashboardStore } from "./dashboard";
 
 export const useDetteStore = defineStore("dette", () => {
   const { $apiFetch } = useNuxtApp();
+  const { getPendings } = useDashboardStore();
 
   let dettes = ref<Dettes>([]);
   let dette = ref<Dette>();
   let loading = reactive({ index: false, edit: false });
-  let pendingValidation = ref<DetteValidations>([])
+  let pendingValidation = ref<DetteValidations>([]);
+  const { getPaginate, getSearch, liste } = usePaginationMethods("api/dettes", $apiFetch, loading);
 
   const getAll = async () => {
     try {
@@ -28,7 +31,7 @@ export const useDetteStore = defineStore("dette", () => {
     } catch (error) {
       if (error instanceof FetchError && error.statusCode === 401) navigateTo("/login");
     }
-  }
+  };
 
   const getOne = async (id: number) => {
     try {
@@ -41,16 +44,31 @@ export const useDetteStore = defineStore("dette", () => {
   };
 
   const repay = async (id: number) => {
-    const response = await $apiFetch<string>(`api/dettes/repay/${ id }`, { method: "PATCH" });
-    await getAll();
+    const response = await $apiFetch<string>(`api/dettes/repay/${id}`, { method: "PATCH" });
+    await getPaginate();
+    await getPendings();
     return response;
   };
 
   const valider = async (id: number, fromValidationPage: boolean) => {
-    const response = await $apiFetch<string>(`api/dettes/validate/${ id }`, { method: "PATCH" });
-    fromValidationPage ? await getPending() : await getAll();
+    const response = await $apiFetch<string>(`api/dettes/validate/${id}`, { method: "PATCH" });
+    fromValidationPage ? await getPending() : await getPaginate();
+    await getPendings();
     return response;
   };
 
-  return { getAll, getOne, loading, dettes, dette, valider, repay, getPending, pendingValidation };
+  return {
+    getAll,
+    getOne,
+    getPaginate,
+    getSearch,
+    loading,
+    dettes,
+    dette,
+    liste,
+    valider,
+    repay,
+    getPending,
+    pendingValidation,
+  };
 });

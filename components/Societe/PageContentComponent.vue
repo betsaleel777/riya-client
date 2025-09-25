@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
-import { Societe } from "~/types/societe";
+import { type Societe } from "~/types/societe";
 import { useSocieteStore } from "@/store/societe";
 import { Field, Form } from "vee-validate";
 
@@ -24,8 +24,8 @@ const onInput = () => {
           <div class="row">
             <div class="col-7">
               <div class="text-primary p-3">
-                <h5 class="text-primary">Welcome Back !</h5>
-                <p>It will seem like simplified</p>
+                <h5 class="text-primary">Bienvenue !</h5>
+                <p>Configuration de la société</p>
               </div>
             </div>
             <div class="col-5 align-self-end">
@@ -49,7 +49,7 @@ const onInput = () => {
                 />
                 <img
                   v-else
-                  src="/images/users/avatar-1.jpg"
+                  src="/images/users/avatar.jpg"
                   alt="logo-empty"
                   class="img-thumbnail rounded-circle"
                 />
