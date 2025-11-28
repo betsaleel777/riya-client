@@ -57,16 +57,8 @@ const onInput = (type: string) => {
       </div>
       <Field name="image_piece" v-slot="{ handleChange, handleBlur }">
         <label for="formFile1" class="form-label">Image de la pièce</label>
-        <input
-          ref="piece"
-          class="form-control"
-          type="file"
-          id="formFile1"
-          @input="onInput('piece')"
-          @change="handleChange($event, true)"
-          @blur="handleBlur"
-          :class="{ 'is-invalid': errors.image_piece }"
-        />
+        <input ref="piece" class="form-control" type="file" id="formFile1" @input="onInput('piece')"
+          @change="handleChange($event, true)" @blur="handleBlur" :class="{ 'is-invalid': errors.image_piece }" />
         <div class="invalid-feedback" v-if="errors.image_piece">
           {{ errors.image_piece }}
         </div>
@@ -78,16 +70,8 @@ const onInput = (type: string) => {
       </div>
       <Field name="image_avatar" v-slot="{ handleChange, handleBlur }">
         <label for="formFile2" class="form-label">Avatar du client</label>
-        <input
-          ref="avatar"
-          class="form-control"
-          type="file"
-          id="formFile2"
-          @input="onInput('avatar')"
-          @change="handleChange($event, true)"
-          @blur="handleBlur"
-          :class="{ 'is-invalid': errors.image_avatar }"
-        />
+        <input ref="avatar" class="form-control" type="file" id="formFile2" @input="onInput('avatar')"
+          @change="handleChange($event, true)" @blur="handleBlur" :class="{ 'is-invalid': errors.image_avatar }" />
         <div class="invalid-feedback" v-if="errors.image_avatar">
           {{ errors.image_avatar }}
         </div>
@@ -97,12 +81,8 @@ const onInput = (type: string) => {
       <div class="mb-2">
         <label for="nom" class="form-label">Nom complet</label>
         <Field name="nom_complet" v-slot="{ handleChange, value }">
-          <el-input
-            id="nom"
-            :model-value="value"
-            @update:model-value="handleChange"
-            :class="{ 'is-invalid': props.errors.nom_complet }"
-          />
+          <el-input id="nom" :model-value="value" @update:model-value="handleChange"
+            :class="{ 'is-invalid': props.errors.nom_complet }" />
         </Field>
         <div class="invalid-feedback" v-if="errors.nom_complet">
           {{ props.errors.nom_complet }}
@@ -113,52 +93,32 @@ const onInput = (type: string) => {
       <div class="mb-2">
         <label for="telephone" class="form-label">Téléphone</label>
         <Field name="telephone" v-slot="{ handleChange, value }">
-          <el-input
-            id="telephone"
-            :model-value="value"
-            @update:model-value="handleChange"
-            v-maska
-            data-maska="+225 ##########"
-            :class="{ 'is-invalid': props.errors.telephone }"
-          />
+          <el-input id="telephone" :model-value="value" @update:model-value="handleChange" v-maska
+            data-maska="+225 ##########" :class="{ 'is-invalid': props.errors.telephone }" />
         </Field>
         <div class="invalid-feedback" v-if="errors.telephone">{{ props.errors.telephone }}</div>
       </div>
       <div class="mb-2">
         <label for="email" class="form-label">Email</label>
         <Field name="email" v-slot="{ handleChange, value }">
-          <el-input
-            id="email"
-            :model-value="value"
-            @update:model-value="handleChange"
-            :class="{ 'is-invalid': props.errors.email }"
-          />
+          <el-input id="email" :model-value="value" @update:model-value="handleChange"
+            :class="{ 'is-invalid': props.errors.email }" />
         </Field>
         <div class="invalid-feedback" v-if="errors.email">{{ props.errors.email }}</div>
       </div>
       <div class="mb-2">
         <label for="cni" class="form-label">Numéro de CNI</label>
         <Field name="cni" v-slot="{ handleChange, value }">
-          <el-input
-            id="cni"
-            :model-value="value"
-            @update:model-value="handleChange"
-            v-maska
-            data-maska="CI#########"
-            :class="{ 'is-invalid': props.errors.cni }"
-          />
+          <el-input id="cni" :model-value="value" @update:model-value="handleChange" v-maska data-maska="CI##########"
+            :class="{ 'is-invalid': props.errors.cni }" />
         </Field>
         <div class="invalid-feedback" v-if="errors.cni">{{ props.errors.cni }}</div>
       </div>
       <div class="mb-2">
         <label for="nationalite" class="form-label">Nationalité</label>
         <Field name="nationalite" v-slot="{ handleChange, value }">
-          <el-input
-            id="nationalite"
-            :model-value="value"
-            @update:model-value="handleChange"
-            :class="{ 'is-invalid': props.errors.nationalite }"
-          />
+          <el-input id="nationalite" :model-value="value" @update:model-value="handleChange"
+            :class="{ 'is-invalid': props.errors.nationalite }" />
         </Field>
         <div class="invalid-feedback" v-if="errors.nationalite">
           {{ props.errors.nationalite }}
@@ -167,12 +127,8 @@ const onInput = (type: string) => {
       <div class="mb-2">
         <label for="lieu_naissance" class="form-label">Lieu de Naissance</label>
         <Field name="lieu_naissance" v-slot="{ handleChange, value }">
-          <el-input
-            id="lieu_naissance"
-            :model-value="value"
-            @update:model-value="handleChange"
-            :class="{ 'is-invalid': props.errors.lieu_naissance }"
-          />
+          <el-input id="lieu_naissance" :model-value="value" @update:model-value="handleChange"
+            :class="{ 'is-invalid': props.errors.lieu_naissance }" />
         </Field>
         <div class="invalid-feedback" v-if="errors.lieu_naissance">
           {{ props.errors.lieu_naissance }}
@@ -183,19 +139,9 @@ const onInput = (type: string) => {
         <Field name="type_client_id" v-slot="{ value, handleChange }">
           <el-row :gutter="5">
             <el-col :span="20">
-              <el-select
-                id="type_client"
-                filterable
-                :model-value="value"
-                @update:model-value="handleChange"
-              >
+              <el-select id="type_client" filterable :model-value="value" @update:model-value="handleChange">
                 <template #append><i class="bx bx-plus" /></template>
-                <el-option
-                  v-for="(item, key) in types"
-                  :key="key"
-                  :label="item.nom"
-                  :value="item.id!"
-                />
+                <el-option v-for="(item, key) in types" :key="key" :label="item.nom" :value="item.id!" />
               </el-select>
             </el-col>
             <el-col :span="4">
@@ -209,13 +155,8 @@ const onInput = (type: string) => {
       </div>
       <div class="mb-2">
         <Field name="civilite" v-slot="{ handleChange, value }">
-          <el-radio-group
-            id="civilite"
-            :model-value="value"
-            @update:model-value="handleChange"
-            :class="{ 'is-invalid': props.errors.civilite }"
-            class="ml-4"
-          >
+          <el-radio-group id="civilite" :model-value="value" @update:model-value="handleChange"
+            :class="{ 'is-invalid': props.errors.civilite }" class="ml-4">
             <el-radio label="Msr" size="large">Homme</el-radio>
             <el-radio label="Mme" size="large">Femme</el-radio>
           </el-radio-group>
@@ -229,19 +170,9 @@ const onInput = (type: string) => {
       <div class="mb-2">
         <label for="pays" class="form-label">Pays de résidence</label>
         <Field name="pays" v-slot="{ value, handleChange }">
-          <el-select
-            id="pays"
-            filterable
-            :model-value="value"
-            @update:model-value="handleChange"
-            :class="{ 'is-invalid': props.errors.pays }"
-          >
-            <el-option
-              v-for="(item, key) in pays"
-              :key="key"
-              :label="item.name"
-              :value="item.name"
-            />
+          <el-select id="pays" filterable :model-value="value" @update:model-value="handleChange"
+            :class="{ 'is-invalid': props.errors.pays }">
+            <el-option v-for="(item, key) in pays" :key="key" :label="item.name" :value="item.name" />
           </el-select>
         </Field>
         <div class="invalid-feedback" v-if="errors.pays">{{ props.errors.pays }}</div>
@@ -249,19 +180,9 @@ const onInput = (type: string) => {
       <div class="mb-2">
         <label for="ville" class="form-label">Commune</label>
         <Field name="ville" v-slot="{ value, handleChange }">
-          <el-select
-            id="ville"
-            filterable
-            :model-value="value"
-            @update:model-value="handleChange"
-            :class="{ 'is-invalid': props.errors.fonctions }"
-          >
-            <el-option
-              v-for="(item, key) in villes"
-              :key="key"
-              :label="item.COMMUNE"
-              :value="item.COMMUNE"
-            />
+          <el-select id="ville" filterable :model-value="value" @update:model-value="handleChange"
+            :class="{ 'is-invalid': props.errors.fonctions }">
+            <el-option v-for="(item, key) in villes" :key="key" :label="item.COMMUNE" :value="item.COMMUNE" />
           </el-select>
         </Field>
         <div class="invalid-feedback" v-if="errors.ville">{{ props.errors.ville }}</div>
@@ -269,24 +190,16 @@ const onInput = (type: string) => {
       <div class="mb-2">
         <label for="quartier" class="form-label">Quartier</label>
         <Field name="quartier" v-slot="{ value, handleChange }">
-          <el-input
-            id="quartier"
-            :model-value="value"
-            @update:model-value="handleChange"
-            :class="{ 'is-invalid': props.errors.quartier }"
-          />
+          <el-input id="quartier" :model-value="value" @update:model-value="handleChange"
+            :class="{ 'is-invalid': props.errors.quartier }" />
         </Field>
         <div class="invalid-feedback" v-if="errors.quartier">{{ props.errors.quartier }}</div>
       </div>
       <div class="mb-2">
         <label for="fonctions" class="form-label">Métier</label>
         <Field name="fonctions" v-slot="{ value, handleChange }">
-          <el-input
-            id="fonctions"
-            :model-value="value"
-            @update:model-value="handleChange"
-            :class="{ 'is-invalid': props.errors.fonctions }"
-          />
+          <el-input id="fonctions" :model-value="value" @update:model-value="handleChange"
+            :class="{ 'is-invalid': props.errors.fonctions }" />
         </Field>
         <div class="invalid-feedback" v-if="errors.fonctions">
           {{ props.errors.fonctions }}
@@ -295,16 +208,9 @@ const onInput = (type: string) => {
       <div class="mb-2">
         <label for="date_naissance" class="form-label">Date de Naissance</label>
         <Field name="date_naissance" v-slot="{ value, handleChange }">
-          <el-date-picker
-            :model-value="value"
-            @update:modelValue="handleChange"
-            id="date_naissance"
-            type="date"
-            format="DD-MM-YYYY"
-            value-format="YYYY-MM-DD"
-            :class="{ 'is-invalid': props.errors.date_naissance }"
-            style="width: 100%"
-          />
+          <el-date-picker :model-value="value" @update:modelValue="handleChange" id="date_naissance" type="date"
+            format="DD-MM-YYYY" value-format="YYYY-MM-DD" :class="{ 'is-invalid': props.errors.date_naissance }"
+            style="width: 100%" />
         </Field>
         <div class="invalid-feedback" v-if="errors.date_naissance">
           {{ props.errors.date_naissance }}
@@ -313,12 +219,8 @@ const onInput = (type: string) => {
       <div class="mb-2">
         <label for="animal" class="form-label">Animal de compagnie</label>
         <Field name="animal" v-slot="{ value, handleChange }">
-          <el-input
-            id="animal"
-            :model-value="value"
-            @update:model-value="handleChange"
-            :class="{ 'is-invalid': props.errors.animal }"
-          />
+          <el-input id="animal" :model-value="value" @update:model-value="handleChange"
+            :class="{ 'is-invalid': props.errors.animal }" />
         </Field>
         <div class="invalid-feedback" v-if="errors.animal">{{ props.errors.animal }}</div>
       </div>

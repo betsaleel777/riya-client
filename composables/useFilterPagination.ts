@@ -36,7 +36,7 @@ const useProprietaireFilterPagination = (proprietaires: Ref<Proprietaires>) => {
   const filterTableData = computed(() => {
     const filtered = Array.isArray(proprietaires.value)
       ? proprietaires.value.filter((proprietaire: Proprietaire) =>
-        !search.value || proprietaire.nom_complet.includes(search.value) || proprietaire.telephone.includes(search.value)
+        !search.value || proprietaire.nom_complet.toLowerCase().includes(search.value.toLowerCase()) || proprietaire.telephone.includes(search.value)
         || proprietaire.cni.includes(search.value)
       )
       : [];
@@ -57,7 +57,7 @@ const usePersonneFilterPagination = (personnes: Ref<Clients>) => {
   let pageSize = ref(8);
   const filterTableData = computed(() => {
     const filtered = Array.isArray(personnes.value)
-      ? personnes.value.filter((personne: Client) => !search.value || personne.nom_complet?.includes(search.value)
+      ? personnes.value.filter((personne: Client) => !search.value || personne.nom_complet?.toLowerCase().includes(search.value.toLowerCase())
         || personne.telephone.includes(search.value) || personne.cni.includes(search.value))
       : [];
     total.value = filtered.length;
@@ -77,8 +77,8 @@ const useAppartementFilterPagination = (appartements: Ref<Appartements>) => {
   let pageSize = ref(8);
   const filterTableData = computed(() => {
     const filtered = Array.isArray(appartements.value)
-      ? appartements.value.filter((appartement: Appartement) => !search.value || appartement.nom.includes(search.value)
-        || appartement.proprietaire?.includes(search.value) || appartement.quartier.includes(search.value)
+      ? appartements.value.filter((appartement: Appartement) => !search.value || appartement.nom.toLowerCase().includes(search.value.toLowerCase())
+        || appartement.proprietaire?.toLowerCase().includes(search.value.toLowerCase()) || appartement.quartier.toLowerCase().includes(search.value.toLowerCase())
         || appartement.status === search.value
       ) : [];
     total.value = filtered.length;
@@ -98,8 +98,9 @@ const useTerrainFilterPagination = (terrains: Ref<Terrains>) => {
   let pageSize = ref(8);
   const filterTableData = computed(() => {
     const filtered = Array.isArray(terrains.value)
-      ? terrains.value.filter((terrain: Terrain) => !search.value || terrain.nom.includes(search.value)
-        || terrain.proprietaire?.includes(search.value) || terrain.quartier.includes(search.value) || terrain.status === search.value
+      ? terrains.value.filter((terrain: Terrain) => !search.value || terrain.nom.toLowerCase().includes(search.value.toLowerCase())
+        || terrain.proprietaire?.toLowerCase().includes(search.value.toLowerCase()) || terrain.quartier.toLowerCase().includes(search.value.toLowerCase())
+        || terrain.status === search.value
       ) : [];
     total.value = filtered.length;
     return filtered.slice(
@@ -118,7 +119,7 @@ const useUserFilterPagination = (utilisateurs: Ref<Utilisateurs>) => {
   let pageSize = ref(8);
   const filterTableData = computed(() => {
     const filtered = Array.isArray(utilisateurs.value)
-      ? utilisateurs.value.filter((utilisateur: Utilisateur) => !search.value || utilisateur.name.includes(search.value))
+      ? utilisateurs.value.filter((utilisateur: Utilisateur) => !search.value || utilisateur.name.toLowerCase().includes(search.value.toLowerCase()))
       : [];
     total.value = filtered.length;
     return filtered.slice(
