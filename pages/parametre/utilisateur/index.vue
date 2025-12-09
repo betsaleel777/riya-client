@@ -31,23 +31,12 @@ const { handleDelete, handleEdit, modal } = useHandleCrudButtons(trash);
                   <el-button @click="modal.create = true" plain type="primary">Ajouter</el-button>
                 </template>
                 <el-input v-model="search" class="w-50 mt-1 mb-2" placeholder="Rechercher" />
-                <el-table
-                  v-loading="loading.index"
-                  :data="filterTableData"
-                  style="width: 100%"
-                  empty-text="aucun utilisateur"
-                >
+                <el-table v-loading="loading.index" :data="filterTableData" style="width: 100%"
+                  empty-text="aucun utilisateur">
                   <el-table-column prop="photo" width="75">
                     <template #default="scope">
-                      <el-image
-                        class="bg-transparent rounded-circle"
-                        style="width: 30px; height: 30px"
-                        fit="fill"
-                        :src="scope.row.photo"
-                        :preview-src-list="[scope.row.photo]"
-                        lazy
-                        preview-teleported
-                      ></el-image>
+                      <el-image class="bg-transparent rounded-circle" style="width: 30px; height: 30px" fit="fill"
+                        :src="scope.row.photo" :preview-src-list="[scope.row.photo]" lazy preview-teleported></el-image>
                     </template>
                   </el-table-column>
                   <el-table-column prop="name" label="Nom" sortable>
@@ -63,42 +52,22 @@ const { handleDelete, handleEdit, modal } = useHandleCrudButtons(trash);
                     </template>
                     <template #default="scope">
                       <el-button type="info" plain circle><i class="bx bx-show" /></el-button>
-                      <el-button type="primary" @click="handleEdit(scope.row)" plain circle
-                        ><i class="bx bx-edit"
-                      /></el-button>
-                      <el-button
-                        type="danger"
-                        @click="
-                          handleDelete(
-                            scope.row,
-                            `Voulez vous réelement supprimer ${scope.row.nom_complet}`
-                          )
-                        "
-                        plain
-                        circle
-                        ><i class="bx bx-trash"
-                      /></el-button>
+                      <el-button type="primary" @click="handleEdit(scope.row)" plain circle><i
+                          class="bx bx-edit" /></el-button>
+                      <el-button type="danger" @click="
+                        handleDelete(
+                          scope.row,
+                          `Voulez vous réelement supprimer ${scope.row.nom_complet}`
+                        )
+                        " plain circle><i class="bx bx-trash" /></el-button>
                     </template>
                   </el-table-column>
                 </el-table>
-                <el-pagination
-                  small
-                  background
-                  layout="prev, pager, next"
-                  :total="total"
-                  class="mt-4"
-                  justify="center"
-                  v-model:page-size="pageSize"
-                  @current-change="setPage"
-                  hide-on-single-page
-                />
+                <el-pagination small background layout="prev, pager, next" :total="total" class="mt-4" justify="center"
+                  v-model:page-size="pageSize" @current-change="setPage" hide-on-single-page />
               </StructurePageHeader>
               <UtilisateurCreateModal v-model="modal.create" />
-              <UtilisateurEditModal
-                :id="modal.edit.id"
-                v-if="modal.edit.dialog"
-                v-model="modal.edit.dialog"
-              />
+              <UtilisateurEditModal :id="modal.edit.id" v-if="modal.edit.dialog" v-model="modal.edit.dialog" />
             </div>
           </div>
         </div>

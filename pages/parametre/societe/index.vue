@@ -8,9 +8,9 @@ definePageMeta({
 });
 const { getOne, getCount } = useSocieteStore();
 const { societe, loading } = storeToRefs(useSocieteStore());
-onMounted(() => {
-  getOne();
-  getCount();
+onMounted(async () => {
+  await getOne();
+  await getCount();
 });
 </script>
 
@@ -34,11 +34,8 @@ onMounted(() => {
       </div>
       <!-- end page title -->
 
-      <div
-        v-loading="loading"
-        element-loading-text="Chargement en cours ..."
-        element-loading-background="rgba(122, 122, 122, 0.9)"
-      >
+      <div v-loading="loading" element-loading-text="Chargement en cours ..."
+        element-loading-background="rgba(122, 122, 122, 0.9)">
         <SocietePageContentComponent v-if="!loading" :societe="societe" />
       </div>
       <!-- end row -->

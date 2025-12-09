@@ -1,6 +1,6 @@
-import { Achat } from "./achat";
-import { Entity } from "./global";
-import { Visite } from "./visite";
+import type { Achat } from "./achat";
+import type { Entity } from "./global";
+import type { Visite } from "./visite";
 
 interface Contrat extends Entity {
   code: string;
@@ -15,8 +15,9 @@ interface Contrat extends Entity {
   created_at: string;
   status: string;
   etat: string;
+  montant_location: number;
 }
 
 type Contrats = Array<Contrat>;
 
-export { Contrat, Contrats };
+export type { Contrat, Contrats };

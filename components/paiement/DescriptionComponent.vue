@@ -1,77 +1,72 @@
 <script lang="ts" setup>
-import { Paiement } from "~/types/paiements";
-
+import type { Paiement } from "~/types/paiements";
 const props = defineProps<{ paiement: Paiement }>();
 </script>
 
 <template>
   <el-divider content-position="left">Paiement</el-divider>
   <el-descriptions direction="horizontal" :column="2" size="large">
-    <el-descriptions-item v-if="props.paiement?.code" label="Code:"
-      >{{ props.paiement?.code }}
+    <el-descriptions-item v-if="props.paiement?.code" label="Code:">
+      {{ props.paiement?.code }}
     </el-descriptions-item>
-    <el-descriptions-item v-if="props.paiement?.montant" label="Montant:"
-      >{{ useCurrency(props.paiement?.montant) }}
+    <el-descriptions-item v-if="props.paiement?.montant" label="Montant:">
+      {{ useCurrency(props.paiement?.montant) }}
     </el-descriptions-item>
-    <el-descriptions-item v-if="props.paiement?.payable_type" label="paiement sur:"
-      >{{ props.paiement?.payable_type }}
+    <el-descriptions-item v-if="props.paiement?.payable_type" label="paiement sur:">
+      {{ props.paiement?.payable_type }}
     </el-descriptions-item>
-    <el-descriptions-item v-if="props.paiement?.created_at" label="Date:"
-      >{{ props.paiement?.created_at }}
+    <el-descriptions-item v-if="props.paiement?.created_at" label="Date:">
+      {{ props.paiement?.created_at }}
     </el-descriptions-item>
   </el-descriptions>
-  <el-divider content-position="left">{{ props.paiement?.payable_type }}</el-divider>
+  <el-divider content-position="left">
+    {{ props.paiement?.payable_type }}
+  </el-divider>
   <el-descriptions direction="horizontal" :column="2" size="large">
-    <el-descriptions-item
-      v-if="props.paiement?.payable?.code"
-      :label="`Code ${props.paiement?.payable_type}`"
-      >{{ props.paiement?.payable?.code }}
+    <el-descriptions-item v-if="props.paiement?.payable?.code" :label="`Code ${props.paiement?.payable_type}`">
+      {{ props.paiement?.payable?.code }}
     </el-descriptions-item>
-    <el-descriptions-item
-      v-if="props.paiement?.payable?.created_at"
-      :label="`Date ${props.paiement?.payable_type}`"
-      >{{ props.paiement?.payable?.created_at }}
+    <el-descriptions-item v-if="props.paiement?.payable?.created_at" :label="`Date ${props.paiement?.payable_type}`">
+      {{ props.paiement?.payable?.created_at }}
     </el-descriptions-item>
-    <el-descriptions-item v-if="props.paiement?.payable?.total" label="Déjà Versé:"
-      >{{ useCurrency(props.paiement?.payable?.total) }}
+    <el-descriptions-item v-if="props.paiement?.payable?.total" label="Déjà Versé:">
+      {{ useCurrency(props.paiement?.payable?.total) }}
     </el-descriptions-item>
-    <el-descriptions-item v-if="props.paiement?.payable?.reste !== undefined" label="Reste à payer:"
-      >{{ useCurrency(props.paiement?.payable?.reste) }}
+    <el-descriptions-item v-if="props.paiement?.payable?.reste !== undefined" label="Reste à payer:">
+      {{ useCurrency(props.paiement?.payable?.reste) }}
     </el-descriptions-item>
   </el-descriptions>
   <el-divider content-position="left">Client</el-divider>
   <el-descriptions direction="horizontal" :column="2" size="large">
-    <el-descriptions-item
-      v-if="props.paiement?.payable?.personne?.nom_complet"
-      label="Nom & prénoms:"
-      >{{ props.paiement?.payable?.personne?.nom_complet }}
+    <el-descriptions-item v-if="props.paiement?.payable?.personne?.nom_complet" label="Nom & prénoms:">
+      {{ props.paiement?.payable?.personne?.nom_complet }}
     </el-descriptions-item>
-    <el-descriptions-item v-if="props.paiement?.payable?.personne?.quartier" label="Quartier:"
-      >{{ props.paiement?.payable?.personne?.quartier }}
+    <el-descriptions-item v-if="props.paiement?.payable?.personne?.quartier" label="Quartier:">
+      {{ props.paiement?.payable?.personne?.quartier }}
     </el-descriptions-item>
-    <el-descriptions-item v-if="props.paiement?.payable?.personne?.telephone" label="Téléphone:"
-      >{{ props.paiement?.payable?.personne?.telephone }}
+    <el-descriptions-item v-if="props.paiement?.payable?.personne?.telephone" label="Téléphone:">
+      {{ props.paiement?.payable?.personne?.telephone }}
     </el-descriptions-item>
-    <el-descriptions-item v-if="props.paiement?.payable?.personne?.ville" label="Ville:"
-      >{{ props.paiement?.payable?.personne?.ville }}
+    <el-descriptions-item v-if="props.paiement?.payable?.personne?.ville" label="Ville:">
+      {{ props.paiement?.payable?.personne?.ville }}
     </el-descriptions-item>
   </el-descriptions>
   <el-divider content-position="left">Bien</el-divider>
   <el-descriptions direction="horizontal" :column="2" size="large">
-    <el-descriptions-item v-if="props.paiement?.payable?.bien?.nom" label="Nom:"
-      >{{ props.paiement?.payable?.bien?.nom }}
+    <el-descriptions-item v-if="props.paiement?.payable?.bien?.nom" label="Nom:">
+      {{ props.paiement?.payable?.bien?.nom }}
     </el-descriptions-item>
-    <el-descriptions-item v-if="props.paiement?.payable?.bien?.superficie" label="Superficie:"
-      >{{ props.paiement?.payable?.bien?.superficie }} m²
+    <el-descriptions-item v-if="props.paiement?.payable?.bien?.superficie" label="Superficie:">
+      {{ props.paiement?.payable?.bien?.superficie }} m²
     </el-descriptions-item>
-    <el-descriptions-item v-if="props.paiement?.payable?.bien?.cout_achat" label="Coût d'achat:"
-      >{{ useCurrency(props.paiement?.payable?.bien?.cout_achat) }}
+    <el-descriptions-item v-if="props.paiement?.payable?.bien?.cout_achat" label="Coût d'achat:">
+      {{ useCurrency(props.paiement?.payable?.bien?.cout_achat) }}
     </el-descriptions-item>
-    <el-descriptions-item v-if="props.paiement?.payable?.bien?.quartier" label="Quartier:"
-      >{{ props.paiement?.payable?.bien?.quartier }}
+    <el-descriptions-item v-if="props.paiement?.payable?.bien?.quartier" label="Quartier:">
+      {{ props.paiement?.payable?.bien?.quartier }}
     </el-descriptions-item>
-    <el-descriptions-item v-if="props.paiement?.payable?.bien?.montant_location" label="Loyer:"
-      >{{ useCurrency(props.paiement?.payable?.bien?.montant_location) }}
+    <el-descriptions-item v-if="props.paiement?.payable?.contrat?.montant_location" label="Loyer:">
+      {{ useCurrency(props.paiement?.payable?.contrat?.montant_location) }}
     </el-descriptions-item>
   </el-descriptions>
 </template>

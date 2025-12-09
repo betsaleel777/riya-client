@@ -1,14 +1,10 @@
 <template>
-  <el-config-provider :locale="locale">
-    <NuxtLayout>
-      <NuxtPage />
-    </NuxtLayout>
-  </el-config-provider>
+  <NuxtLayout>
+    <NuxtPage />
+  </NuxtLayout>
 </template>
 
 <script setup>
-import fr from "element-plus/dist/locale/fr.mjs";
-const locale = fr;
 const color = useColorMode();
 import { storeToRefs } from "pinia";
 import { useConfigStore } from "~/store";
@@ -23,8 +19,11 @@ useHead({
 </script>
 
 <style>
-@import "element-plus/theme-chalk/dark/css-vars.css";
 html.dark {
   --el-bg-color: #2a3042;
+}
+
+html.dark .el-table__body tr:hover>td {
+  background-color: #222736 !important;
 }
 </style>

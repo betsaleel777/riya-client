@@ -9,17 +9,12 @@ const { dialog } = useDialogModelValue(props, emit);
 
 const { update, getOne } = useTerrainStore();
 const { terrain, loading } = storeToRefs(useTerrainStore());
-getOne(props.id);
+await getOne(props.id);
 const { onSubmit } = useSubmitForm(update, dialog);
 </script>
 
 <template>
-  <Form
-    class="form-horizontal"
-    @submit="onSubmit"
-    :initial-values="terrain"
-    v-slot="{ isSubmitting, errors }"
-  >
+  <Form class="form-horizontal" @submit="onSubmit" :initial-values="terrain" v-slot="{ isSubmitting, errors }">
     <el-dialog v-model="dialog" title="Modifier le terrain" width="50%" destroy-on-close center>
       <div v-loading="loading.edit || isSubmitting">
         <TerrainDialogForm :errors="errors" />

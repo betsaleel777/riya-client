@@ -38,26 +38,14 @@ const onSubmit = async (values: any, actions: any) => {
 
 <template>
   <Form class="form-horizontal" @submit="onSubmit" v-slot="{ isSubmitting, errors }">
-    <el-dialog
-      v-model="dialog"
-      title="Créer un contrat"
-      width="30%"
-      destroy-on-close
-      center
-      scrollable
-    >
-      <ContratDialogForm
-        v-loading="isSubmitting"
-        :errors="errors"
-        :operation-id="operationId"
-        :paiement-id="paiementId"
-        :type="props.type"
-      />
+    <el-dialog v-model="dialog" title="Créer un contrat" width="30%" destroy-on-close center scrollable>
+      <ContratDialogForm v-loading="isSubmitting" :errors="errors" :operation-id="operationId" :paiement-id="paiementId"
+        :type="props.type" />
       <template #footer>
         <span class="dialog-footer">
-          <el-button type="danger" :disabled="isSubmitting" @click="dialog = false" plain
-            >Annuler</el-button
-          >
+          <el-button type="danger" :disabled="isSubmitting" @click="dialog = false" plain>
+            Annuler
+          </el-button>
           <el-button type="primary" :disabled="isSubmitting" native-type="submit">
             enregistrer
           </el-button>

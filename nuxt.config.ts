@@ -42,6 +42,10 @@ export default defineNuxtConfig({
     plugins: ["relativeTime", "utc", "timezone"],
     defaultLocale: "fr",
   },
+  elementPlus: {
+    defaultLocale: "fr",
+    themes: ["dark"],
+  },
   colorMode: {
     preference: "system",
     fallback: "light",

@@ -9,28 +9,19 @@ const { dialog } = useDialogModelValue(props, emit);
 
 const { update, getOne } = useAppartementStore();
 const { appartement, loading } = storeToRefs(useAppartementStore());
-onMounted(async () => {
-  await getOne(props.id);
-});
+await getOne(props.id);
 const { onSubmit } = useSubmitForm(update, dialog);
 </script>
 
 <template>
-  <Form
-    class="form-horizontal"
-    @submit="onSubmit"
-    :initial-values="appartement"
-    v-slot="{ isSubmitting, errors }"
-  >
+  <Form class="form-horizontal" @submit="onSubmit" :initial-values="appartement" v-slot="{ isSubmitting, errors }">
     <el-dialog v-model="dialog" title="Modifier l'apprtement" width="50%" destroy-on-close center>
       <div v-loading="loading.edit || isSubmitting">
         <AppartementDialogForm :errors="errors" />
       </div>
       <template #footer>
         <span class="dialog-footer">
-          <el-button type="danger" :disabled="isSubmitting" @click="dialog = false" plain
-            >Annuler</el-button
-          >
+          <el-button type="danger" :disabled="isSubmitting" @click="dialog = false" plain>Annuler</el-button>
           <el-button type="primary" :disabled="isSubmitting" native-type="submit">
             modifier
           </el-button>

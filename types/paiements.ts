@@ -1,13 +1,14 @@
-import { Achat } from "./achat";
-import { Audit, Entity } from "./global";
-import { Loyer } from "./loyer";
+import type { Contrat } from "./contrat";
+import type { Achat } from "./achat";
+import type { Audit, Entity } from "./global";
+import type { Loyer } from "./loyer";
 
 interface Paiement extends Entity {
   code: string;
   montant: number;
   created_at: string;
   status: string;
-  payable?: Achat & Loyer;
+  payable?: Achat & Loyer & Contrat;
   payable_id: number;
   payable_type: string;
   audit: Audit
@@ -15,4 +16,4 @@ interface Paiement extends Entity {
 
 type Paiements = Array<Paiement>;
 
-export { Paiement, Paiements };
+export type { Paiement, Paiements };

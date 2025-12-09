@@ -8,7 +8,7 @@ export const useLoyerStore = defineStore("loyer", () => {
   const { $apiFetch } = useNuxtApp();
   const { getPendings } = useDashboardStore();
   let loyers = ref<Loyers>([]);
-  let loyer = ref<Loyer>();
+  let loyer = ref<Loyer | null>();
   let pendingValidations = ref<LoyerValidations>([]);
   let loading = reactive({ index: false, edit: false });
   const { getPaginate, getSearch, liste } = usePaginationMethods("api/loyers", $apiFetch, loading);
@@ -40,7 +40,7 @@ export const useLoyerStore = defineStore("loyer", () => {
   const getLastPaid = async (id: number) => {
     try {
       loading.edit = true;
-      loyer.value = await $apiFetch<Loyer>("api/loyers/last-paid/", {
+      loyer.value = await $apiFetch<Loyer | null>("api/loyers/last-paid", {
         method: "get",
         params: { id },
       });

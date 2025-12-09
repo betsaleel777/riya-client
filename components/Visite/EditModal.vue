@@ -9,17 +9,12 @@ const { dialog } = useDialogModelValue(props, emit);
 
 const { update, getOne } = useVisiteStore();
 const { visite, loading } = storeToRefs(useVisiteStore());
-getOne(props.id);
+await getOne(props.id);
 const { onSubmit } = useSubmitForm(update, dialog);
 </script>
 
 <template>
-  <Form
-    class="form-horizontal"
-    @submit="onSubmit"
-    :initial-values="visite"
-    v-slot="{ isSubmitting, errors }"
-  >
+  <Form class="form-horizontal" @submit="onSubmit" :initial-values="visite" v-slot="{ isSubmitting, errors }">
     <el-dialog v-model="dialog" title="Modifier la visite" width="35%" destroy-on-close center>
       <VisiteDialogForm v-loading="loading.edit || isSubmitting" :errors="errors" />
       <template #footer>
