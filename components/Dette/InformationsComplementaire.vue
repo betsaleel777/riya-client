@@ -38,11 +38,10 @@ if (props.type === typeContrat.visite) {
   </div>
   <div v-else-if="props.type === typePaiement.rent" v-loading="loyerLoading.edit">
     <LoyerDescriptionComponent :loyer="loyer" />
-    <el-alert v-if="loyer?.status === statusPayable.unpaid" type="error"
-      >La validation du paiement de cette dette se fera sur vos fonds propres à hauteur de
+    <el-alert v-if="loyer?.status === statusPayable.unpaid && dette?.montant! > loyer.paid" type="error">La validation
+      du paiement de cette dette se fera sur vos fonds propres à hauteur de
       {{ useCurrency(dette?.montant! - loyer.paid) }} car ce loyer n'a pas été entièrement
-      payé</el-alert
-    >
+      payé</el-alert>
   </div>
   <div v-else v-loading="paiementLoading.edit">
     <PaiementDescriptionComponent :paiement="paiement" />
