@@ -40,12 +40,7 @@ const imprimer = async () => {
         <div class="card-body pe-5 ps-5">
           <div class="row text-center">
             <div class="col-4">
-              <el-image
-                fit="fill"
-                v-if="url.length > 0"
-                :src="url"
-                style="height: 80%; width: 90%"
-              />
+              <el-image fit="fill" v-if="url.length > 0" :src="url" style="height: 140px; width: 140px;" />
             </div>
             <div class="col-4">
               <el-image src="/images/eccuissonci.png" style="height: 140px; width: 140px" />
@@ -67,19 +62,15 @@ const imprimer = async () => {
               </div>
               <div class="d-flex flex-column">
                 <span class="text-muted"><u>Texte de référence:</u></span>
-                <span
-                  ><em
-                    >Loi N°2019-576 du 26 juin 2019 instituant Code de la Construction et de
-                    l’Habitat</em
-                  >
+                <span><em>Loi N°2019-576 du 26 juin 2019 instituant Code de la Construction et de
+                    l’Habitat</em>
                 </span>
                 <span class="my-1">ENTRE:</span>
               </div>
             </div>
             <p class="text-justify">
-              <b
-                >L’agence <span class="text-uppercase">{{ societe.raison_sociale }}</span></b
-              >, entreprise individuelle, représentée par Madame TOTO, domiciliée à Abidjan,
+              <b>L’agence <span class="text-uppercase">{{ societe.raison_sociale }}</span></b>, entreprise individuelle,
+              représentée par Madame TOTO, domiciliée à Abidjan,
               immatriculée au RCCM de Toumodi sous le {{ societe.registre }}, Tél. :
               {{ societe.contact }} ; compte contribuable n°<b>1703538F</b>. Désignée dans tout ce
               qui suit : « Le BAILLEUR ».
@@ -100,9 +91,7 @@ const imprimer = async () => {
               Courriel : {{ props.contrat?.operation?.personne?.email }}
               Personne à contacter en cas d’urgence: ……………………………… Contact : …………………………….
             </p>
-            <span class="my-1"
-              >Dénommé au titre du présent acte « LE PRENEUR » ou « LE LOCATAIRE »</span
-            >
+            <span class="my-1">Dénommé au titre du présent acte « LE PRENEUR » ou « LE LOCATAIRE »</span>
             <div class="d-flex flex-row-reverse"><b>D’autre part.</b></div>
             <p>Lesquels ont convenu et arrêté le contrat qui suit :</p>
             <div class="d-flex justify-content-center align-baseline my-3">
@@ -204,10 +193,8 @@ const imprimer = async () => {
             </div>
             <div class="html2pdf__page-break"></div>
             <h6 class="font-weight-bold my-3">ARTICLE 3 – REVISION DU LOYER</h6>
-            <span
-              >Le loyer peut être révisé à la hausse ou à la baisse tous les
-              <b>trois (3) ans</b>.</span
-            >
+            <span>Le loyer peut être révisé à la hausse ou à la baisse tous les
+              <b>trois (3) ans</b>.</span>
             <p class="my-2">
               Les litiges relatifs à la révision du loyer peuvent être portés devant la juridiction
               compétente. La partie qui sollicite une augmentation ou une réduction du loyer doit
@@ -222,7 +209,7 @@ const imprimer = async () => {
               {{
                 numberToFrench(
                   props.contrat?.operation?.caution! *
-                    props.contrat?.operation?.appartement?.montant_location!,
+                  props.contrat?.operation?.appartement?.montant_location!,
                   " "
                 ).toUpperCase()
               }}
@@ -288,7 +275,7 @@ const imprimer = async () => {
               {{
                 numberToFrench(
                   props.contrat?.operation?.appartement?.montant_location! *
-                    props.contrat?.operation?.avance!,
+                  props.contrat?.operation?.avance!,
                   " "
                 )
               }}
@@ -578,8 +565,7 @@ const imprimer = async () => {
               </li>
             </ul>
             <span>
-              <b><u>NB</u></b
-              >: Tous frais et honoraires d’huissier et autres seront à la charge du PRENEUR qui s’y
+              <b><u>NB</u></b>: Tous frais et honoraires d’huissier et autres seront à la charge du PRENEUR qui s’y
               oblige et s’y engage.
             </span>
             <h6 class="font-weight-bold my-3">ARTICLE 17 – ABANDON DU LOCAL PAR LE LOCATAIRE</h6>
@@ -691,14 +677,10 @@ const imprimer = async () => {
             </div>
             <div class="d-flex justify-content-between">
               <div class="d-flex flex-column">
-                <span
-                  ><b><u>Pour le PRENEUR</u></b></span
-                >
+                <span><b><u>Pour le PRENEUR</u></b></span>
                 <small>Avec la mention Lu et Approuvé</small>
               </div>
-              <span
-                ><b><u>Pour le BAILLEUR</u></b></span
-              >
+              <span><b><u>Pour le BAILLEUR</u></b></span>
             </div>
           </div>
         </div>

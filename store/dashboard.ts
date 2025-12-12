@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { FetchError } from "ofetch";
-import { Dashboard } from "~/types/dashboard";
+import type { Dashboard } from "~/types/dashboard";
 
 export const useDashboardStore = defineStore("dashboard", () => {
   const { $apiFetch } = useNuxtApp();
@@ -30,9 +30,9 @@ export const useDashboardStore = defineStore("dashboard", () => {
     loading.chiffre = true;
     dashboard.value
       ? (dashboard.value.chiffres = await $apiFetch<Dashboard["chiffres"]>(
-          `api/dashboard-count/chiffres`,
-          { method: "get", params: { date: data } }
-        ))
+        `api/dashboard-count/chiffres`,
+        { method: "get", params: { date: data } }
+      ))
       : null;
     loading.chiffre = false;
     return "Chiffre d'affaire mis à jour selon le critère de recherche" as string;
@@ -43,9 +43,9 @@ export const useDashboardStore = defineStore("dashboard", () => {
     loading.dette = true;
     dashboard.value
       ? (dashboard.value.remboursements = await $apiFetch<Dashboard["remboursements"]>(
-          "api/dashboard-count/dettes",
-          { method: "get", params: { date: data } }
-        ))
+        "api/dashboard-count/dettes",
+        { method: "get", params: { date: data } }
+      ))
       : null;
     loading.dette = false;
     return "Dettes mises à jour selon le critère de recherche" as string;
@@ -56,9 +56,9 @@ export const useDashboardStore = defineStore("dashboard", () => {
     loading.depense = true;
     dashboard.value
       ? (dashboard.value.depenses = await $apiFetch<Dashboard["depenses"]>(
-          "api/dashboard-count/depenses",
-          { method: "get", params: { date: data } }
-        ))
+        "api/dashboard-count/depenses",
+        { method: "get", params: { date: data } }
+      ))
       : null;
     loading.depense = false;
     return "Dépenses mises à jour selon le critère de recherche" as string;

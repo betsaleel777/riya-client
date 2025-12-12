@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { FetchError } from "ofetch";
-import { TypePostForm, TypePutForm } from "~/types/global";
-import { Depense, DepenseValidations, Depenses, TypeDepense, TypeDepenses } from "~/types/depense";
+import type { TypePostForm, TypePutForm } from "~/types/global";
+import type { Depense, DepenseValidations, Depenses, TypeDepense, TypeDepenses } from "~/types/depense";
 import { useDashboardStore } from "./dashboard";
 
 const useTypeDepenseStore = defineStore("type-depense", () => {

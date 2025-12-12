@@ -1,5 +1,5 @@
-import { Bien, Type } from "./global";
-import { Proprietaire } from "./proprietaire";
+import type { Bien, Type } from "./global";
+import type { Proprietaire } from "./proprietaire";
 
 interface Appartement extends Bien {
   cours_commune: boolean;
@@ -18,9 +18,9 @@ interface Appartement extends Bien {
   observation?: string;
 }
 
-interface TypeAppartement extends Type {}
+interface TypeAppartement extends Type { }
 
 type Appartements = Array<Appartement>;
 type TypeAppartements = Array<TypeAppartement>;
 
-export { TypeAppartement, TypeAppartements, Appartements, Appartement };
+export type { TypeAppartement, TypeAppartements, Appartements, Appartement };

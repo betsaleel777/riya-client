@@ -12,6 +12,7 @@
     "@element-plus/nuxt": "^1.0.4",
     "@nuxtjs/color-mode": "^3.3.2",
     "@types/node": "^18",
+    "baseline-browser-mapping": "^2.9.6",
     "dayjs-nuxt": "^2.1.9",
     "element-plus": "^2.4.1",
     "nuxt": "^3.4.2"

@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { FetchError } from "ofetch";
-import { TypePostForm, TypePutForm } from "~/types/global";
-import { Terrain, Terrains, TypeTerrain, TypeTerrains } from "~/types/terrain";
+import type { TypePostForm, TypePutForm } from "~/types/global";
+import type { Terrain, Terrains, TypeTerrain, TypeTerrains } from "~/types/terrain";
 
 const useTypeTerrainStore = defineStore("type-terrain", () => {
   const { $apiFetch } = useNuxtApp();

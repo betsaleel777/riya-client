@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Operation } from "~/types/visite";
+import type { Operation } from "~/types/visite";
 import { useVisiteStore } from "~/store/visite";
 import { Form } from "vee-validate";
 
@@ -17,22 +17,10 @@ const action = getOperationAction(frais.value);
 const { onSubmit } = useSubmitFormSimple(action);
 </script>
 <template>
-  <Form
-    class="form-horizontal"
-    @submit="onSubmit"
-    :initial-values="initials"
-    v-slot="{ isSubmitting, errors }"
-  >
+  <Form class="form-horizontal" @submit="onSubmit" :initial-values="initials" v-slot="{ isSubmitting, errors }">
     <VisiteFraisForm v-loading="isSubmitting" :errors="errors" :loyer="loyer" />
-    <el-button
-      style="float: right"
-      class="my-2"
-      type="primary"
-      :disabled="isSubmitting"
-      native-type="submit"
-    >
-      enregistrer</el-button
-    >
+    <el-button style="float: right" class="my-2" type="primary" :disabled="isSubmitting" native-type="submit">
+      enregistrer</el-button>
   </Form>
 </template>
 

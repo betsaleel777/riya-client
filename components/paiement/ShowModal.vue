@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { storeToRefs } from "pinia";
 import { usePaiementStore } from "~/store/paiement";
+import { rolesNames, typePaiement, statusValidable } from "~/utils/constante";
 
 const props = defineProps<{ modelValue: boolean; id: number }>();
 const emit = defineEmits<{ (event: "update:modelValue", payload: boolean): void }>();
@@ -41,23 +42,14 @@ const onContratCreated = async () => {
   <el-dialog v-model="dialog" title="Détails de paiement" width="40%" destroy-on-close center>
     <div v-loading="loading.edit">
       <div class="d-flex flex-row-reverse">
-        <el-button
-          v-if="paiement?.status === statusValidable.wait"
-          @click="handleValidate"
-          type="primary"
-          text
-          >valider ce paiement
+        <el-button v-role="rolesNames.admin" v-if="paiement?.status === statusValidable.wait" @click="handleValidate"
+          type="primary" text>valider ce paiement
         </el-button>
       </div>
       <PaiementDescriptionComponent :paiement="paiement" />
     </div>
-    <ContratCreateModal
-      v-model="contratForm.modal"
-      :operation-id="paiement?.payable_id"
-      :paiement-id="contratForm.paiement"
-      :type="typePaiement.purchase"
-      @contrat-created="onContratCreated()"
-    />
+    <ContratCreateModal v-model="contratForm.modal" :operation-id="paiement?.payable_id || 0"
+      :paiement-id="contratForm.paiement" :type="typePaiement.purchase" @contrat-created="onContratCreated()" />
   </el-dialog>
 </template>
 

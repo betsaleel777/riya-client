@@ -5,19 +5,13 @@
       <div id="sidebar-menu">
         <!-- Left Menu Start -->
         <ul class="metismenu list-unstyled" id="side-menu" ref="side">
-          <li
-            :class="{ 'mm-active': $route.name === 'proprietaire' }"
-            v-role="[rolesNames.admin, rolesNames.employee]"
-          >
+          <li :class="{ 'mm-active': $route.name === 'proprietaire' }" v-role="[rolesNames.admin, rolesNames.employee]">
             <nuxt-link to="/proprietaire" class="waves-effect">
               <i class="bx bx-user-circle"></i>
               <span key="t-starter-page">Proprietaires</span>
             </nuxt-link>
           </li>
-          <li
-            :class="{ 'mm-active': $route.name === 'personne' }"
-            v-role="[rolesNames.admin, rolesNames.employee]"
-          >
+          <li :class="{ 'mm-active': $route.name === 'personne' }" v-role="[rolesNames.admin, rolesNames.employee]">
             <nuxt-link to="/personne" class="waves-effect">
               <i class="bx bx-id-card"></i>
               <span key="t-starter-page">Clients</span>
@@ -27,20 +21,12 @@
             <nuxt-link to="/approval" class="waves-effect">
               <i class="bx bx-check-shield"></i>
               <span key="t-starter-page "> Validations </span>
-              <span
-                v-if="!loading.pendings && Number(pendings) !== 0"
-                class="float-end"
-                :class="pendingsColor(Number(pendings))"
-                >{{ pendings }}</span
-              >
+              <span v-if="!loading.pendings && Number(pendings) !== 0" class="float-end"
+                :class="pendingsColor(Number(pendings))">{{ pendings }}</span>
             </nuxt-link>
           </li>
           <li v-role="[rolesNames.admin, rolesNames.employee]">
-            <a
-              href="javascript: void(0);"
-              class="has-arrow waves-effect"
-              @click="menu.biens = true"
-            >
+            <a href="javascript: void(0);" class="has-arrow waves-effect" @click="menu.biens = true">
               <i class="bx bx-home"></i>
               <span key="t-Biens">Biens</span>
             </a>
@@ -54,11 +40,7 @@
             </ul>
           </li>
           <li v-role="[rolesNames.admin, rolesNames.employee]">
-            <a
-              href="javascript: void(0);"
-              class="has-arrow waves-effect"
-              @click="menu.operations = true"
-            >
+            <a href="javascript: void(0);" class="has-arrow waves-effect" @click="menu.operations = true">
               <i class="bx bx-pulse"></i>
               <span key="t-Opération">Opérations</span>
             </a>
@@ -78,11 +60,7 @@
             </ul>
           </li>
           <li v-role="[rolesNames.admin, rolesNames.financial]">
-            <a
-              href="javascript: void(0);"
-              class="has-arrow waves-effect"
-              @click="menu.caisse = true"
-            >
+            <a href="javascript: void(0);" class="has-arrow waves-effect" @click="menu.caisse = true">
               <i class="bx bx-credit-card"></i>
               <span key="t-caisse">Caisses</span>
             </a>
@@ -99,11 +77,7 @@
             </ul>
           </li>
           <li v-role="[rolesNames.admin]">
-            <a
-              href="javascript: void(0);"
-              class="has-arrow waves-effect"
-              @click="menu.parametres = true"
-            >
+            <a href="javascript: void(0);" class="has-arrow waves-effect" @click="menu.parametres = true">
               <i class="bx bx-cog"></i>
               <span key="t-parametres">Parametres</span>
             </a>
@@ -112,19 +86,13 @@
                 <nuxt-link to="/parametre/utilisateur" key="t-type-terrain">Utilisateur</nuxt-link>
               </li>
               <li :class="{ 'mm-active': $route.name === 'parametre-type-terrain' }">
-                <nuxt-link to="/parametre/type/terrain" key="t-type-terrain"
-                  >Types de terrains</nuxt-link
-                >
+                <nuxt-link to="/parametre/type/terrain" key="t-type-terrain">Types de terrains</nuxt-link>
               </li>
               <li :class="{ 'mm-active': $route.name === 'parametre-type-appartement' }">
-                <nuxt-link to="/parametre/type/appartement" key="t-type-appartement"
-                  >Types d'appartements</nuxt-link
-                >
+                <nuxt-link to="/parametre/type/appartement" key="t-type-appartement">Types d'appartements</nuxt-link>
               </li>
               <li :class="{ 'mm-active': $route.name === 'parametre-type-depense' }">
-                <nuxt-link to="/parametre/type/depense" key="t-type-depense"
-                  >Types de dépenses</nuxt-link
-                >
+                <nuxt-link to="/parametre/type/depense" key="t-type-depense">Types de dépenses</nuxt-link>
               </li>
               <li :class="{ 'mm-active': $route.name === 'parametre-type-personne' }">
                 <nuxt-link to="/parametre/type/personne" key="t-client">Types de clients</nuxt-link>
@@ -146,6 +114,7 @@ import MetisMenu from "metismenujs";
 import { storeToRefs } from "pinia";
 import { buttonTypes } from "element-plus";
 import { useDashboardStore } from "~/store/dashboard";
+import { rolesNames } from "~/utils/constante";
 const menu = ref({
   parametres: false,
   biens: false,

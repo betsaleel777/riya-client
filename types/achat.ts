@@ -1,8 +1,8 @@
-import { Appartement } from "./appartement";
-import { Audit, Entity, Media } from "./global";
-import { Paiements } from "./paiements";
-import { Client } from "./personne";
-import { Terrain } from "./terrain";
+import type { Appartement } from "./appartement";
+import type { Audit, Entity, Media } from "./global";
+import type { Paiements } from "./paiements";
+import type { Client } from "./personne";
+import type { Terrain } from "./terrain";
 
 interface Achat extends Entity {
   code: string;
@@ -34,4 +34,4 @@ interface AchatValidation extends Entity {
 type Achats = Array<Achat>;
 type AchatValidations = Array<AchatValidation>
 
-export { Achats, Achat, AchatValidation, AchatValidations };
+export type { Achats, Achat, AchatValidation, AchatValidations };

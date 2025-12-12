@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { Paiements } from "~/types/paiements";
+import type { Paiements } from "~/types/paiements";
 
 const props = defineProps<{ paiements?: Paiements }>();
 const classType = (status: string) => {
@@ -15,21 +15,14 @@ const classType = (status: string) => {
       </template>
     </el-empty>
     <div v-else>
-      <el-timeline-item
-        v-for="(paiement, index) in props.paiements"
-        :key="index"
-        :type="classType(paiement.status)"
-        :hollow="true"
-        :timestamp="paiement.created_at"
-        placement="top"
-      >
+      <el-timeline-item v-for="(paiement, index) in props.paiements" :key="index" :type="classType(paiement.status)"
+        :hollow="true" :timestamp="paiement.created_at" placement="top">
         <div class="d-flex justify-content-between align-items-center">
           <span>
-            <em v-if="paiement.audit"
-              ><h6>encaissé par {{ paiement.audit.user.name }}</h6></em
-            >
-            <b>{{ paiement.code }}</b> -- {{ useCurrency(paiement.montant) }}</span
-          >
+            <em v-if="paiement.audit">
+              <h6>encaissé par {{ paiement.audit.user.name }}</h6>
+            </em>
+            <b>{{ paiement.code }}</b> -- {{ useCurrency(paiement.montant) }}</span>
           <el-tag :type="classType(paiement.status)">{{ paiement.status }}</el-tag>
         </div>
       </el-timeline-item>

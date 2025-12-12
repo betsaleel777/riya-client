@@ -20,4 +20,4 @@ interface Count {
   biens: number;
 }
 
-export { Societe, Count };
+export type { Societe, Count };

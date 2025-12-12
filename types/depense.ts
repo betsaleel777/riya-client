@@ -1,4 +1,4 @@
-import { Audit, Entity, Type } from "./global";
+import type { Audit, Entity, Type } from "./global";
 
 interface Depense extends Entity {
   type_depense_id: number;
@@ -24,4 +24,4 @@ type Depenses = Array<Depense>
 type TypeDepenses = Array<TypeDepense>
 type DepenseValidations = Array<DepenseValidation>
 
-export { Depenses, Depense, TypeDepense, TypeDepenses, DepenseValidation, DepenseValidations }
+export type { Depenses, Depense, TypeDepense, TypeDepenses, DepenseValidation, DepenseValidations }

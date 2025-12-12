@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { storeToRefs } from "pinia";
 import { useDepenseStore } from "~/store/depense";
+import { rolesNames, statusValidable } from "~/utils/constante";
 
 const props = withDefaults(
   defineProps<{
@@ -40,14 +41,8 @@ const handleValidate = () => {
   <el-dialog v-model="dialog" title="Détails des dépenses" width="45%" destroy-on-close center>
     <div v-loading="loading.edit">
       <div class="d-flex flex-row-reverse">
-        <el-button
-          v-role="rolesNames.admin"
-          v-if="depense?.status === statusValidable.wait"
-          @click="handleValidate"
-          type="primary"
-          text
-          >valider cette dépense</el-button
-        >
+        <el-button v-role="rolesNames.admin" v-if="depense?.status === statusValidable.wait" @click="handleValidate"
+          type="primary" text>valider cette dépense</el-button>
       </div>
       <el-divider class="mt-0" />
       <DepenseDescriptionComponent :depense="depense" />

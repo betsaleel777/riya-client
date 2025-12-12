@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-import { Appartement } from "~/types/appartement";
-import { Terrain } from "~/types/terrain";
+import type { Appartement } from "~/types/appartement";
+import type { Terrain } from "~/types/terrain";
 
-const props = defineProps<{ bien: Appartement | Terrain }>();
+const props = defineProps<{ bien: Appartement | Terrain | undefined }>();
 const classType = (status: string) => {
   return status === statusBien.busy ? "danger" : "success";
 };
@@ -10,11 +10,9 @@ const classType = (status: string) => {
 
 <template>
   <el-descriptions direction="horizontal" :column="2" size="large">
-    <el-descriptions-item v-if="props.bien?.reference" label="Code:"
-      >{{ props.bien?.reference }}
+    <el-descriptions-item v-if="props.bien?.reference" label="Code:">{{ props.bien?.reference }}
     </el-descriptions-item>
-    <el-descriptions-item v-if="props.bien?.nom" label="Nom:"
-      >{{ props.bien?.nom }}
+    <el-descriptions-item v-if="props.bien?.nom" label="Nom:">{{ props.bien?.nom }}
     </el-descriptions-item>
     <el-descriptions-item v-if="props.bien?.pays" label="Pays:">{{
       props.bien?.pays
@@ -37,47 +35,24 @@ const classType = (status: string) => {
     <el-descriptions-item v-if="props.bien?.montant_investit" label="Montant investit:">{{
       useCurrency(props.bien?.montant_investit)
     }}</el-descriptions-item>
-    <el-descriptions-item v-if="props.bien?.superficie" label="Superficie:"
-      >{{ props.bien?.superficie }} m²</el-descriptions-item
-    >
+    <el-descriptions-item v-if="props.bien?.superficie" label="Superficie:">{{ props.bien?.superficie }}
+      m²</el-descriptions-item>
     <el-descriptions-item v-if="props.bien?.created_at" label="Date création:">{{
       props.bien?.created_at
     }}</el-descriptions-item>
-    <el-descriptions-item v-if="props.bien?.status" label="Status:"
-      ><el-tag :type="classType(props.bien?.status)">{{
-        props.bien?.status
-      }}</el-tag></el-descriptions-item
-    >
-    <el-descriptions-item
-      v-if="props.bien?.attestation_villageoise"
-      label="Attestation villageoise:"
-      ><input
-        class="form-check-input"
-        type="checkbox"
-        onclick="return false"
-        :checked="props.bien?.attestation_villageoise"
-    /></el-descriptions-item>
-    <el-descriptions-item v-if="props.bien?.arreter_approbation" label="Arrêter d'approbation:"
-      ><input
-        class="form-check-input"
-        type="checkbox"
-        onclick="return false"
-        :checked="props.bien?.arreter_approbation"
-    /></el-descriptions-item>
-    <el-descriptions-item v-if="props.bien?.document_cession" label="Document Cession:"
-      ><input
-        class="form-check-input"
-        type="checkbox"
-        onclick="return false"
-        :checked="props.bien?.document_cession"
-    /></el-descriptions-item>
-    <el-descriptions-item v-if="props.bien?.titre_foncier" label="Titre Foncier:"
-      ><input
-        class="form-check-input"
-        type="checkbox"
-        onclick="return false"
-        :checked="props.bien?.titre_foncier"
-    /></el-descriptions-item>
+    <el-descriptions-item v-if="props.bien?.status" label="Status:"><el-tag :type="classType(props.bien?.status)">{{
+      props.bien?.status
+        }}</el-tag></el-descriptions-item>
+    <el-descriptions-item v-if="props.bien?.attestation_villageoise" label="Attestation villageoise:"><input
+        class="form-check-input" type="checkbox" onclick="return false"
+        :checked="props.bien?.attestation_villageoise" /></el-descriptions-item>
+    <el-descriptions-item v-if="props.bien?.arreter_approbation" label="Arrêter d'approbation:"><input
+        class="form-check-input" type="checkbox" onclick="return false"
+        :checked="props.bien?.arreter_approbation" /></el-descriptions-item>
+    <el-descriptions-item v-if="props.bien?.document_cession" label="Document Cession:"><input class="form-check-input"
+        type="checkbox" onclick="return false" :checked="props.bien?.document_cession" /></el-descriptions-item>
+    <el-descriptions-item v-if="props.bien?.titre_foncier" label="Titre Foncier:"><input class="form-check-input"
+        type="checkbox" onclick="return false" :checked="props.bien?.titre_foncier" /></el-descriptions-item>
   </el-descriptions>
 </template>
 

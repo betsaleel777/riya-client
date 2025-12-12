@@ -1,7 +1,7 @@
-import { Contrat } from "./contrat";
-import { Audit, Entity, Personne } from "./global";
-import { Paiement } from "./paiements";
-import { Visite } from "./visite";
+import type { Contrat } from "./contrat";
+import type { Audit, Entity } from "./global";
+import type { Paiement } from "./paiements";
+import type { Visite } from "./visite";
 
 interface Dette extends Entity {
   code: string;
@@ -25,4 +25,4 @@ interface DetteValidation extends Entity {
 type Dettes = Array<Dette>;
 type DetteValidations = Array<DetteValidation>;
 
-export { Dettes, Dette, DetteValidation, DetteValidations };
+export type { Dettes, Dette, DetteValidation, DetteValidations };

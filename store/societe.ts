@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { FetchError } from "ofetch";
-import { Count, Societe } from "~/types/societe";
+import type { Count, Societe } from "~/types/societe";
 
 export const useSocieteStore = defineStore("societe", () => {
   const { $apiFetch } = useNuxtApp();

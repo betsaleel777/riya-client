@@ -1,4 +1,4 @@
-import { Dashboard } from "~/types/dashboard";
+import type { Dashboard } from "~/types/dashboard";
 
 export const useDashboardOptions = (dashboard: Ref<Dashboard | undefined>) => {
   const locatairesOptions = computed(() => [

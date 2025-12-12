@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { Achat } from "~/types/achat";
-const props = defineProps<{ achat?: Achat }>();
+const props = defineProps<{ achat?: Achat | undefined }>();
 </script>
 
 <template>

@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { FetchError } from "ofetch";
-import { Utilisateur, Utilisateurs } from "~/types/utilisateur";
+import type { Utilisateur, Utilisateurs } from "~/types/utilisateur";
 
 export const useUtilisateurStore = defineStore("utilisateur", () => {
   const { $apiFetch } = useNuxtApp();

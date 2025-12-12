@@ -13,12 +13,7 @@ const { runShowModal, show } = useShowModal();
     <div v-loading="loading.index">
       <div class="d-flex align-items-baseline mb-2">
         <h5 class="w-75">Achats</h5>
-        <el-input
-          v-model="search"
-          class="25"
-          :suffix-icon="ElIconSearch"
-          placeholder="rechercher"
-        />
+        <el-input v-model="search" class="25" :suffix-icon="ElIconSearch" placeholder="rechercher" />
       </div>
       <el-scrollbar v-if="achats.length > 0">
         <div class="row flex-row flex-nowrap">
@@ -28,31 +23,21 @@ const { runShowModal, show } = useShowModal();
                 <div class="d-flex">
                   <div class="flex-shrink-0 me-4 align-self-center">
                     <div class="avatar-md">
-                      <span
-                        class="avatar-title badge-primary-subtle rounded-circle text-danger font-size-16"
-                      >
-                        <el-tooltip
-                          v-if="achat?.avatar"
-                          :content="`Le client: ${achat.personne}`"
-                          placement="top"
-                        >
-                          <el-image
-                            class="bg-transparent rounded-circle"
-                            style="width: 70px; height: 70px"
-                            fit="fill"
-                            :src="achat?.avatar.url"
-                            :preview-src-list="[achat?.avatar.url]"
-                            lazy
-                          ></el-image>
+                      <span class="avatar-title badge-primary-subtle rounded-circle text-danger font-size-16">
+                        <el-tooltip v-if="achat?.avatar" :content="`Le client: ${achat.personne}`" placement="top">
+                          <el-image class="bg-transparent rounded-circle avatar-image" fit="fill"
+                            :src="achat?.avatar.url" :preview-src-list="[achat?.avatar.url]" lazy>
+                            <template #error>
+                              <el-icon size="35" class="text-white">
+                                <ElIconUser />
+                              </el-icon>
+                            </template>
+                          </el-image>
                         </el-tooltip>
-                        <el-tooltip
-                          v-else
-                          :content="`Le client: ${achat.personne}`"
-                          placement="top"
-                        >
+                        <el-tooltip v-else :content="`Le client: ${achat.personne}`" placement="top">
                           <el-avatar class="bg-transparent" size="large">{{
                             achat.personne.substring(0, 2).toUpperCase()
-                          }}</el-avatar>
+                            }}</el-avatar>
                         </el-tooltip>
                       </span>
                     </div>
@@ -71,24 +56,18 @@ const { runShowModal, show } = useShowModal();
                     <el-tooltip content="coût total d'achat du bien" placement="right">
                       <el-text class="w-200px headline text-uppercase text-primary" truncated>{{
                         useCurrency(achat?.cout)
-                      }}</el-text>
+                        }}</el-text>
                     </el-tooltip>
                   </div>
                 </div>
               </div>
               <div class="d-flex border-top justify-content-center px-1 py-1">
-                <el-button @click="runShowModal(achat?.id!)" class="w-100" type="primary" plain
-                  >consulter et valider</el-button
-                >
+                <el-button @click="runShowModal(achat?.id!)" class="w-100" type="primary" plain>consulter et
+                  valider</el-button>
               </div>
             </div>
           </div>
-          <LazyAchatShowModal
-            :id="show.id"
-            v-if="show.enable"
-            v-model="show.enable"
-            :from-validation-page="true"
-          />
+          <LazyAchatShowModal :id="show.id" v-if="show.enable" v-model="show.enable" :from-validation-page="true" />
         </div>
       </el-scrollbar>
       <el-empty v-else :image-size="80">

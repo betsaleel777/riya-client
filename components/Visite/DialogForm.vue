@@ -3,6 +3,7 @@ import { Field } from "vee-validate";
 import { usePersonneStore } from "~/store/personne";
 import { useAppartementStore } from "~/store/appartement";
 import { storeToRefs } from "pinia";
+import { numberConfig } from "~/utils/constante";
 
 const props = defineProps<{ errors: any }>();
 
@@ -24,21 +25,10 @@ getAppartements();
       <Field name="personne_id" v-slot="{ value, handleChange }">
         <el-row :gutter="5">
           <el-col :span="21">
-            <el-select
-              id="client"
-              filterable
-              :model-value="value"
-              @update:model-value="handleChange"
-              :class="{ 'is-invalid': props.errors.personne_id }"
-              class="w-100"
-            >
+            <el-select id="client" filterable :model-value="value" @update:model-value="handleChange"
+              :class="{ 'is-invalid': props.errors.personne_id }" class="w-100">
               <template #append><i class="bx bx-plus" /></template>
-              <el-option
-                v-for="(item, key) in personnes"
-                :key="key"
-                :label="item.nom_complet"
-                :value="item.id!"
-              />
+              <el-option v-for="(item, key) in personnes" :key="key" :label="item.nom_complet" :value="item.id!" />
             </el-select>
             <div class="invalid-feedback" v-if="props.errors.personne_id">
               {{ props.errors.personne_id }}
@@ -46,9 +36,7 @@ getAppartements();
           </el-col>
           <el-col :span="3">
             <el-tooltip content="Créer un client" placement="bottom">
-              <el-button class="w-100" @click="dialog.personne = true" plain
-                ><i class="bx bx-plus"
-              /></el-button>
+              <el-button class="w-100" @click="dialog.personne = true" plain><i class="bx bx-plus" /></el-button>
             </el-tooltip>
           </el-col>
         </el-row>
@@ -59,14 +47,8 @@ getAppartements();
     <div class="mb-3">
       <label for="montant" class="form-label">Montant</label>
       <Field name="montant" v-slot="{ value, handleChange }">
-        <vue-number
-          id="montant"
-          class="form-control"
-          v-bind="numberConfig"
-          :model-value="value ?? 0"
-          @update:model-value="handleChange"
-          :class="{ 'is-invalid': props.errors.montant }"
-        ></vue-number>
+        <vue-number id="montant" class="form-control" v-bind="numberConfig" :model-value="value ?? 0"
+          @update:model-value="handleChange" :class="{ 'is-invalid': props.errors.montant }"></vue-number>
         <div class="invalid-feedback" v-if="props.errors.montant">
           {{ props.errors.montant }}
         </div>
@@ -77,21 +59,10 @@ getAppartements();
       <Field name="appartement_id" v-slot="{ value, handleChange }">
         <el-row :gutter="5">
           <el-col :span="21">
-            <el-select
-              id="appartement"
-              filterable
-              :model-value="value"
-              @update:model-value="handleChange"
-              :class="{ 'is-invalid': props.errors.appartement_id }"
-              class="w-100"
-            >
+            <el-select id="appartement" filterable :model-value="value" @update:model-value="handleChange"
+              :class="{ 'is-invalid': props.errors.appartement_id }" class="w-100">
               <template #append><i class="bx bx-plus" /></template>
-              <el-option
-                v-for="(item, key) in appartements"
-                :key="key"
-                :label="item.nom"
-                :value="item.id!"
-              />
+              <el-option v-for="(item, key) in appartements" :key="key" :label="item.nom" :value="item.id!" />
             </el-select>
             <div class="invalid-feedback" v-if="props.errors.appartement_id">
               {{ props.errors.appartement_id }}
@@ -99,9 +70,7 @@ getAppartements();
           </el-col>
           <el-col :span="3">
             <el-tooltip content="Créer un appartement" placement="bottom">
-              <el-button class="w-100" @click="dialog.appartement = true" plain
-                ><i class="bx bx-plus"
-              /></el-button>
+              <el-button class="w-100" @click="dialog.appartement = true" plain><i class="bx bx-plus" /></el-button>
             </el-tooltip>
           </el-col>
         </el-row>

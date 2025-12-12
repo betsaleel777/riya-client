@@ -13,12 +13,7 @@ const { runShowModal, show } = useShowModal();
     <div v-loading="loading.index">
       <div class="d-flex align-items-baseline mb-2">
         <h5 class="w-75">Dettes</h5>
-        <el-input
-          v-model="search"
-          class="25"
-          :suffix-icon="ElIconSearch"
-          placeholder="rechercher"
-        />
+        <el-input v-model="search" class="25" :suffix-icon="ElIconSearch" placeholder="rechercher" />
       </div>
       <el-scrollbar v-if="dettes.length > 0">
         <div class="row flex-row flex-nowrap">
@@ -28,31 +23,21 @@ const { runShowModal, show } = useShowModal();
                 <div class="d-flex">
                   <div class="flex-shrink-0 align-self-center me-4">
                     <div class="avatar-md">
-                      <span
-                        class="avatar-title badge-primary-subtle rounded-circle text-danger font-size-16"
-                      >
-                        <el-tooltip
-                          v-if="dette?.audit"
-                          :content="`L'utilisateur: ${dette?.audit.user.name}`"
-                          placement="top"
-                        >
-                          <el-image
-                            class="bg-transparent"
-                            style="width: 70px; height: 70px"
-                            fit="fill"
-                            :src="dette?.audit.user.photo"
-                            :preview-src-list="[dette?.audit.user.photo]"
-                            lazy
-                          ></el-image>
+                      <span class="avatar-title badge-primary-subtle rounded-circle text-danger font-size-16">
+                        <el-tooltip v-if="dette?.audit" :content="`L'utilisateur: ${dette?.audit.user.name}`"
+                          placement="top">
+                          <el-image class="bg-transparent avatar-image" fit="fill" :src="dette?.audit.user.photo"
+                            :preview-src-list="[dette?.audit.user.photo]" lazy>
+                            <template #error>
+                              <el-icon size="35" class="text-white">
+                                <ElIconUser />
+                              </el-icon>
+                            </template>
+                          </el-image>
                         </el-tooltip>
-                        <el-tooltip
-                          v-else
-                          :content="`L'utilisateur: ${dette?.audit.user.name}`"
-                          placement="top"
-                        >
+                        <el-tooltip v-else :content="`L'utilisateur: ${dette?.audit.user.name}`" placement="top">
                           <el-avatar class="bg-transparent" size="large">
-                            {{ dette?.audit.user.name.substring(0, 2).toUpperCase() }}</el-avatar
-                          >
+                            {{ dette?.audit.user.name.substring(0, 2).toUpperCase() }}</el-avatar>
                         </el-tooltip>
                       </span>
                     </div>
@@ -68,18 +53,12 @@ const { runShowModal, show } = useShowModal();
                 </div>
               </div>
               <div class="d-flex border-top justify-content-center px-1 py-1">
-                <el-button @click="runShowModal(dette?.id!)" class="w-100" type="primary" plain
-                  >consulter et valider</el-button
-                >
+                <el-button @click="runShowModal(dette?.id!)" class="w-100" type="primary" plain>consulter et
+                  valider</el-button>
               </div>
             </div>
           </div>
-          <LazyDetteShowModal
-            :id="show.id"
-            v-model="show.enable"
-            v-if="show.enable"
-            :from-validation-page="true"
-          />
+          <LazyDetteShowModal :id="show.id" v-model="show.enable" v-if="show.enable" :from-validation-page="true" />
         </div>
       </el-scrollbar>
       <el-empty v-else :image-size="80">
@@ -91,4 +70,13 @@ const { runShowModal, show } = useShowModal();
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.avatar-image {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 100%;
+  width: 70px;
+  height: 70px;
+}
+</style>

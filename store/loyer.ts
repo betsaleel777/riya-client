@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { FetchError } from "ofetch";
-import { AvanceLoyerForm, Loyer, LoyerValidations, Loyers } from "~/types/loyer";
+import type { AvanceLoyerForm, Loyer, LoyerValidations, Loyers } from "~/types/loyer";
 import { statusPayable } from "~/utils/constante";
 import { useDashboardStore } from "./dashboard";
 

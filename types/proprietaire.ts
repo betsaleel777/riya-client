@@ -1,6 +1,6 @@
-import { Personne } from "./global";
+import type { Personne } from "./global";
 
-interface Proprietaire extends Personne {}
+interface Proprietaire extends Personne { }
 type Proprietaires = Array<Proprietaire>;
 
-export { Proprietaire, Proprietaires };
+export type { Proprietaire, Proprietaires };

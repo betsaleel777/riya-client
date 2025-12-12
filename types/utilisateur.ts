@@ -1,4 +1,4 @@
-import { Entity } from "./global";
+import type { Entity } from "./global";
 
 interface Utilisateur extends Entity {
   name: string;
@@ -12,4 +12,4 @@ interface Utilisateur extends Entity {
   roles: string[];
 }
 type Utilisateurs = Array<Utilisateur>;
-export { Utilisateur, Utilisateurs };
+export type { Utilisateur, Utilisateurs };

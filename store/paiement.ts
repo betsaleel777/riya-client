@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { FetchError } from "ofetch";
-import { Paiement, Paiements } from "~/types/paiements";
+import type { Paiement, Paiements } from "~/types/paiements";
 import { useAchatStore } from "./achat";
 import { useDashboardStore } from "./dashboard";
 

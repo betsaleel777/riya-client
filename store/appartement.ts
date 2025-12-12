@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { FetchError } from 'ofetch'
-import { Appartement, Appartements, TypeAppartement, TypeAppartements } from '~/types/appartement'
-import { TypePostForm, TypePutForm } from '~/types/global'
+import type { Appartement, Appartements, TypeAppartement, TypeAppartements } from '~/types/appartement'
+import type { TypePostForm, TypePutForm } from '~/types/global'
 
 const useTypeAppartementStore = defineStore('type-appartement', () => {
   const { $apiFetch } = useNuxtApp()

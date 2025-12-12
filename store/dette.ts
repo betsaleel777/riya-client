@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { FetchError } from "ofetch";
-import { Dette, DetteValidations, Dettes } from "~/types/dette";
+import type { Dette, DetteValidations, Dettes } from "~/types/dette";
 import { useDashboardStore } from "./dashboard";
 
 export const useDetteStore = defineStore("dette", () => {

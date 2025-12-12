@@ -2,7 +2,8 @@
 import { storeToRefs } from "pinia";
 import { useContratStore } from "~/store/contrat";
 import { NuxtLink } from "#components";
-import { Variant } from "~/types/global";
+import type { Variant } from "~/types/global";
+import { rolesNames, typeContrat, statusContrat, stateContrat } from "~/utils/constante";
 
 useHead({ title: "Contrats" });
 definePageMeta({
@@ -46,42 +47,21 @@ const activateDescriptionModal = (id: number, type: string) => {
           <div class="card">
             <div class="card-body">
               <StructurePageHeader :breadcrumbs="links" title="Contrats">
-                <el-input
-                  v-model="search"
-                  class="w-50 mt-1 mb-2"
-                  placeholder="Code, client, bien, statut, etat"
-                />
-                <el-table
-                  v-loading="loading.index"
-                  :data="filterTableData"
-                  class="w-100"
-                  empty-text="aucun contrat"
-                >
+                <el-input v-model="search" class="w-50 mt-1 mb-2" placeholder="Code, client, bien, statut, etat" />
+                <el-table v-loading="loading.index" :data="filterTableData" class="w-100" empty-text="aucun contrat">
                   <el-table-column prop="code" label="Code" width="150" align="left">
                     <template #default="scope">
-                      <el-link
-                        @click="
-                          activateDescriptionModal(scope.row.operation_id, scope.row.operation_type)
-                        "
-                        type="primary"
-                        >{{ scope.row.code }}</el-link
-                      >
+                      <el-link @click="
+                        activateDescriptionModal(scope.row.operation_id, scope.row.operation_type)
+                        " type="primary">{{ scope.row.code }}</el-link>
                     </template>
                   </el-table-column>
-                  <el-table-column
-                    show-overflow-tooltip
-                    prop="client"
-                    label="Client"
-                    align="center"
-                  />
+                  <el-table-column show-overflow-tooltip prop="client" label="Client" align="center" />
                   <el-table-column show-overflow-tooltip prop="bien" label="Bien" align="center" />
                   <el-table-column prop="debut" label="Debut" width="130" align="center" sortable />
                   <el-table-column prop="status" label="Statut" width="120">
                     <template #default="scope">
-                      <el-tag
-                        :type="classTypeStatus(scope.row.status) as Variant"
-                        >{{ scope.row.status }}</el-tag
-                      >
+                      <el-tag :type="classTypeStatus(scope.row.status) as Variant">{{ scope.row.status }}</el-tag>
                     </template>
                   </el-table-column>
                   <el-table-column prop="etat" label="Etat" width="100">
@@ -94,52 +74,25 @@ const activateDescriptionModal = (id: number, type: string) => {
                       <span>Option</span>
                     </template>
                     <template #default="scope">
-                      <el-button
-                        type="warning"
-                        :tag="NuxtLink"
-                        :to="`/operation/contrat/${scope.row.id}`"
-                        plain
-                        circle
-                        ><i class="bx bx-printer"
-                      /></el-button>
-                      <el-button
-                        v-role="rolesNames.admin"
-                        type="danger"
-                        @click="
-                          handleDelete(
-                            scope.row,
-                            `Voulez vous réelement supprimer le contrat ${scope.row.code}`
-                          )
-                        "
-                        plain
-                        circle
-                        ><i class="bx bx-trash"
-                      /></el-button>
+                      <el-button type="warning" :tag="NuxtLink" :to="`/operation/contrat/${scope.row.id}`" plain circle>
+                        <i class="bx bx-printer" />
+                      </el-button>
+                      <el-button v-role="rolesNames.admin" type="danger" @click="
+                        handleDelete(
+                          scope.row,
+                          `Voulez vous réelement résilier le contrat ${scope.row.code}`
+                        )
+                        " plain circle><i class="bx bx-trash" /></el-button>
                     </template>
                   </el-table-column>
                 </el-table>
-                <el-pagination
-                  small
-                  background
-                  layout="prev, pager, next"
-                  :total="total"
-                  class="mt-4"
-                  justify="center"
-                  v-model:page-size="pageSize"
-                  @current-change="setPage"
-                  hide-on-single-page
-                />
+                <el-pagination small background layout="prev, pager, next" :total="total" class="mt-4" justify="center"
+                  v-model:page-size="pageSize" @current-change="setPage" hide-on-single-page />
               </StructurePageHeader>
-              <VisiteShowModal
-                :id="showDescription.visite.id"
-                v-if="showDescription.visite.modal"
-                v-model="showDescription.visite.modal"
-              />
-              <AchatShowModal
-                :id="showDescription.achat.id"
-                v-if="showDescription.achat.modal"
-                v-model="showDescription.achat.modal"
-              />
+              <VisiteShowModal :id="showDescription.visite.id" v-if="showDescription.visite.modal"
+                v-model="showDescription.visite.modal" />
+              <AchatShowModal :id="showDescription.achat.id" v-if="showDescription.achat.modal"
+                v-model="showDescription.achat.modal" />
             </div>
           </div>
         </div>

@@ -4,6 +4,7 @@ import { usePaiementStore } from "~/store/paiement";
 import { storeToRefs } from "pinia";
 import { useLoyerStore } from "~/store/loyer";
 import { useDetteStore } from "~/store/dette";
+import { typeContrat, typePaiement, statusPayable } from "~/utils/constante";
 
 const props = defineProps<{ origine: number; type: string }>();
 const { getOne: getVisite } = useVisiteStore();
@@ -37,7 +38,7 @@ if (props.type === typeContrat.visite) {
     </el-collapse>
   </div>
   <div v-else-if="props.type === typePaiement.rent" v-loading="loyerLoading.edit">
-    <LoyerDescriptionComponent :loyer="loyer" />
+    <LoyerDescriptionComponent :loyer="loyer!" />
     <el-alert v-if="loyer?.status === statusPayable.unpaid && dette?.montant! > loyer.paid" type="error">La validation
       du paiement de cette dette se fera sur vos fonds propres à hauteur de
       {{ useCurrency(dette?.montant! - loyer.paid) }} car ce loyer n'a pas été entièrement

@@ -75,7 +75,7 @@ type DataPaginate = {
 type SearchData = { search: string; page: number };
 type Variant = '' | 'success' | 'warning' | 'info' | 'danger'
 
-export {
+export type {
   Entity,
   Type,
   Types,

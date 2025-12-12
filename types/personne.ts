@@ -1,4 +1,4 @@
-import { Type, Personne } from "./global";
+import type { Type, Personne } from "./global";
 
 interface Client extends Personne {
   date_naissance: string;
@@ -23,4 +23,4 @@ interface TypePersonne extends Type { }
 type Clients = Array<Client>;
 type TypePersonnes = Array<TypePersonne>;
 
-export { TypePersonne, TypePersonnes, Clients, Client };
+export type { TypePersonne, TypePersonnes, Clients, Client };

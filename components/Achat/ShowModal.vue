@@ -1,7 +1,8 @@
 <script lang="ts" setup>
 import { storeToRefs } from "pinia";
 import { useAchatStore } from "~/store/achat";
-import { Paiement } from "~/types/paiements";
+import { rolesNames } from "~/utils/constante";
+import type { Paiement } from "~/types/paiements";
 
 const props = withDefaults(
   defineProps<{ modelValue: boolean; id: number; fromValidationPage?: boolean }>(),
@@ -44,24 +45,12 @@ const onContratCreated = async () => {
 </script>
 
 <template>
-  <el-dialog
-    v-model="dialog"
-    :title="`Détails de l'achat ${achat?.code}`"
-    width="45%"
-    destroy-on-close
-    center
-  >
+  <el-dialog v-model="dialog" :title="`Détails de l'achat ${achat?.code}`" width="45%" destroy-on-close center>
     <div v-loading="loading.edit">
       <div class="d-flex justify-content-between align-items-center">
         <span class="text-truncate">créer par {{ achat?.audit.user.name }}</span>
         <div class="d-flex flex-row-reverse">
-          <el-button
-            v-role="rolesNames.admin"
-            v-if="pendingPaiement"
-            @click="handleValidate"
-            type="primary"
-            text
-          >
+          <el-button v-role="rolesNames.admin" v-if="pendingPaiement" @click="handleValidate" type="primary" text>
             valider le paiement en attente
           </el-button>
           <el-button @click="useAchatReceipt(achat!)" type="warning" text plain>
@@ -75,13 +64,8 @@ const onContratCreated = async () => {
         <AchatPaiementTimelineComponent :paiements="achat?.paiements" />
       </el-scrollbar>
     </div>
-    <ContratCreateModal
-      :operation-id="achat?.id || 0"
-      v-model="contratForm.modal"
-      :paiement-id="contratForm.paiement"
-      :type="typeContrat.achat"
-      @contrat-created="onContratCreated()"
-    />
+    <ContratCreateModal :operation-id="achat?.id || 0" v-model="contratForm.modal" :paiement-id="contratForm.paiement"
+      :type="typeContrat.achat" @contrat-created="onContratCreated()" />
   </el-dialog>
 </template>
 

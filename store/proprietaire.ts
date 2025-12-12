@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { FetchError } from 'ofetch'
-import { Proprietaire, Proprietaires } from '~/types/proprietaire'
+import type { Proprietaire, Proprietaires } from '~/types/proprietaire'
 
 export const useProprietaireStore = defineStore('proprietaire', () => {
   const { $apiFetch } = useNuxtApp()

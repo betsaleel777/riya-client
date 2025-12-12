@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { FetchError } from "ofetch";
-import { Operation, Visite, VisiteValidations, Visites } from "~/types/visite";
+import type { Operation, Visite, VisiteValidations, Visites } from "~/types/visite";
 import { useDashboardStore } from "./dashboard";
 
 export const useVisiteStore = defineStore("visite", () => {

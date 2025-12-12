@@ -1,6 +1,6 @@
-import { Appartement } from "./appartement";
-import { Audit, Entity } from "./global";
-import { Client } from "./personne";
+import type { Appartement } from "./appartement";
+import type { Audit, Entity } from "./global";
+import type { Client } from "./personne";
 
 const enum OperationName {
   FRAIS = "frais",
@@ -51,4 +51,4 @@ interface VisiteInfo extends Entity {
 type Visites = Array<Visite>;
 type VisiteValidations = Array<VisiteValidation>
 
-export { Visite, Visites, VisiteInfo, Operation, OperationName, VisiteValidation, VisiteValidations };
+export type { Visite, Visites, VisiteInfo, Operation, OperationName, VisiteValidation, VisiteValidations };

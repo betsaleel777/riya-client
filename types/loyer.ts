@@ -1,9 +1,9 @@
-import { Appartement } from "./appartement";
-import { Contrat } from "./contrat";
-import { Entity, Links, Media, MetaPaginate } from "./global";
-import { Paiements } from "./paiements";
-import { Client } from "./personne";
-import { Proprietaire } from "./proprietaire";
+import type { Appartement } from "./appartement";
+import type { Contrat } from "./contrat";
+import type { Entity, Media } from "./global";
+import type { Paiements } from "./paiements";
+import type { Client } from "./personne";
+import type { Proprietaire } from "./proprietaire";
 
 interface Loyer extends Entity {
   code: string;
@@ -38,4 +38,4 @@ interface AvanceLoyerForm {
 
 type Loyers = Array<Loyer>;
 type LoyerValidations = Array<LoyerValidation>;
-export { Loyers, Loyer, LoyerValidation, LoyerValidations, AvanceLoyerForm };
+export type { Loyers, Loyer, LoyerValidation, LoyerValidations, AvanceLoyerForm };

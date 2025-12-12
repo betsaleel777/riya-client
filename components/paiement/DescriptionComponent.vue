@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { Paiement } from "~/types/paiements";
-const props = defineProps<{ paiement: Paiement }>();
+const props = defineProps<{ paiement: Paiement | undefined }>();
 </script>
 
 <template>

@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { storeToRefs } from "pinia";
 import { useDetteStore } from "~/store/dette";
+import { rolesNames, statusValidable } from "~/utils/constante";
 
 const props = withDefaults(
   defineProps<{
@@ -35,14 +36,8 @@ const handleValidate = () => {
   <el-dialog v-model="dialog" title="Détails de dette" width="40%" destroy-on-close center>
     <div v-loading="loading.edit">
       <div class="d-flex flex-row-reverse">
-        <el-button
-          v-role="rolesNames.admin"
-          v-if="dette?.status === statusValidable.wait"
-          @click="handleValidate"
-          type="primary"
-          text
-          >valider cette dette</el-button
-        >
+        <el-button v-role="rolesNames.admin" v-if="dette?.status === statusValidable.wait" @click="handleValidate"
+          type="primary" text>valider cette dette</el-button>
       </div>
       <el-scrollbar :max-height="400">
         <el-divider class="mt-0" />

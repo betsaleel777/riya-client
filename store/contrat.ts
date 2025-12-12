@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { FetchError } from "ofetch";
-import { Contrat, Contrats } from "~/types/contrat";
+import type { Contrat, Contrats } from "~/types/contrat";
 import { useDashboardStore } from "./dashboard";
 
 export const useContratStore = defineStore("contrat", () => {
