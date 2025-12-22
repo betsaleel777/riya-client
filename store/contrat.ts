@@ -77,6 +77,15 @@ export const useContratStore = defineStore("contrat", () => {
     return response;
   };
 
+  const edit = async (payload: Contrat) => {
+    const response = await $apiFetch<string>("api/contrats/" + payload.id, {
+      method: "put",
+      body: payload,
+    });
+    await getAll();
+    return response;
+  };
+
   return {
     contrat,
     contrats,
@@ -85,6 +94,7 @@ export const useContratStore = defineStore("contrat", () => {
     update,
     getOne,
     trash,
+    edit,
     getRentProcessing,
     getRentAvanceProcessing,
     validerContrat,

@@ -18,11 +18,9 @@ const { getAll, trash } = useContratStore();
 const { contrats, loading } = storeToRefs(useContratStore());
 getAll();
 const { filterTableData, setPage, search, total, pageSize } = useContratFilterPagination(contrats);
-const { handleDelete } = useHandleCrudButtons(trash);
-const classTypeStatus = (status: string) => {
-  return status === statusContrat.notuptodate ? "danger" : "success";
-};
-const classTypeState = (state: string) => (state === stateContrat.using ? "" : "danger");
+const { handleDelete, handleEdit } = useHandleCrudButtons(trash);
+const classTypeStatus = (status: string) => status === statusContrat.notuptodate ? "danger" : "success";
+const classTypeState = (state: string) => state === stateContrat.using ? "" : "danger";
 const showDescription = reactive({
   visite: { id: 0, modal: false },
   achat: { id: 0, modal: false },
@@ -76,6 +74,9 @@ const activateDescriptionModal = (id: number, type: string) => {
                     <template #default="scope">
                       <el-button type="warning" :tag="NuxtLink" :to="`/operation/contrat/${scope.row.id}`" plain circle>
                         <i class="bx bx-printer" />
+                      </el-button>
+                      <el-button type="primary" @click="handleEdit(scope.row)" plain circle>
+                        <i class="bx bx-edit" />
                       </el-button>
                       <el-button v-role="rolesNames.admin" type="danger" @click="
                         handleDelete(
