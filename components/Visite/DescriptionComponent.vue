@@ -26,9 +26,12 @@ const props = defineProps<{
     <el-descriptions-item v-if="props.visite?.avance!" label="Avance:">{{
       useCurrency(props.visite?.appartement?.montant_location! * props.visite?.avance!) }}
     </el-descriptions-item>
-    <el-descriptions-item v-if="props.visite?.created_at" label="Date de creéation:">{{
-      props.visite?.created_at
-      }}</el-descriptions-item>
+    <el-descriptions-item v-if="props.visite?.visite_date" label="Date de visite:">
+      {{ $dayjs(props.visite?.visite_date).format('DD-MM-YYYY') }}
+    </el-descriptions-item>
+    <el-descriptions-item v-if="props.visite?.created_at" label="Date de création:">
+      {{ props.visite?.created_at }}
+    </el-descriptions-item>
   </el-descriptions>
 </template>
 

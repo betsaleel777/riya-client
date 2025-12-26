@@ -92,8 +92,13 @@ export const useLoyerStore = defineStore("loyer", () => {
 
   const valider = async (id: number, fromValidationPage: boolean) => {
     const response = await $apiFetch<string>(`api/loyers/validate/${id}`, { method: "PATCH" });
-    fromValidationPage ? await getPending() : await getPaginate();
-    await getPendings();
+    if (fromValidationPage) {
+      await getPending();
+    } else {
+      await getPaginate();
+      await getPendings();
+      await fetchStats();
+    }
     return response;
   };
 
