@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { storeToRefs } from "pinia";
 import { useLoyerStore } from "~/store/loyer";
+import { useCurrency } from "~/composables/numeral";
 const { pendingValidations, loading } = storeToRefs(useLoyerStore());
 const { getPending } = useLoyerStore();
 getPending();
@@ -38,7 +39,7 @@ const { runShowModal, show } = useShowModal();
                         <el-tooltip v-else :content="`Le client: ${loyer.personne}`" placement="top">
                           <el-avatar class="bg-transparent" size="large">{{
                             loyer.personne.substring(0, 2).toUpperCase()
-                            }}</el-avatar>
+                          }}</el-avatar>
                         </el-tooltip>
                       </span>
                     </div>

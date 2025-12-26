@@ -2,6 +2,7 @@
 import { storeToRefs } from "pinia";
 import { useAchatStore } from "~/store/achat";
 import { NuxtLink } from "#components";
+import { useCurrency } from "~/composables/numeral";
 
 useHead({ title: "Achats" });
 definePageMeta({
@@ -31,27 +32,13 @@ const { handleDelete, modal } = useHandleCrudButtons(trash);
                 <template #options>
                   <el-button @click="modal.create = true" plain type="primary">Ajouter</el-button>
                 </template>
-                <el-input
-                  v-model="search"
-                  class="w-50 mt-1 mb-2"
-                  placeholder="Code, client, bien"
-                />
-                <el-table
-                  v-loading="loading.index"
-                  :data="filterTableData"
-                  style="width: 100%"
-                  empty-text="aucun achat"
-                >
+                <el-input v-model="search" class="w-50 mt-1 mb-2" placeholder="Code, client, bien" />
+                <el-table v-loading="loading.index" :data="filterTableData" style="width: 100%"
+                  empty-text="aucun achat">
                   <el-table-column prop="code" label="Code" width="120" />
                   <el-table-column prop="personne" label="Client" />
                   <el-table-column show-overflow-tooltip prop="bien" label="Bien" />
-                  <el-table-column
-                    show-overflow-tooltip
-                    prop="total"
-                    label="Payé"
-                    width="150"
-                    sortable
-                  >
+                  <el-table-column show-overflow-tooltip prop="total" label="Payé" width="150" sortable>
                     <template #default="scope">
                       {{ useCurrency(scope.row.total) }}
                     </template>
@@ -67,48 +54,22 @@ const { handleDelete, modal } = useHandleCrudButtons(trash);
                       <span>Option</span>
                     </template>
                     <template #default="scope">
-                      <el-button
-                        :tag="NuxtLink"
-                        :to="`/operation/purchase/${scope.row.id}`"
-                        type="info"
-                        plain
-                        circle
-                        ><i class="bx bx-show"
-                      /></el-button>
-                      <el-button
-                        type="danger"
-                        v-role="rolesNames.admin"
-                        @click="
-                          handleDelete(
-                            scope.row,
-                            `Voulez vous réelement supprimer l'achat ${scope.row.code}`
-                          )
-                        "
-                        plain
-                        circle
-                        ><i class="bx bx-trash"
-                      /></el-button>
+                      <el-button :tag="NuxtLink" :to="`/operation/purchase/${scope.row.id}`" type="info" plain circle><i
+                          class="bx bx-show" /></el-button>
+                      <el-button type="danger" v-role="rolesNames.admin" @click="
+                        handleDelete(
+                          scope.row,
+                          `Voulez vous réelement supprimer l'achat ${scope.row.code}`
+                        )
+                        " plain circle><i class="bx bx-trash" /></el-button>
                     </template>
                   </el-table-column>
                 </el-table>
-                <el-pagination
-                  small
-                  background
-                  layout="prev, pager, next"
-                  :total="total"
-                  class="mt-4"
-                  justify="center"
-                  v-model:page-size="pageSize"
-                  @current-change="setPage"
-                  hide-on-single-page
-                />
+                <el-pagination small background layout="prev, pager, next" :total="total" class="mt-4" justify="center"
+                  v-model:page-size="pageSize" @current-change="setPage" hide-on-single-page />
               </StructurePageHeader>
               <AchatCreateModal v-model="modal.create" />
-              <LazyAchatShowModal
-                :id="modal.show.id"
-                v-if="modal.show.dialog"
-                v-model="modal.show.dialog"
-              />
+              <LazyAchatShowModal :id="modal.show.id" v-if="modal.show.dialog" v-model="modal.show.dialog" />
             </div>
           </div>
         </div>

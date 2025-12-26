@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { FetchError } from "ofetch";
-import type { Dette, DetteValidations, Dettes } from "~/types/dette";
+import type { Dette, DetteValidations, Dettes, Stat } from "~/types/dette";
 import { useDashboardStore } from "./dashboard";
 
 export const useDetteStore = defineStore("dette", () => {
@@ -9,7 +9,8 @@ export const useDetteStore = defineStore("dette", () => {
 
   let dettes = ref<Dettes>([]);
   let dette = ref<Dette>();
-  let loading = reactive({ index: false, edit: false });
+  let stats = ref<Stat | null>(null);
+  let loading = reactive({ index: false, edit: false, stats: false });
   let pendingValidation = ref<DetteValidations>([]);
   const { getPaginate, getSearch, liste } = usePaginationMethods("api/dettes", $apiFetch, loading);
 
@@ -47,13 +48,28 @@ export const useDetteStore = defineStore("dette", () => {
     const response = await $apiFetch<string>(`api/dettes/repay/${id}`, { method: "PATCH" });
     await getPaginate();
     await getPendings();
+    await fetchStats();
     return response;
+  };
+
+  const fetchStats = async () => {
+    try {
+      loading.stats = true;
+      stats.value = await $apiFetch<Stat>("api/dettes/stats", { method: "get" });
+      loading.stats = false;
+    } catch (error) {
+      if (error instanceof FetchError && error.statusCode === 401) navigateTo("/login");
+    }
   };
 
   const valider = async (id: number, fromValidationPage: boolean) => {
     const response = await $apiFetch<string>(`api/dettes/validate/${id}`, { method: "PATCH" });
-    fromValidationPage ? await getPending() : await getPaginate();
-    await getPendings();
+    if (fromValidationPage) {
+      await getPending();
+    } else {
+      await getPaginate();
+      await fetchStats();
+    }
     return response;
   };
 
@@ -69,6 +85,8 @@ export const useDetteStore = defineStore("dette", () => {
     valider,
     repay,
     getPending,
+    fetchStats,
+    stats,
     pendingValidation,
   };
 });

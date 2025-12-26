@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { storeToRefs } from "pinia";
 import { useAchatStore } from "~/store/achat";
+import { useCurrency } from "~/composables/numeral";
 
 definePageMeta({
   middleware: ["auth", "nuxt-permissions"],
@@ -69,18 +70,15 @@ getOne(Number(useRoute().params.id)).then(() => useHead({ title: "Achat " + acha
                 <div class="card-body">
                   <h4 class="card-title mb-4">Détails de l'achat</h4>
                   <el-descriptions direction="horizontal" :column="2" size="large">
-                    <el-descriptions-item label="Montant versé:"
-                      >{{ useCurrency(achat?.total!) }}
+                    <el-descriptions-item label="Montant versé:">{{ useCurrency(achat?.total!) }}
                     </el-descriptions-item>
                     <el-descriptions-item label="Reste à payer :">
-                      {{ useCurrency(achat?.reste!) }}</el-descriptions-item
-                    >
+                      {{ useCurrency(achat?.reste!) }}</el-descriptions-item>
                     <el-descriptions-item label="Date :">
-                      {{ achat?.created_at }}</el-descriptions-item
-                    >
+                      {{ achat?.created_at }}</el-descriptions-item>
                     <el-descriptions-item label="Auteur :">{{
                       achat?.audit.user.name
-                    }}</el-descriptions-item>
+                      }}</el-descriptions-item>
                   </el-descriptions>
                 </div>
               </div>

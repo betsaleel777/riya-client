@@ -1,5 +1,6 @@
-import { DataPaginate, SearchData } from "~/types/global";
-import { FetchError, FetchRequest, FetchOptions } from "ofetch";
+import type { DataPaginate, SearchData } from "~/types/global";
+import type { FetchRequest, FetchOptions } from "ofetch";
+import { FetchError } from "ofetch";
 type PaginateFunction = (id?: number) => Promise<void>;
 type SearchFunction = (data: SearchData) => Promise<void>;
 type ApiFetch = <T>(endpoint: FetchRequest, options?: FetchOptions) => Promise<T>;

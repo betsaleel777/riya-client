@@ -1,5 +1,7 @@
 <script lang="ts" setup>
 import type { Achat } from "~/types/achat";
+import { useCurrency } from "~/composables/numeral";
+
 const props = defineProps<{ achat?: Achat | undefined }>();
 </script>
 

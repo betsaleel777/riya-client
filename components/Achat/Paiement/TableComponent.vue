@@ -1,9 +1,11 @@
 <script lang="ts" setup>
 import { storeToRefs } from "pinia";
-import { Paiement, Paiements } from "~/types/paiements";
+import { statusValidable, rolesNames, typeContrat } from "~/utils/constante";
+import type { Paiement, Paiements } from "~/types/paiements";
 import { usePaiementStore } from "~/store/paiement";
 import { useAchatStore } from "~/store/achat";
-import { Achat } from "~/types/achat";
+import type { Achat } from "~/types/achat";
+import { useCurrency } from "~/composables/numeral";
 
 const props = defineProps<{ achat: Achat }>();
 let contratForm = reactive({ modal: false, paiement: 0, operation: 0 });
@@ -45,13 +47,8 @@ const onContratCreated = async () => await getOne(achat.value?.id!);
   <StructurePageHeader title="liste des paiements">
     <template #options>
       <el-button @click="useAchatReceipt(achat)" plain type="warning">Reçu</el-button>
-      <el-button
-        v-if="createPaiement && !existsPending"
-        @click="modal.create = true"
-        plain
-        type="primary"
-        >Ajouter</el-button
-      >
+      <el-button v-if="createPaiement && !existsPending" @click="modal.create = true" plain
+        type="primary">Ajouter</el-button>
     </template>
     <el-input v-model="search" class="w-50 my-1" placeholder="Rechercher" />
     <el-table :data="filterTableData" style="width: 100%" empty-text="aucun paiement">
@@ -72,64 +69,26 @@ const onContratCreated = async () => await getOne(achat.value?.id!);
           <span>Option</span>
         </template>
         <template #default="scope">
-          <el-button
-            v-role="rolesNames.admin"
-            v-if="scope.row.status === statusValidable.wait"
-            type="success"
-            @click="handleValidate(scope.row)"
-            plain
-            circle
-            ><i class="bx bx-check-shield"
-          /></el-button>
-          <el-button
-            type="primary"
-            v-if="scope.row.status === statusValidable.wait"
-            @click="handleEdit(scope.row)"
-            plain
-            circle
-            ><i class="bx bx-edit"
-          /></el-button>
-          <el-button
-            v-role="rolesNames.admin"
-            type="danger"
-            @click="
-              handleDelete(
-                scope.row,
-                `Voulez vous réelement supprimer le paiement ${scope.row.code}`
-              )
-            "
-            plain
-            circle
-            ><i class="bx bx-trash"
-          /></el-button>
+          <el-button v-role="rolesNames.admin" v-if="scope.row.status === statusValidable.wait" type="success"
+            @click="handleValidate(scope.row)" plain circle><i class="bx bx-check-shield" /></el-button>
+          <el-button type="primary" v-if="scope.row.status === statusValidable.wait" @click="handleEdit(scope.row)"
+            plain circle><i class="bx bx-edit" /></el-button>
+          <el-button v-role="rolesNames.admin" type="danger" @click="
+            handleDelete(
+              scope.row,
+              `Voulez vous réelement supprimer le paiement ${scope.row.code}`
+            )
+            " plain circle><i class="bx bx-trash" /></el-button>
         </template>
       </el-table-column>
     </el-table>
-    <el-pagination
-      small
-      background
-      layout="prev, pager, next"
-      :total="total"
-      class="mt-4"
-      justify="center"
-      v-model:page-size="pageSize"
-      @current-change="setPage"
-      hide-on-single-page
-    />
+    <el-pagination small background layout="prev, pager, next" :total="total" class="mt-4" justify="center"
+      v-model:page-size="pageSize" @current-change="setPage" hide-on-single-page />
   </StructurePageHeader>
   <AchatPaiementCreateModal v-model="modal.create" />
-  <AchatPaiementEditModal
-    :id="modal.edit.id"
-    v-if="modal.edit.dialog"
-    v-model="modal.edit.dialog"
-  />
-  <ContratCreateModal
-    :operation-id="contratForm.operation"
-    v-model="contratForm.modal"
-    :paiement-id="contratForm.paiement"
-    :type="typeContrat.achat"
-    @contrat-created="onContratCreated()"
-  />
+  <AchatPaiementEditModal :id="modal.edit.id" v-if="modal.edit.dialog" v-model="modal.edit.dialog" />
+  <ContratCreateModal :operation-id="contratForm.operation" v-model="contratForm.modal"
+    :paiement-id="contratForm.paiement" :type="typeContrat.achat" @contrat-created="onContratCreated()" />
 </template>
 
 <style scoped></style>

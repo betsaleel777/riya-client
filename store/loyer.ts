@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { FetchError } from "ofetch";
-import type { AvanceLoyerForm, Loyer, LoyerValidations, Loyers } from "~/types/loyer";
+import type { AvanceLoyerForm, Loyer, LoyerValidations, Loyers, Stats } from "~/types/loyer";
 import { statusPayable } from "~/utils/constante";
 import { useDashboardStore } from "./dashboard";
 
@@ -10,7 +10,8 @@ export const useLoyerStore = defineStore("loyer", () => {
   let loyers = ref<Loyers>([]);
   let loyer = ref<Loyer | null>();
   let pendingValidations = ref<LoyerValidations>([]);
-  let loading = reactive({ index: false, edit: false });
+  let stats = ref<Stats | null>(null);
+  let loading = reactive({ index: false, edit: false, stats: false });
   const { getPaginate, getSearch, liste } = usePaginationMethods("api/loyers", $apiFetch, loading);
 
   const impayes = computed<Loyers>(() =>
@@ -37,6 +38,16 @@ export const useLoyerStore = defineStore("loyer", () => {
     }
   };
 
+  const fetchStats = async () => {
+    try {
+      loading.stats = true;
+      stats.value = await $apiFetch<Stats>("api/loyers/stats", { method: "get" });
+      loading.stats = false;
+    } catch (error) {
+      if (error instanceof FetchError && error.statusCode === 401) navigateTo("/login");
+    }
+  };
+
   const getLastPaid = async (id: number) => {
     try {
       loading.edit = true;
@@ -53,6 +64,7 @@ export const useLoyerStore = defineStore("loyer", () => {
   const trash = async (id: number) => {
     const response = await $apiFetch<string>("api/loyers/" + id, { method: "delete" });
     await getPaginate();
+    await fetchStats();
     return response;
   };
 
@@ -74,6 +86,7 @@ export const useLoyerStore = defineStore("loyer", () => {
     });
     await getPaginate();
     await getPendings();
+    await fetchStats();
     return response;
   };
 
@@ -88,6 +101,7 @@ export const useLoyerStore = defineStore("loyer", () => {
     const response = await $apiFetch<string>("api/loyers/avance", { method: "post", body: avance });
     await getPaginate();
     await getPendings();
+    await fetchStats();
     return response;
   };
 
@@ -96,7 +110,9 @@ export const useLoyerStore = defineStore("loyer", () => {
     loyers,
     loyer,
     impayes,
+    stats,
     loading,
+    fetchStats,
     getAll,
     getOne,
     trash,

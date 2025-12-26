@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { storeToRefs } from "pinia";
 import { useDetteStore } from "~/store/dette";
+import { useCurrency } from "~/composables/numeral";
 const { pendingValidation, loading } = storeToRefs(useDetteStore());
 const { getPending } = useDetteStore();
 getPending();

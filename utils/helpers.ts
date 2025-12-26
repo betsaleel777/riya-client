@@ -1,13 +1,13 @@
 import { jsPDF as JsPDF } from "jspdf";
 import autoTable from "jspdf-autotable";
-import { Societe } from "~/types/societe";
-import { Visite } from "~/types/visite";
+import type { Societe } from "~/types/societe";
+import type { Visite } from "~/types/visite";
 import dayjs from "dayjs";
 import html2pdf from "html2pdf.js";
-import { Achat } from "~/types/achat";
-import { Loyer } from "~/types/loyer";
-import { Client } from "~/types/personne";
-import { Appartement } from "~/types/appartement";
+import type { Achat } from "~/types/achat";
+import type { Loyer } from "~/types/loyer";
+import type { Client } from "~/types/personne";
+import type { Appartement } from "~/types/appartement";
 
 const domPrinter = async (element: HTMLElement) => {
   html2pdf()

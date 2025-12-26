@@ -5,32 +5,17 @@
         <div class="col-lg-12">
           <div class="row">
             <div class="col-lg-2">
-              <DashboardCounterCardComponent
-                titre="Clients"
-                :nombre="dashboard?.clients"
-                icon="bx bxs-user"
-              />
+              <DashboardCounterCardComponent titre="Clients" :nombre="dashboard?.clients" icon="bx bxs-user" />
             </div>
             <div class="col-lg-2">
-              <DashboardCounterCardComponent
-                titre="Locataires"
-                :nombre="dashboard?.locataires"
-                icon="bx bxs-book-bookmark"
-              />
+              <DashboardCounterCardComponent titre="Locataires" :nombre="dashboard?.locataires"
+                icon="bx bxs-book-bookmark" />
             </div>
             <div class="col-lg-2">
-              <DashboardCounterCardComponent
-                :nombre="dashboard?.biens"
-                icon="bx bxs-home"
-                titre="Biens"
-              />
+              <DashboardCounterCardComponent :nombre="dashboard?.biens" icon="bx bxs-home" titre="Biens" />
             </div>
             <div class="col-lg-2">
-              <DashboardCounterCardComponent
-                :nombre="dashboard?.visites"
-                icon="bx bxs-card"
-                titre="Visites"
-              />
+              <DashboardCounterCardComponent :nombre="dashboard?.visites" icon="bx bxs-card" titre="Visites" />
             </div>
             <div class="col-lg-4">
               <div class="card">
@@ -52,59 +37,31 @@
           </div>
         </div>
         <div class="col-lg-8">
-          <DashboardStatistiqueComponent
-            titre="Statistiques des paiements"
-            :donnees="statistiquesPaiementsOptions"
-          />
-          <DashboardStatistiqueComponent
-            titre="Statistiques des locations"
-            :donnees="statistiquesLocationsOptions"
-          />
+          <DashboardStatistiqueComponent titre="Statistiques des paiements" :donnees="statistiquesPaiementsOptions" />
+          <DashboardStatistiqueComponent titre="Statistiques des locations" :donnees="statistiquesLocationsOptions" />
           <!-- ici tableau de compte d'exploitation -->
         </div>
         <div class="col-lg-4">
-          <DashboardAmountCardComponent
-            v-role="[rolesNames.admin, rolesNames.financial]"
-            titre="Chiffre d'affaire"
-            :montant="dashboard?.chiffres"
-            icon="bx bx-money"
-            v-loading="loading.chiffre"
-            ><template #options>
+          <DashboardAmountCardComponent v-role="[rolesNames.admin, rolesNames.financial]" titre="Chiffre d'affaire"
+            :montant="dashboard?.chiffres" icon="bx bx-money" v-loading="loading.chiffre"><template #options>
               <DashboardOptionComponent type="chiffres" />
             </template>
           </DashboardAmountCardComponent>
-          <DashboardAmountCardComponent
-            v-role="[rolesNames.admin, rolesNames.financial]"
-            titre="Dépenses"
-            :montant="dashboard?.depenses"
-            icon="bx bx-dollar"
-            v-loading="loading.depense"
-          >
+          <DashboardAmountCardComponent v-role="[rolesNames.admin, rolesNames.financial]" titre="Dépenses"
+            :montant="dashboard?.depenses" icon="bx bx-dollar" v-loading="loading.depense">
             <template #options>
               <DashboardOptionComponent type="depenses" />
             </template>
           </DashboardAmountCardComponent>
-          <DashboardAmountCardComponent
-            v-role="[rolesNames.admin, rolesNames.financial]"
-            titre="Dettes"
-            :montant="dashboard?.remboursements"
-            icon="bx bx-wallet"
-            v-loading="loading.dette"
-          >
+          <DashboardAmountCardComponent v-role="[rolesNames.admin, rolesNames.financial]" titre="Dettes"
+            :montant="dashboard?.remboursements" icon="bx bx-wallet" v-loading="loading.dette">
             <template #options>
               <DashboardOptionComponent type="dettes" />
             </template>
           </DashboardAmountCardComponent>
-          <DashboardPieCardComponent
-            :size="250"
-            :series-option="proprietesOptions"
-            titre="Propriétés"
-          ></DashboardPieCardComponent>
-          <DashboardPieCardComponent
-            :size="250"
-            :series-option="locatairesOptions"
-            titre="Statut des contrats"
-          >
+          <DashboardPieCardComponent :size="250" :series-option="proprietesOptions" titre="Propriétés">
+          </DashboardPieCardComponent>
+          <DashboardPieCardComponent :size="250" :series-option="locatairesOptions" titre="Statut des contrats">
           </DashboardPieCardComponent>
         </div>
       </div>
@@ -115,6 +72,7 @@
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
 import { useDashboardStore } from "~/store/dashboard";
+import { rolesNames } from "~/utils/constante";
 useHead({ title: "Dashboard" });
 definePageMeta({ middleware: "auth" });
 

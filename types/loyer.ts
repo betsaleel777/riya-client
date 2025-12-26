@@ -20,6 +20,18 @@ interface Loyer extends Entity {
   paiements: Paiements;
   proprietaire?: Proprietaire;
 }
+interface StatContent {
+  amount: number;
+  percentage: number;
+  text: string;
+  title: string;
+}
+
+interface Stats {
+  paid: StatContent;
+  unpaid: StatContent;
+  pending: StatContent;
+}
 
 interface LoyerValidation extends Entity {
   code: string;
@@ -38,4 +50,12 @@ interface AvanceLoyerForm {
 
 type Loyers = Array<Loyer>;
 type LoyerValidations = Array<LoyerValidation>;
-export type { Loyers, Loyer, LoyerValidation, LoyerValidations, AvanceLoyerForm };
+export type {
+  Loyers,
+  Loyer,
+  LoyerValidation,
+  LoyerValidations,
+  AvanceLoyerForm,
+  Stats,
+  StatContent,
+};

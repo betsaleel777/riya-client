@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import type { Appartement } from "~/types/appartement";
 import type { Terrain } from "~/types/terrain";
+import { useCurrency } from "~/composables/numeral";
 
 const props = defineProps<{ bien: Appartement | Terrain | undefined }>();
 const classType = (status: string) => {
@@ -16,30 +17,30 @@ const classType = (status: string) => {
     </el-descriptions-item>
     <el-descriptions-item v-if="props.bien?.pays" label="Pays:">{{
       props.bien?.pays
-    }}</el-descriptions-item>
+      }}</el-descriptions-item>
     <el-descriptions-item v-if="props.bien?.ville" label="Ville:">{{
       props.bien?.ville
-    }}</el-descriptions-item>
+      }}</el-descriptions-item>
     <el-descriptions-item v-if="props.bien?.quartier" label="Quartier:">{{
       props.bien?.quartier
-    }}</el-descriptions-item>
+      }}</el-descriptions-item>
     <el-descriptions-item v-if="props.bien?.proprietaire" label="Propriétaire:">{{
       props.bien?.proprietaire
-    }}</el-descriptions-item>
+      }}</el-descriptions-item>
     <el-descriptions-item v-if="props.bien?.cout_achat" label="Coût d'achat:">{{
       useCurrency(props.bien?.cout_achat)
-    }}</el-descriptions-item>
+      }}</el-descriptions-item>
     <el-descriptions-item v-if="props.bien?.montant_location" label="Loyer:">{{
       useCurrency(props.bien?.montant_location)
-    }}</el-descriptions-item>
+      }}</el-descriptions-item>
     <el-descriptions-item v-if="props.bien?.montant_investit" label="Montant investit:">{{
       useCurrency(props.bien?.montant_investit)
-    }}</el-descriptions-item>
+      }}</el-descriptions-item>
     <el-descriptions-item v-if="props.bien?.superficie" label="Superficie:">{{ props.bien?.superficie }}
       m²</el-descriptions-item>
     <el-descriptions-item v-if="props.bien?.created_at" label="Date création:">{{
       props.bien?.created_at
-    }}</el-descriptions-item>
+      }}</el-descriptions-item>
     <el-descriptions-item v-if="props.bien?.status" label="Status:"><el-tag :type="classType(props.bien?.status)">{{
       props.bien?.status
         }}</el-tag></el-descriptions-item>

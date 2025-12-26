@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { useCurrency } from '~/composables/numeral';
 const props = defineProps<{ montant: number; icon: string; titre: string }>();
 </script>
 

@@ -18,7 +18,7 @@ const { getAll, trash } = useContratStore();
 const { contrats, loading } = storeToRefs(useContratStore());
 getAll();
 const { filterTableData, setPage, search, total, pageSize } = useContratFilterPagination(contrats);
-const { handleDelete, handleEdit } = useHandleCrudButtons(trash);
+const { handleDelete, handleEdit, modal } = useHandleCrudButtons(trash);
 const classTypeStatus = (status: string) => status === statusContrat.notuptodate ? "danger" : "success";
 const classTypeState = (state: string) => state === stateContrat.using ? "" : "danger";
 const showDescription = reactive({
@@ -94,6 +94,7 @@ const activateDescriptionModal = (id: number, type: string) => {
                 v-model="showDescription.visite.modal" />
               <AchatShowModal :id="showDescription.achat.id" v-if="showDescription.achat.modal"
                 v-model="showDescription.achat.modal" />
+              <LazyContratEditModal :id="modal.edit.id" v-if="modal.edit.dialog" v-model="modal.edit.dialog" />
             </div>
           </div>
         </div>

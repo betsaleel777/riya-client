@@ -1,5 +1,7 @@
 <script lang="ts" setup>
 import type { Dette } from "~/types/dette";
+import { useCurrency } from "~/composables/numeral";
+
 const props = defineProps<{ dette: Dette | undefined }>();
 </script>
 
