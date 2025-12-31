@@ -53,12 +53,8 @@ const handleValidate = () => {
     contratDialog.value = true;
   }
 };
-const imprimer = () => {
-  useVisiteInvoice(visite);
-};
-const imprimerProvisoire = () => {
-  useVisiteInvoiceProvisoire(visite);
-};
+const imprimer = () => useVisiteInvoice(visite);
+const imprimerProvisoire = () => useVisiteInvoiceProvisoire(visite);
 const onContratCreated = async () => {
   if (props.fromValidationPage) await getPending();
   await getOne(visite?.value?.id!);
@@ -75,7 +71,8 @@ const onContratCreated = async () => {
         <el-button @click="imprimer" v-if="validated" type="warning" text>Imprimer reçu de visite</el-button>
         <el-button @click="imprimerProvisoire" v-if="validatedProvisoire" type="warning" text>Imprimer reçu
           provisoire</el-button>
-        <span class="text-muted me-auto">créer par {{ visite?.audit?.user.name }}</span>
+        <span v-if="visite?.audit?.user" class="text-muted me-auto">créer par {{ visite?.audit?.user.name }}</span>
+        <span v-else class="text-muted me-auto">créer par Système</span>
       </div>
       <div>
         <el-collapse v-model="activeName" accordion class="my-1">

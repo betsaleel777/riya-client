@@ -40,21 +40,24 @@
           <DashboardStatistiqueComponent titre="Statistiques des paiements" :donnees="statistiquesPaiementsOptions" />
           <DashboardStatistiqueComponent titre="Statistiques des locations" :donnees="statistiquesLocationsOptions" />
           <!-- ici tableau de compte d'exploitation -->
+          <DashboardRapportCardComponent v-role="[rolesNames.admin, rolesNames.financial]"
+            :rapport="dashboard?.rapport!" v-loading="loading.rapport" />
         </div>
         <div class="col-lg-4">
           <DashboardAmountCardComponent v-role="[rolesNames.admin, rolesNames.financial]" titre="Chiffre d'affaire"
-            :montant="dashboard?.chiffres" icon="bx bx-money" v-loading="loading.chiffre"><template #options>
+            :montant="dashboard?.chiffres!" icon="bx bx-money" v-loading="loading.chiffre">
+            <template #options>
               <DashboardOptionComponent type="chiffres" />
             </template>
           </DashboardAmountCardComponent>
           <DashboardAmountCardComponent v-role="[rolesNames.admin, rolesNames.financial]" titre="Dépenses"
-            :montant="dashboard?.depenses" icon="bx bx-dollar" v-loading="loading.depense">
+            :montant="dashboard?.depenses!" icon="bx bx-dollar" v-loading="loading.depense">
             <template #options>
               <DashboardOptionComponent type="depenses" />
             </template>
           </DashboardAmountCardComponent>
-          <DashboardAmountCardComponent v-role="[rolesNames.admin, rolesNames.financial]" titre="Dettes"
-            :montant="dashboard?.remboursements" icon="bx bx-wallet" v-loading="loading.dette">
+          <DashboardAmountCardComponent v-role="[rolesNames.admin, rolesNames.financial]" titre="Remboursements"
+            :montant="dashboard?.remboursements!" icon="bx bx-wallet" v-loading="loading.dette">
             <template #options>
               <DashboardOptionComponent type="dettes" />
             </template>
@@ -79,10 +82,13 @@ definePageMeta({ middleware: "auth" });
 const { user } = useAuth();
 const roles = useRoles();
 roles.value = user.roles;
-
-const { getAll } = useDashboardStore();
-const { loading, dashboard } = storeToRefs(useDashboardStore());
-getAll();
+const store = useDashboardStore();
+const { getAll, getRapport } = store;
+const { loading, dashboard } = storeToRefs(store);
+onMounted(async () => {
+  await getAll();
+  await getRapport();
+});
 const {
   locatairesOptions,
   proprietesOptions,
