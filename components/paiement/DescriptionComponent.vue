@@ -1,5 +1,7 @@
 <script lang="ts" setup>
 import type { Paiement } from "~/types/paiements";
+import { useCurrency } from "~/composables/numeral";
+
 const props = defineProps<{ paiement: Paiement | undefined }>();
 </script>
 

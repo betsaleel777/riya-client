@@ -1,5 +1,7 @@
 <script lang="ts" setup>
 import type { Loyer } from "~/types/loyer";
+import { useCurrency } from "~/composables/numeral";
+
 const props = defineProps<{ loyer: Loyer | undefined }>();
 </script>
 

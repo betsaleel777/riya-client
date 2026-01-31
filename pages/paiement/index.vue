@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
 import { usePaiementStore } from "~/store/paiement";
+import { useCurrency } from "~/composables/numeral";
 
 useHead({ title: "Paiements" });
 definePageMeta({
@@ -44,22 +45,13 @@ const classStatus = (state: string) => {
                 <template #options>
                   <el-button @click="modal.create = true" plain type="primary">Ajouter</el-button>
                 </template>
-                <StructureSearchServer
-                  :loaded-search="loadedSearch"
-                  :search-exists="searchExists"
-                  @on-search="search"
-                  @on-refresh="setRefresh"
-                >
+                <StructureSearchServer :loaded-search="loadedSearch" :search-exists="searchExists" @on-search="search"
+                  @on-refresh="setRefresh">
                   <template #searching>
                     <el-input v-model="toSearch" placeholder="code, statut, date" />
                   </template>
                 </StructureSearchServer>
-                <el-table
-                  v-loading="loading.index"
-                  :data="liste?.data"
-                  style="width: 100%"
-                  empty-text="aucun paiement"
-                >
+                <el-table v-loading="loading.index" :data="liste?.data" style="width: 100%" empty-text="aucun paiement">
                   <el-table-column prop="code" label="Code" width="100" />
                   <el-table-column prop="montant" label="Montant" sortable>
                     <template #default="scope">
@@ -82,57 +74,26 @@ const classStatus = (state: string) => {
                       <span>Option</span>
                     </template>
                     <template #default="scope">
-                      <el-button type="info" @click="handleShow(scope.row)" plain circle
-                        ><i class="bx bx-show"
-                      /></el-button>
-                      <el-button
-                        type="primary"
-                        v-if="scope.row.status === statusValidable.wait"
-                        @click="handleEdit(scope.row)"
-                        plain
-                        circle
-                        ><i class="bx bx-edit"
-                      /></el-button>
-                      <el-button
-                        v-role="rolesNames.admin"
-                        type="danger"
-                        @click="
-                          handleDelete(
-                            scope.row,
-                            `Voulez vous réelement supprimer le paiement ${scope.row.code}`
-                          )
-                        "
-                        plain
-                        circle
-                        ><i class="bx bx-trash"
-                      /></el-button>
+                      <el-button type="info" @click="handleShow(scope.row)" plain circle><i
+                          class="bx bx-show" /></el-button>
+                      <el-button type="primary" v-if="scope.row.status === statusValidable.wait"
+                        @click="handleEdit(scope.row)" plain circle><i class="bx bx-edit" /></el-button>
+                      <el-button v-role="rolesNames.admin" type="danger" @click="
+                        handleDelete(
+                          scope.row,
+                          `Voulez vous réelement supprimer le paiement ${scope.row.code}`
+                        )
+                        " plain circle><i class="bx bx-trash" /></el-button>
                     </template>
                   </el-table-column>
                 </el-table>
-                <el-pagination
-                  small
-                  background
-                  layout="prev, pager, next"
-                  :total="total"
-                  class="mt-4"
-                  justify="center"
-                  v-model:page-size="pageSize"
-                  v-model:current-page="currentPage"
-                  @current-change="setPage"
-                  hide-on-single-page
-                />
+                <el-pagination small background layout="prev, pager, next" :total="total" class="mt-4" justify="center"
+                  v-model:page-size="pageSize" v-model:current-page="currentPage" @current-change="setPage"
+                  hide-on-single-page />
               </StructurePageHeader>
               <PaiementCreateModal v-model="modal.create" />
-              <LazyPaiementEditModal
-                :id="modal.edit.id"
-                v-if="modal.edit.dialog"
-                v-model="modal.edit.dialog"
-              />
-              <LazyPaiementShowModal
-                v-model="modal.show.dialog"
-                v-if="modal.show.dialog"
-                :id="modal.show.id"
-              />
+              <LazyPaiementEditModal :id="modal.edit.id" v-if="modal.edit.dialog" v-model="modal.edit.dialog" />
+              <LazyPaiementShowModal v-model="modal.show.dialog" v-if="modal.show.dialog" :id="modal.show.id" />
             </div>
           </div>
         </div>

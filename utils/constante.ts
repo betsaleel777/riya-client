@@ -44,8 +44,8 @@ const rolesNames = {
 const operation = {
   purchase: "Achat",
   rent: "Loyer",
-  visit: "Visite"
-} as const
+  visit: "Visite",
+} as const;
 
 const numberConfig = { suffix: " FCFA", separator: " ", decimal: ",", precision: 0 } as const;
 
@@ -60,5 +60,5 @@ export {
   typePaiement,
   numberConfig,
   rolesNames,
-  operation
+  operation,
 };

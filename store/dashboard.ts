@@ -12,6 +12,7 @@ export const useDashboardStore = defineStore("dashboard", () => {
     chiffre: false,
     depense: false,
     dette: false,
+    rapport: false,
   });
   let pendings = ref<number>(0);
 
@@ -64,6 +65,18 @@ export const useDashboardStore = defineStore("dashboard", () => {
     return "Dépenses mises à jour selon le critère de recherche" as string;
   };
 
+  const getRapport = async (date?: string) => {
+    loading.rapport = true;
+    dashboard.value
+      ? (dashboard.value.rapport = await $apiFetch<Dashboard["rapport"]>(
+        "api/dashboard-count/rapport",
+        { method: "get", params: { date } }
+      ))
+      : null;
+    loading.rapport = false;
+    return "Rapport mises à jour selon le critère de recherche" as string;
+  };
+
   const getSwitch = (type: string) => {
     if (type === "depenses") return getDepenses;
     else if (type === "dettes") return getDettes;
@@ -80,5 +93,5 @@ export const useDashboardStore = defineStore("dashboard", () => {
     }
   };
 
-  return { getAll, getPendings, getSwitch, loading, dashboard, pendings };
+  return { getAll, getPendings, getSwitch, loading, dashboard, pendings, getRapport };
 });

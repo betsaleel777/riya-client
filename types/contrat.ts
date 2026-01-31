@@ -7,7 +7,7 @@ interface Contrat extends Entity {
   debut?: string;
   fin?: string;
   bien: string;
-  client: string,
+  client: string;
   operation_id: number;
   operation_type: string;
   commission?: string;
@@ -16,6 +16,7 @@ interface Contrat extends Entity {
   status: string;
   etat: string;
   montant_location: number;
+  cout_achat: number;
 }
 
 type Contrats = Array<Contrat>;

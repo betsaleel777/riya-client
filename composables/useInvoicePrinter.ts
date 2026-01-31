@@ -1,9 +1,8 @@
 import { storeToRefs } from "pinia";
 import { useSocieteStore } from "~/store/societe";
-import { Loyer } from "~/types/loyer";
-import { Achat } from "~/types/achat";
-import { Paiement } from "~/types/paiements";
-import { Visite } from "~/types/visite";
+import type { Loyer } from "~/types/loyer";
+import type { Achat } from "~/types/achat";
+import type { Visite } from "~/types/visite";
 
 const useVisiteInvoice = (visite: Ref<Visite | undefined>) => {
   const { getOne } = useSocieteStore();

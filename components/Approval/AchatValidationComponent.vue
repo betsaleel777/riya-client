@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { storeToRefs } from "pinia";
 import { useAchatStore } from "~/store/achat";
+import { useCurrency } from "~/composables/numeral";
 const { pendingValidations, loading } = storeToRefs(useAchatStore());
 const { getPending } = useAchatStore();
 getPending();
@@ -37,7 +38,7 @@ const { runShowModal, show } = useShowModal();
                         <el-tooltip v-else :content="`Le client: ${achat.personne}`" placement="top">
                           <el-avatar class="bg-transparent" size="large">{{
                             achat.personne.substring(0, 2).toUpperCase()
-                            }}</el-avatar>
+                          }}</el-avatar>
                         </el-tooltip>
                       </span>
                     </div>
@@ -56,7 +57,7 @@ const { runShowModal, show } = useShowModal();
                     <el-tooltip content="coût total d'achat du bien" placement="right">
                       <el-text class="w-200px headline text-uppercase text-primary" truncated>{{
                         useCurrency(achat?.cout)
-                        }}</el-text>
+                      }}</el-text>
                     </el-tooltip>
                   </div>
                 </div>

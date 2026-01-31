@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import type { Visite } from "~/types/visite";
+import { useCurrency } from "~/composables/numeral";
 
 const props = defineProps<{
   visite: Visite;
@@ -12,10 +13,10 @@ const props = defineProps<{
     </el-descriptions-item>
     <el-descriptions-item v-if="props.visite?.montant" label="Montant de visite:">{{
       useCurrency(props.visite?.montant)
-    }}</el-descriptions-item>
+      }}</el-descriptions-item>
     <el-descriptions-item v-if="props.visite?.frais_dossier" label="Frais de dossier:">{{
       useCurrency(props.visite?.frais_dossier!)
-    }}</el-descriptions-item>
+      }}</el-descriptions-item>
     <el-descriptions-item v-if="props.visite?.frais" label="Frais agence:">{{
       useCurrency(props.visite?.appartement?.montant_location! * props.visite?.frais!) }}
     </el-descriptions-item>
@@ -25,9 +26,12 @@ const props = defineProps<{
     <el-descriptions-item v-if="props.visite?.avance!" label="Avance:">{{
       useCurrency(props.visite?.appartement?.montant_location! * props.visite?.avance!) }}
     </el-descriptions-item>
-    <el-descriptions-item v-if="props.visite?.created_at" label="Date de creéation:">{{
-      props.visite?.created_at
-    }}</el-descriptions-item>
+    <el-descriptions-item v-if="props.visite?.visite_date" label="Date de visite:">
+      {{ $dayjs(props.visite?.visite_date).format('DD-MM-YYYY') }}
+    </el-descriptions-item>
+    <el-descriptions-item v-if="props.visite?.created_at" label="Date de création:">
+      {{ props.visite?.created_at }}
+    </el-descriptions-item>
   </el-descriptions>
 </template>
 

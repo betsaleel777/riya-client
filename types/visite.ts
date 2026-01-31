@@ -24,6 +24,7 @@ interface Visite extends Entity {
   montant: number;
   date_expiration: string;
   created_at: string;
+  visite_date: string;
   status: string;
   caution: number;
   avance: number;
@@ -33,7 +34,7 @@ interface Visite extends Entity {
   fraisObject: Operation | null;
   avanceStatus: string;
   frais_dossier: number;
-  audit: Audit
+  audit: Audit;
 }
 
 interface VisiteValidation extends Entity {
@@ -49,6 +50,14 @@ interface VisiteInfo extends Entity {
 }
 
 type Visites = Array<Visite>;
-type VisiteValidations = Array<VisiteValidation>
+type VisiteValidations = Array<VisiteValidation>;
 
-export type { Visite, Visites, VisiteInfo, Operation, OperationName, VisiteValidation, VisiteValidations };
+export type {
+  Visite,
+  Visites,
+  VisiteInfo,
+  Operation,
+  OperationName,
+  VisiteValidation,
+  VisiteValidations,
+};

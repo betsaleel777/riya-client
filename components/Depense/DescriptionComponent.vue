@@ -1,5 +1,7 @@
 <script lang="ts" setup>
 import type { Depense } from "~/types/depense";
+import { useCurrency } from "~/composables/numeral";
+
 const props = defineProps<{ depense: Depense | undefined }>();
 </script>
 
@@ -9,10 +11,10 @@ const props = defineProps<{ depense: Depense | undefined }>();
     </el-descriptions-item>
     <el-descriptions-item v-if="props.depense?.type" label="Type de dépense :">{{
       props.depense?.type.nom
-      }}</el-descriptions-item>
+    }}</el-descriptions-item>
     <el-descriptions-item v-if="props.depense?.montant" label="Montant :">{{
       useCurrency(props.depense?.montant)
-      }}</el-descriptions-item>
+    }}</el-descriptions-item>
     <el-descriptions-item v-if="props.depense?.created_at" label="Date:">{{ props.depense?.created_at }}
     </el-descriptions-item>
   </el-descriptions>

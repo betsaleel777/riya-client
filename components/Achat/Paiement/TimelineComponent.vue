@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import type { Paiements } from "~/types/paiements";
+import { useCurrency } from "~/composables/numeral";
 
 const props = defineProps<{ paiements?: Paiements }>();
 const classType = (status: string) => {

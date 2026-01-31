@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { storeToRefs } from "pinia";
 import { useDepenseStore } from "~/store/depense";
+import { useCurrency } from "~/composables/numeral";
 const { pending, loading } = storeToRefs(useDepenseStore());
 const { getPending } = useDepenseStore();
 getPending();
@@ -53,7 +54,7 @@ const { runShowModal, show } = useShowModal();
                     <el-tooltip :content="depense?.type" placement="right">
                       <el-text class="w-200px headline text-uppercase text-primary" truncated>{{
                         depense?.type
-                        }}</el-text>
+                      }}</el-text>
                     </el-tooltip>
                   </div>
                 </div>

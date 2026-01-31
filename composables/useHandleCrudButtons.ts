@@ -1,4 +1,4 @@
-import { Entity } from "~/types/global";
+import type { Entity } from "~/types/global";
 
 type TrashFunction = (id: number) => Promise<string | undefined>;
 
