@@ -1,4 +1,4 @@
-import type { Audit, Entity, Type } from "./global";
+import type { Audit, Entity, StatContent, Type } from "./global";
 
 interface Depense extends Entity {
   type_depense_id: number;
@@ -18,10 +18,16 @@ interface DepenseValidation extends Entity {
   audit: Audit,
 }
 
+interface Stats {
+  depenses: StatContent;
+  recettes: StatContent;
+  solde: StatContent;
+}
+
 interface TypeDepense extends Type { }
 
 type Depenses = Array<Depense>
 type TypeDepenses = Array<TypeDepense>
 type DepenseValidations = Array<DepenseValidation>
 
-export type { Depenses, Depense, TypeDepense, TypeDepenses, DepenseValidation, DepenseValidations }
+export type { Depenses, Depense, TypeDepense, TypeDepenses, DepenseValidation, DepenseValidations, Stats }

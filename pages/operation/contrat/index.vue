@@ -34,6 +34,10 @@ const activateDescriptionModal = (id: number, type: string) => {
     showDescription.visite.modal = true;
   }
 };
+const { user } = useAuth();
+const roles = useRoles();
+roles.value = user.roles;
+const hasAdminRole = computed(() => roles.value.includes(rolesNames.admin));
 </script>
 
 <template>
@@ -78,7 +82,7 @@ const activateDescriptionModal = (id: number, type: string) => {
                       <el-button type="primary" @click="handleEdit(scope.row)" plain circle>
                         <i class="bx bx-edit" />
                       </el-button>
-                      <el-button v-role="rolesNames.admin" type="danger" @click="
+                      <el-button v-show="hasAdminRole" type="danger" @click="
                         handleDelete(
                           scope.row,
                           `Voulez vous réelement résilier le contrat ${scope.row.code}`

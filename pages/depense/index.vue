@@ -8,13 +8,18 @@ definePageMeta({
   middleware: ["auth", "nuxt-permissions"],
   roles: [rolesNames.financial, rolesNames.admin],
 });
+const { user } = useAuth();
+const roles = useRoles();
+roles.value = user.roles;
+const hasAdminRole = computed(() => roles.value.includes(rolesNames.admin));
 const links = [
   { path: "/", title: "Acceuil" },
   { path: "#", title: "Dépenses" },
 ];
-const { getPaginate, getSearch, trash } = useDepenseStore();
-const { liste, loading } = storeToRefs(useDepenseStore());
+const { getPaginate, getSearch, trash, fetchStats } = useDepenseStore();
+const { liste, loading, stats } = storeToRefs(useDepenseStore());
 getPaginate();
+if (hasAdminRole.value) fetchStats();
 const {
   setPage,
   setRefresh,
@@ -30,6 +35,14 @@ const { handleDelete, handleEdit, handleShow, modal } = useHandleCrudButtons(tra
 const statusClass = (status: string) => {
   return status === statusValidable.wait ? "warning" : "success";
 };
+const statsSafe = computed(() => {
+  if (stats.value) return stats.value;
+  return {
+    depenses: { title: "Dépenses", amount: 0, percentage: 0, text: "" },
+    recettes: { title: "Recettes", amount: 0, percentage: 0, text: "" },
+    solde: { title: "Solde", amount: 0, percentage: 0, text: "" },
+  };
+});
 </script>
 
 <template>
@@ -37,6 +50,23 @@ const statusClass = (status: string) => {
     <div class="container-fluid">
       <!-- start page title -->
       <div class="row">
+        <template v-for="(item, key) in statsSafe" :key="key">
+          <div class="col-sm-4">
+            <LazyDashboardStatCard v-if="hasAdminRole" :stat="item" :loading="loading.stats">
+              <template #icon>
+                <el-icon class="text-white" size="18" v-if="key === 'depenses'">
+                  <ElIconCreditCard />
+                </el-icon>
+                <el-icon class="text-white" size="18" v-else-if="key === 'recettes'">
+                  <ElIconMoney />
+                </el-icon>
+                <el-icon class="text-white" size="18" v-else>
+                  <ElIconWallet />
+                </el-icon>
+              </template>
+            </LazyDashboardStatCard>
+          </div>
+        </template>
         <div class="col-12">
           <div class="card">
             <div class="card-body">
@@ -81,7 +111,7 @@ const statusClass = (status: string) => {
                           class="bx bx-show" /></el-button>
                       <el-button type="primary" v-if="scope.row.status === statusValidable.wait"
                         @click="handleEdit(scope.row)" plain circle><i class="bx bx-edit" /></el-button>
-                      <el-button v-role="rolesNames.admin" type="danger" @click="
+                      <el-button v-show="hasAdminRole" type="danger" @click="
                         handleDelete(
                           scope.row,
                           `Voulez vous réelement supprimer ${scope.row.titre}`

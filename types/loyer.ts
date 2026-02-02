@@ -1,6 +1,6 @@
 import type { Appartement } from "./appartement";
 import type { Contrat } from "./contrat";
-import type { Entity, Media } from "./global";
+import type { Entity, Media, StatContent } from "./global";
 import type { Paiements } from "./paiements";
 import type { Client } from "./personne";
 import type { Proprietaire } from "./proprietaire";
@@ -19,12 +19,6 @@ interface Loyer extends Entity {
   pending: boolean;
   paiements: Paiements;
   proprietaire?: Proprietaire;
-}
-interface StatContent {
-  amount: number;
-  percentage: number;
-  text: string;
-  title: string;
 }
 
 interface Stats {

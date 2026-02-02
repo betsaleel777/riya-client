@@ -32,7 +32,9 @@
           <div class="text-muted mt-4">
             <h4>{{ useCurrency(props.stat.amount) }}</h4>
             <div class="d-flex">
-              <span class="badge badge-soft-success font-size-12"> {{ props.stat.percentage }}% </span>
+              <span v-if="props.stat.percentage" class="badge badge-soft-success font-size-12">
+                {{ props.stat.percentage }}%
+              </span>
               <span class="ms-2 text-truncate">{{ props.stat.text }}</span>
             </div>
           </div>

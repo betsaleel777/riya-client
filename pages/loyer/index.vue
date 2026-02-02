@@ -14,11 +14,15 @@ const links = [
   { path: "/", title: "Acceuil" },
   { path: "#", title: "Loyers" },
 ];
+const { user } = useAuth();
+const roles = useRoles();
+roles.value = user.roles;
+const hasAdminRole = computed(() => roles.value.includes(rolesNames.admin));
 const loyerStore = useLoyerStore();
 const { getPaginate, getSearch, trash, fetchStats } = loyerStore;
 const { stats, liste, loading } = storeToRefs(loyerStore);
 getPaginate();
-fetchStats();
+if (hasAdminRole.value) fetchStats();
 const {
   setPage,
   setRefresh,
@@ -71,7 +75,7 @@ const statsSafe = computed(() => {
       <div class="row">
         <template v-for="(item, key) in statsSafe" :key="key">
           <div class="col-sm-4">
-            <DashboardStatCard :stat="item" :loading="loading.stats">
+            <LazyDashboardStatCard v-if="hasAdminRole" :stat="item" :loading="loading.stats">
               <template #icon>
                 <el-icon class="text-white" size="18" v-if="key === 'paid'">
                   <ElIconMoney />
@@ -83,7 +87,7 @@ const statsSafe = computed(() => {
                   <ElIconClock />
                 </el-icon>
               </template>
-            </DashboardStatCard>
+            </LazyDashboardStatCard>
           </div>
         </template>
         <div class="col-12">
@@ -126,7 +130,7 @@ const statsSafe = computed(() => {
                           class="bx bx-show" /></el-button>
                       <el-button v-if="!scope.row.pending && scope.row.status === statusPayable.unpaid" type="primary"
                         @click="handleCashed(scope.row)" plain circle><i class="bx bx-dollar" /></el-button>
-                      <el-button v-role="rolesNames.admin" type="danger" @click="
+                      <el-button v-show="hasAdminRole" type="danger" @click="
                         handleDelete(
                           scope.row,
                           `Voulez vous réelement supprimer le loyer ${scope.row.code}`
