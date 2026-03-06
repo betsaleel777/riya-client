@@ -31,6 +31,10 @@ const { handleDelete, handleEdit, handleShow, modal } = useHandleCrudButtons(tra
 const classStatus = (state: string) => {
   return state === statusValidable.wait ? "warning" : "success";
 };
+const { user } = useAuth();
+const roles = useRoles();
+roles.value = user.roles;
+const hasAdminRole = computed(() => roles.value.includes(rolesNames.admin));
 </script>
 
 <template>
@@ -78,7 +82,7 @@ const classStatus = (state: string) => {
                           class="bx bx-show" /></el-button>
                       <el-button type="primary" v-if="scope.row.status === statusValidable.wait"
                         @click="handleEdit(scope.row)" plain circle><i class="bx bx-edit" /></el-button>
-                      <el-button v-role="rolesNames.admin" type="danger" @click="
+                      <el-button v-show="hasAdminRole" type="danger" @click="
                         handleDelete(
                           scope.row,
                           `Voulez vous réelement supprimer le paiement ${scope.row.code}`

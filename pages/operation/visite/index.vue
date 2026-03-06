@@ -19,9 +19,7 @@ const { visites, loading } = storeToRefs(useVisiteStore());
 getAll();
 const { filterTableData, setPage, search, total, pageSize } = useVisiteFilterPagination(visites);
 const { handleDelete, handleEdit, handleShow, modal } = useHandleCrudButtons(trash);
-const classType = (status: string) => {
-  return status === statusValidable.wait ? "warning" : "success";
-};
+const classType = (status: string) => status === statusValidable.wait ? "warning" : "success";
 const classStatus = (status: string) => {
   const classes = {
     [statusAvance.contratWithout as string]: "info",
@@ -30,6 +28,10 @@ const classStatus = (status: string) => {
   };
   return classes[status];
 };
+const { user } = useAuth();
+const roles = useRoles();
+roles.value = user.roles;
+const hasAdminRole = computed(() => roles.value.includes(rolesNames.admin));
 </script>
 
 <template>
@@ -70,7 +72,7 @@ const classStatus = (status: string) => {
                     <template #default="scope">
                       <el-tag class="text-truncated" :type="classType(scope.row.status)">{{
                         scope.row.status
-                        }}</el-tag>
+                      }}</el-tag>
                     </template>
                   </el-table-column>
                   <el-table-column prop="avanceStatus" label="Statut avance" width="150">
@@ -88,7 +90,7 @@ const classStatus = (status: string) => {
                           class="bx bx-show" /></el-button>
                       <el-button v-if="scope.row.status === statusValidable.wait" type="primary"
                         @click="handleEdit(scope.row)" plain circle><i class="bx bx-edit" /></el-button>
-                      <el-button v-role="rolesNames.admin" type="danger" @click="
+                      <el-button v-show="hasAdminRole" type="danger" @click="
                         handleDelete(
                           scope.row,
                           `Voulez vous réelement supprimer la visite ${scope.row.code}`

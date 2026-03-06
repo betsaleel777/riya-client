@@ -30,17 +30,9 @@ const { handleDelete, handleEdit, handleShow, modal } = useHandleCrudButtons(tra
                 <template #options>
                   <el-button @click="modal.create = true" plain type="primary">Ajouter</el-button>
                 </template>
-                <el-input
-                  v-model="search"
-                  class="w-50 mt-1 mb-2"
-                  placeholder="Nom complet, téléphone, cni"
-                />
-                <el-table
-                  v-loading="loading.index"
-                  :data="filterTableData"
-                  class="w-100"
-                  empty-text="aucun propriétaire"
-                >
+                <el-input v-model="search" class="w-50 mt-1 mb-2" placeholder="Nom complet, téléphone, cni" />
+                <el-table v-loading="loading.index" :data="filterTableData" class="w-100"
+                  empty-text="aucun propriétaire">
                   <el-table-column show-overflow-tooltip prop="nom_complet" label="Nom complet" />
                   <el-table-column prop="telephone" label="Téléphone" width="150" />
                   <el-table-column prop="email" label="Email">
@@ -56,51 +48,25 @@ const { handleDelete, handleEdit, handleShow, modal } = useHandleCrudButtons(tra
                       <span>Option</span>
                     </template>
                     <template #default="scope">
-                      <el-button type="info" @click="handleShow(scope.row)" plain circle
-                        ><i class="bx bx-show"
-                      /></el-button>
-                      <el-button type="primary" @click="handleEdit(scope.row)" plain circle
-                        ><i class="bx bx-edit"
-                      /></el-button>
-                      <el-button
-                        v-role="rolesNames.admin"
-                        type="danger"
-                        @click="
-                          handleDelete(
-                            scope.row,
-                            `Voulez vous réelement supprimer ${scope.row.nom_complet}`
-                          )
-                        "
-                        plain
-                        circle
-                        ><i class="bx bx-trash"
-                      /></el-button>
+                      <el-button type="info" @click="handleShow(scope.row)" plain circle><i
+                          class="bx bx-show" /></el-button>
+                      <el-button type="primary" @click="handleEdit(scope.row)" plain circle><i
+                          class="bx bx-edit" /></el-button>
+                      <el-button v-role="rolesNames.admin" type="danger" @click="
+                        handleDelete(
+                          scope.row,
+                          `Voulez vous réelement supprimer ${scope.row.nom_complet}`
+                        )
+                        " plain circle><i class="bx bx-trash" /></el-button>
                     </template>
                   </el-table-column>
                 </el-table>
-                <el-pagination
-                  small
-                  background
-                  layout="prev, pager, next"
-                  :total="total"
-                  class="mt-4"
-                  justify="center"
-                  v-model:page-size="pageSize"
-                  @current-change="setPage"
-                  hide-on-single-page
-                />
+                <el-pagination small background layout="prev, pager, next" :total="total" class="mt-4" justify="center"
+                  v-model:page-size="pageSize" @current-change="setPage" hide-on-single-page />
               </StructurePageHeader>
               <ProprietaireCreateModal v-model="modal.create" />
-              <ProprietaireEditModal
-                :id="modal.edit.id"
-                v-if="modal.edit.dialog"
-                v-model="modal.edit.dialog"
-              />
-              <ProprietaireShowModal
-                :id="modal.show.id"
-                v-if="modal.show.dialog"
-                v-model="modal.show.dialog"
-              />
+              <ProprietaireEditModal :id="modal.edit.id" v-if="modal.edit.dialog" v-model="modal.edit.dialog" />
+              <ProprietaireShowModal :id="modal.show.id" v-if="modal.show.dialog" v-model="modal.show.dialog" />
             </div>
           </div>
         </div>

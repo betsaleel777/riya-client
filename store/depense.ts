@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { FetchError } from "ofetch";
 import type { TypePostForm, TypePutForm } from "~/types/global";
-import type { Depense, DepenseValidations, Depenses, TypeDepense, TypeDepenses } from "~/types/depense";
+import type { Depense, DepenseValidations, Depenses, Stats, TypeDepense, TypeDepenses } from "~/types/depense";
 import { useDashboardStore } from "./dashboard";
 
 const useTypeDepenseStore = defineStore("type-depense", () => {
@@ -61,7 +61,8 @@ const useDepenseStore = defineStore("depense", () => {
   let depenses = ref<Depenses>([]);
   let depense = ref<Depense>();
   let pending = ref<DepenseValidations>([]);
-  let loading = reactive({ index: false, edit: false });
+  let stats = ref<Stats | null>(null);
+  let loading = reactive({ index: false, edit: false, stats: false });
   const { getPaginate, getSearch, liste } = usePaginationMethods("api/depenses", $apiFetch, loading);
 
   const getAll = async () => {
@@ -69,6 +70,16 @@ const useDepenseStore = defineStore("depense", () => {
       loading.index = true;
       depenses.value = await $apiFetch<Depenses>("api/depenses");
       loading.index = false;
+    } catch (error) {
+      if (error instanceof FetchError && error.statusCode === 401) navigateTo("/login");
+    }
+  };
+
+  const fetchStats = async () => {
+    try {
+      loading.stats = true;
+      stats.value = await $apiFetch<Stats>("api/depenses/stats", { method: "get" });
+      loading.stats = false;
     } catch (error) {
       if (error instanceof FetchError && error.statusCode === 401) navigateTo("/login");
     }
@@ -121,12 +132,15 @@ const useDepenseStore = defineStore("depense", () => {
       const response = await $apiFetch<string>("api/depenses/validate/" + id, { method: "PATCH" });
       fromValidationPage ? await getPending() : await getAll();
       await getPendings();
+      await fetchStats();
       return response;
     } catch (error) {
       if (error instanceof FetchError && error.statusCode === 401) navigateTo("/login");
     }
   };
+
   return {
+    stats,
     depenses,
     depense,
     loading,
@@ -139,6 +153,7 @@ const useDepenseStore = defineStore("depense", () => {
     getPending,
     getPaginate,
     getSearch,
+    fetchStats,
     pending,
     liste,
   };

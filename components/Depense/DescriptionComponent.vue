@@ -15,7 +15,8 @@ const props = defineProps<{ depense: Depense | undefined }>();
     <el-descriptions-item v-if="props.depense?.montant" label="Montant :">{{
       useCurrency(props.depense?.montant)
     }}</el-descriptions-item>
-    <el-descriptions-item v-if="props.depense?.created_at" label="Date:">{{ props.depense?.created_at }}
+    <el-descriptions-item v-if="props.depense?.date_depense" label="Date:">
+      {{ $dayjs(props.depense?.date_depense).format('DD-MM-YYYY') }}
     </el-descriptions-item>
   </el-descriptions>
   <div v-if="props.depense?.description">

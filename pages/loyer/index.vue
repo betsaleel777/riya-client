@@ -14,11 +14,24 @@ const links = [
   { path: "/", title: "Acceuil" },
   { path: "#", title: "Loyers" },
 ];
+const { user } = useAuth();
+const roles = useRoles();
+roles.value = user.roles;
+const hasAdminRole = computed(() => roles.value.includes(rolesNames.admin));
 const loyerStore = useLoyerStore();
 const { getPaginate, getSearch, trash, fetchStats } = loyerStore;
 const { stats, liste, loading } = storeToRefs(loyerStore);
 getPaginate();
-fetchStats();
+if (hasAdminRole.value) fetchStats();
+
+const filterParams = ref<{ range: [string, string] | null; status: string | null }>({
+  range: null,
+  status: null,
+});
+const hasActiveFilters = computed(
+  () => filterParams.value.range != null || filterParams.value.status != null
+);
+
 const {
   setPage,
   setRefresh,
@@ -29,7 +42,7 @@ const {
   total,
   pageSize,
   toSearch,
-} = useServerPagination(liste, getPaginate, getSearch);
+} = useServerPagination(liste, getPaginate, getSearch, { filterParams });
 const { handleDelete, handleShow, modal } = useHandleCrudButtons(trash);
 const cashing = reactive({ active: false, id: 0 });
 const classStatus = (status: string) => {
@@ -71,7 +84,7 @@ const statsSafe = computed(() => {
       <div class="row">
         <template v-for="(item, key) in statsSafe" :key="key">
           <div class="col-sm-4">
-            <DashboardStatCard :stat="item" :loading="loading.stats">
+            <LazyDashboardStatCard v-if="hasAdminRole" :stat="item" :loading="loading.stats">
               <template #icon>
                 <el-icon class="text-white" size="18" v-if="key === 'paid'">
                   <ElIconMoney />
@@ -83,7 +96,7 @@ const statsSafe = computed(() => {
                   <ElIconClock />
                 </el-icon>
               </template>
-            </DashboardStatCard>
+            </LazyDashboardStatCard>
           </div>
         </template>
         <div class="col-12">
@@ -93,10 +106,14 @@ const statsSafe = computed(() => {
                 <template #options>
                   <el-button @click="openAvanceModal = true" plain type="primary">Avance sur loyer</el-button>
                 </template>
-                <StructureSearchServer :loaded-search="loadedSearch" :search-exists="searchExists" @on-search="search"
+                <StructureSearchServer :loaded-search="loadedSearch" :search-exists="searchExists!" @on-search="search"
                   @on-refresh="setRefresh">
                   <template #searching>
-                    <el-input v-model="toSearch" placeholder="Code, Client, Bien, Date et statut" />
+                    <el-input v-model="toSearch" placeholder="Code, Client, Bien" />
+                  </template>
+                  <template #filters>
+                    <LoyerFilterPopover v-model:date-range="filterParams.range" v-model:status="filterParams.status"
+                      :has-active-filters="hasActiveFilters ?? false" @search="search" />
                   </template>
                 </StructureSearchServer>
                 <el-table v-loading="loading.index" :data="liste?.data" class="w-100" empty-text="aucun Loyer">
@@ -126,7 +143,7 @@ const statsSafe = computed(() => {
                           class="bx bx-show" /></el-button>
                       <el-button v-if="!scope.row.pending && scope.row.status === statusPayable.unpaid" type="primary"
                         @click="handleCashed(scope.row)" plain circle><i class="bx bx-dollar" /></el-button>
-                      <el-button v-role="rolesNames.admin" type="danger" @click="
+                      <el-button v-show="hasAdminRole" type="danger" @click="
                         handleDelete(
                           scope.row,
                           `Voulez vous réelement supprimer le loyer ${scope.row.code}`

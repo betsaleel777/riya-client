@@ -1,0 +1,91 @@
+<script setup lang="ts">
+import { statusContrat, stateContrat } from "~/utils/constante";
+
+const visible = ref(false);
+const dateRange = defineModel<[string, string] | null>("dateRange", { default: null });
+const status = defineModel<string | null>("status", { default: null });
+const etat = defineModel<string | null>("etat", { default: null });
+
+defineProps<{ hasActiveFilters?: boolean }>();
+const emit = defineEmits<{ (e: "reset"): void }>();
+
+const statusOptions = [
+  { label: statusContrat.uptodate, value: statusContrat.uptodate },
+  { label: statusContrat.notuptodate, value: statusContrat.notuptodate },
+];
+const etatOptions = [
+  { label: stateContrat.using, value: stateContrat.using },
+  { label: stateContrat.aborted, value: stateContrat.aborted },
+];
+
+const handleReset = () => {
+  emit("reset");
+  visible.value = false;
+};
+</script>
+
+<template>
+  <el-popover v-model:visible="visible" placement="bottom-start" :width="320" trigger="click">
+    <template #reference>
+      <el-button type="default" plain :class="{ 'contrat-filter-btn--active': hasActiveFilters }">
+        <el-icon>
+          <ElIconFilter />
+        </el-icon>
+        <span class="ms-1">Filtres</span>
+        <el-badge v-if="hasActiveFilters" is-dot class="contrat-filter-badge" />
+      </el-button>
+    </template>
+    <div class="contrat-filter-panel">
+      <div class="contrat-filter-panel__title">Filtres multicritères</div>
+      <div class="mb-2">
+        <label class="contrat-filter-panel__label">Intervalle de dates (début contrat)</label>
+        <el-date-picker v-model="dateRange" type="daterange" range-separator="-" start-placeholder="Début"
+          end-placeholder="Fin" format="DD-MM-YYYY" value-format="YYYY-MM-DD" style="width: 100%" :teleported="false"
+          clearable />
+      </div>
+      <div class="mb-2">
+        <label class="contrat-filter-panel__label">Statut</label>
+        <el-select v-model="status" placeholder="Tous les statuts" clearable style="width: 100%" :teleported="false">
+          <el-option v-for="opt in statusOptions" :key="opt.value" :label="opt.label" :value="opt.value" />
+        </el-select>
+      </div>
+      <div class="mb-3">
+        <label class="contrat-filter-panel__label">État</label>
+        <el-select v-model="etat" placeholder="Tous les états" clearable style="width: 100%" :teleported="false">
+          <el-option v-for="opt in etatOptions" :key="opt.value" :label="opt.label" :value="opt.value" />
+        </el-select>
+      </div>
+      <div class="d-flex justify-content-end gap-1">
+        <el-button size="small" @click="handleReset">Réinitialiser</el-button>
+      </div>
+    </div>
+  </el-popover>
+</template>
+
+<style scoped>
+.contrat-filter-btn--active {
+  border-color: var(--el-color-primary);
+  color: var(--el-color-primary);
+}
+
+.contrat-filter-badge {
+  margin-left: 4px;
+}
+
+.contrat-filter-panel {
+  padding: 4px 0;
+}
+
+.contrat-filter-panel__title {
+  font-weight: 600;
+  margin-bottom: 12px;
+  font-size: 14px;
+}
+
+.contrat-filter-panel__label {
+  display: block;
+  font-size: 12px;
+  color: var(--el-text-color-secondary);
+  margin-bottom: 6px;
+}
+</style>

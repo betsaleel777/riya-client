@@ -40,28 +40,28 @@
           <DashboardStatistiqueComponent titre="Statistiques des paiements" :donnees="statistiquesPaiementsOptions" />
           <DashboardStatistiqueComponent titre="Statistiques des locations" :donnees="statistiquesLocationsOptions" />
           <!-- ici tableau de compte d'exploitation -->
-          <DashboardRapportCardComponent v-role="[rolesNames.admin, rolesNames.financial]"
-            :rapport="dashboard?.rapport!" v-loading="loading.rapport" />
+          <LazyDashboardRapportCardComponent v-if="hasStats" :rapport="dashboard?.rapport!"
+            v-loading="loading.rapport" />
         </div>
         <div class="col-lg-4">
-          <DashboardAmountCardComponent v-role="[rolesNames.admin, rolesNames.financial]" titre="Chiffre d'affaire"
-            :montant="dashboard?.chiffres!" icon="bx bx-money" v-loading="loading.chiffre">
+          <LazyDashboardAmountCardComponent v-if="hasStats" titre="Chiffre d'affaire" :montant="dashboard?.chiffres!"
+            icon="bx bx-money" v-loading="loading.chiffre">
             <template #options>
               <DashboardOptionComponent type="chiffres" />
             </template>
-          </DashboardAmountCardComponent>
-          <DashboardAmountCardComponent v-role="[rolesNames.admin, rolesNames.financial]" titre="Dépenses"
-            :montant="dashboard?.depenses!" icon="bx bx-dollar" v-loading="loading.depense">
+          </LazyDashboardAmountCardComponent>
+          <LazyDashboardAmountCardComponent titre="Dépenses" :montant="dashboard?.depenses!" icon="bx bx-dollar"
+            v-loading="loading.depense">
             <template #options>
               <DashboardOptionComponent type="depenses" />
             </template>
-          </DashboardAmountCardComponent>
-          <DashboardAmountCardComponent v-role="[rolesNames.admin, rolesNames.financial]" titre="Remboursements"
-            :montant="dashboard?.remboursements!" icon="bx bx-wallet" v-loading="loading.dette">
+          </LazyDashboardAmountCardComponent>
+          <LazyDashboardAmountCardComponent v-if="hasStats" titre="Remboursements" :montant="dashboard?.remboursements!"
+            icon="bx bx-wallet" v-loading="loading.dette">
             <template #options>
               <DashboardOptionComponent type="dettes" />
             </template>
-          </DashboardAmountCardComponent>
+          </LazyDashboardAmountCardComponent>
           <DashboardPieCardComponent :size="250" :series-option="proprietesOptions" titre="Propriétés">
           </DashboardPieCardComponent>
           <DashboardPieCardComponent :size="250" :series-option="locatairesOptions" titre="Statut des contrats">
@@ -82,12 +82,13 @@ definePageMeta({ middleware: "auth" });
 const { user } = useAuth();
 const roles = useRoles();
 roles.value = user.roles;
+const hasStats = computed(() => roles.value.includes(rolesNames.admin) || roles.value.includes(rolesNames.financial));
 const store = useDashboardStore();
 const { getAll, getRapport } = store;
 const { loading, dashboard } = storeToRefs(store);
 onMounted(async () => {
   await getAll();
-  await getRapport();
+  if (hasStats.value) await getRapport();
 });
 const {
   locatairesOptions,

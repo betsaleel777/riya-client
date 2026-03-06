@@ -15,12 +15,7 @@ getAll();
     <Field name="id" hidden />
     <div class="mb-2">
       <label for="titre" class="form-label">Titre</label>
-      <Field
-        name="titre"
-        id="titre"
-        class="form-control"
-        :class="{ 'is-invalid': props.errors.titre }"
-      />
+      <Field name="titre" id="titre" class="form-control" :class="{ 'is-invalid': props.errors.titre }" />
       <div class="invalid-feedback" v-if="errors.titre">
         {{ props.errors.titre }}
       </div>
@@ -28,16 +23,21 @@ getAll();
     <div class="mb-2">
       <label for="montant" class="form-label">Montant</label>
       <Field name="montant" v-slot="{ value, handleChange }">
-        <vue-number
-          id="montant"
-          class="form-control"
-          v-bind="numberConfig"
-          :model-value="value"
-          @update:model-value="handleChange"
-          :class="{ 'is-invalid': props.errors.montant }"
-        ></vue-number>
+        <vue-number id="montant" class="form-control" v-bind="numberConfig" :model-value="value"
+          @update:model-value="handleChange" :class="{ 'is-invalid': props.errors.montant }"></vue-number>
         <div class="invalid-feedback" v-if="errors.montant">
           {{ props.errors.montant }}
+        </div>
+      </Field>
+    </div>
+    <div class="mb-2">
+      <label for="date_depense" class="form-label">Date de la dépense</label>
+      <Field name="date_depense" v-slot="{ value, handleChange }">
+        <el-date-picker id="date_depense" :model-value="value" @update:modelValue="handleChange" type="date"
+          format="DD-MM-YYYY" value-format="YYYY-MM-DD" style="width: 100%"
+          :class="{ 'is-invalid': props.errors.date_depense }" />
+        <div class="invalid-feedback" v-if="errors.date_depense">
+          {{ props.errors.date_depense }}
         </div>
       </Field>
     </div>
@@ -46,22 +46,10 @@ getAll();
       <Field name="type_depense_id" v-slot="{ value, handleChange }">
         <el-row :gutter="5">
           <el-col :span="22">
-            <el-select
-              id="type_depense"
-              filterable
-              :model-value="value"
-              @update:model-value="handleChange"
-              style="width: 100%"
-              clearable
-              :class="{ 'is-invalid': props.errors.type_depense_id }"
-            >
+            <el-select id="type_depense" filterable :model-value="value" @update:model-value="handleChange"
+              style="width: 100%" clearable :class="{ 'is-invalid': props.errors.type_depense_id }">
               <template #append><i class="bx bx-plus" /></template>
-              <el-option
-                v-for="(item, key) in types"
-                :key="key"
-                :label="item.nom"
-                :value="item.id!"
-              />
+              <el-option v-for="(item, key) in types" :key="key" :label="item.nom" :value="item.id!" />
             </el-select>
             <div class="invalid-feedback" v-if="errors.type_depense_id">
               {{ props.errors.type_depense_id }}
@@ -69,9 +57,7 @@ getAll();
           </el-col>
           <el-col :span="2">
             <el-tooltip content="Créer un type de dépense" placement="top">
-              <el-button @click="dialog.type = true" style="width: 100%" plain
-                ><i class="bx bx-plus"
-              /></el-button>
+              <el-button @click="dialog.type = true" style="width: 100%" plain><i class="bx bx-plus" /></el-button>
             </el-tooltip>
             <DepenseTypeCreateModal v-model="dialog.type" />
           </el-col>
@@ -80,15 +66,8 @@ getAll();
     </div>
     <div class="mb-2">
       <label for="description" class="form-label">Description</label>
-      <Field
-        name="description"
-        class="form-control"
-        id="description"
-        as="textarea"
-        cols="30"
-        rows="5"
-        :class="{ 'is-invalid': props.errors.description }"
-      />
+      <Field name="description" class="form-control" id="description" as="textarea" cols="30" rows="5"
+        :class="{ 'is-invalid': props.errors.description }" />
       <div class="invalid-feedback" v-if="errors.description">
         {{ props.errors.description }}
       </div>

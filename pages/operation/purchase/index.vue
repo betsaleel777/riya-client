@@ -18,6 +18,10 @@ const { achats, loading } = storeToRefs(useAchatStore());
 getAll();
 const { filterTableData, setPage, search, total, pageSize } = usePurchaseFilterPagination(achats);
 const { handleDelete, modal } = useHandleCrudButtons(trash);
+const { user } = useAuth();
+const roles = useRoles();
+roles.value = user.roles;
+const hasAdminRole = computed(() => roles.value.includes(rolesNames.admin));
 </script>
 
 <template>
@@ -56,7 +60,7 @@ const { handleDelete, modal } = useHandleCrudButtons(trash);
                     <template #default="scope">
                       <el-button :tag="NuxtLink" :to="`/operation/purchase/${scope.row.id}`" type="info" plain circle><i
                           class="bx bx-show" /></el-button>
-                      <el-button type="danger" v-role="rolesNames.admin" @click="
+                      <el-button type="danger" v-show="hasAdminRole" @click="
                         handleDelete(
                           scope.row,
                           `Voulez vous réelement supprimer l'achat ${scope.row.code}`

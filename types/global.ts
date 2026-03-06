@@ -72,7 +72,20 @@ type DataPaginate = {
   links: Links;
   meta: MetaPaginate;
 };
-type SearchData = { search: string; page: number };
+interface StatContent {
+  amount: number;
+  percentage: number;
+  text: string;
+  title: string;
+}
+type SearchData = {
+  search?: string;
+  page?: number;
+  range?: [string, string];
+  status?: string;
+  date_from?: string;
+  date_to?: string;
+};
 type Variant = '' | 'success' | 'warning' | 'info' | 'danger'
 
 export type {
@@ -91,4 +104,5 @@ export type {
   DataPaginate,
   SearchData,
   Variant,
+  StatContent,
 };

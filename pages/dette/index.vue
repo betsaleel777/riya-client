@@ -15,11 +15,15 @@ const links = [
   { path: "/", title: "Acceuil" },
   { path: "#", title: "Dettes" },
 ];
+const { user } = useAuth();
+const roles = useRoles();
+roles.value = user.roles;
+const hasRequiredRoles = computed(() => roles.value.includes(rolesNames.admin) || roles.value.includes(rolesNames.financial));
 const detteStore = useDetteStore();
 const { getPaginate, getSearch, repay, fetchStats } = detteStore;
 const { liste, loading, stats } = storeToRefs(detteStore);
 getPaginate();
-fetchStats();
+if (hasRequiredRoles.value) fetchStats();
 const {
   setPage,
   setRefresh,
@@ -62,11 +66,6 @@ const statsSafe = computed(() => {
     [operation.rent]: { paid: { amount: 0, percentage: 0 }, unpaid: { amount: 0, percentage: 0 }, pending: { amount: 0, percentage: 0 } },
     [operation.visit]: { paid: { amount: 0, percentage: 0 }, unpaid: { amount: 0, percentage: 0 }, pending: { amount: 0, percentage: 0 } },
   }
-});
-const roles = useRoles();
-const hasRequiredRoles = computed(() => {
-  const userRoles = roles.value || [];
-  return userRoles.includes(rolesNames.admin) || userRoles.includes(rolesNames.financial);
 });
 </script>
 
@@ -137,9 +136,9 @@ const hasRequiredRoles = computed(() => {
                   </el-table-column>
                   <el-table-column prop="status" label="Statut">
                     <template #default="scope">
-                      <el-tag :type="classStatus(scope.row.status) as Variant">{{
-                        scope.row.status
-                      }}</el-tag>
+                      <el-tag :type="classStatus(scope.row.status) as Variant">
+                        {{ scope.row.status }}
+                      </el-tag>
                     </template>
                   </el-table-column>
                   <el-table-column prop="created_at" label="Date" sortable />

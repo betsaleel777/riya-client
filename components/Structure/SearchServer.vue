@@ -13,23 +13,15 @@ const emit = defineEmits<{ onSearch: PromiseFunction; onRefresh: PromiseFunction
       <slot name="searching" />
     </el-col>
     <el-col :span="3">
-      <el-button
-        type="default"
-        :icon="ElIconSearch"
-        @click="$emit('onSearch')"
-        :disabled="!props.searchExists"
-        plain
-      />
+      <el-button type="default" :icon="ElIconSearch" @click="$emit('onSearch')" :disabled="!props.searchExists" plain />
     </el-col>
-    <el-col :span="10"></el-col>
-    <el-col :span="1">
-      <el-button
-        v-if="props.loadedSearch"
-        @click="$emit('onRefresh')"
-        class="w-100"
-        type="default"
-        :icon="ElIconRefresh"
-      />
+    <el-col :span="8"></el-col>
+    <el-col :span="3">
+      <div class="d-flex justify-content-end">
+        <slot name="filters" />
+        <el-button v-if="props.loadedSearch" @click="$emit('onRefresh')" class="w-100" type="default"
+          :icon="ElIconRefresh" />
+      </div>
     </el-col>
   </el-row>
 </template>

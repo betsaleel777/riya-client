@@ -41,6 +41,10 @@ const handleValidate = (paiement: Paiement) => {
 };
 const createPaiement = computed<boolean>(() => achat.value?.reste !== 0);
 const onContratCreated = async () => await getOne(achat.value?.id!);
+const { user } = useAuth();
+const roles = useRoles();
+roles.value = user.roles;
+const hasAdminRole = computed(() => roles.value.includes(rolesNames.admin));
 </script>
 
 <template>
@@ -69,11 +73,11 @@ const onContratCreated = async () => await getOne(achat.value?.id!);
           <span>Option</span>
         </template>
         <template #default="scope">
-          <el-button v-role="rolesNames.admin" v-if="scope.row.status === statusValidable.wait" type="success"
-            @click="handleValidate(scope.row)" plain circle><i class="bx bx-check-shield" /></el-button>
-          <el-button type="primary" v-if="scope.row.status === statusValidable.wait" @click="handleEdit(scope.row)"
-            plain circle><i class="bx bx-edit" /></el-button>
-          <el-button v-role="rolesNames.admin" type="danger" @click="
+          <el-button v-role="rolesNames.admin" v-show="hasAdminRole && scope.row.status === statusValidable.wait"
+            type="success" @click="handleValidate(scope.row)" plain circle><i class="bx bx-check-shield" /></el-button>
+          <el-button type="primary" v-show="hasAdminRole && scope.row.status === statusValidable.wait"
+            @click="handleEdit(scope.row)" plain circle><i class="bx bx-edit" /></el-button>
+          <el-button v-show="hasAdminRole" type="danger" @click="
             handleDelete(
               scope.row,
               `Voulez vous réelement supprimer le paiement ${scope.row.code}`

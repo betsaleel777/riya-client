@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import { FetchError } from "ofetch";
-import type { Contrat, Contrats } from "~/types/contrat";
+import type { Contrat, Contrats, DetailsOwnerContract } from "~/types/contrat";
+
 import { useDashboardStore } from "./dashboard";
 
 export const useContratStore = defineStore("contrat", () => {
@@ -9,12 +10,23 @@ export const useContratStore = defineStore("contrat", () => {
 
   let contrats = ref<Contrats>([]);
   let contrat = ref<Contrat>();
+  let details = ref<DetailsOwnerContract[]>([]);
   let loading = reactive({ index: false, edit: false });
 
   const getAll = async () => {
     try {
       loading.index = true;
       contrats.value = await $apiFetch<Contrats>("api/contrats");
+      loading.index = false;
+    } catch (error) {
+      if (error instanceof FetchError && error.statusCode === 401) navigateTo("/login");
+    }
+  };
+
+  const getContratsByOwner = async (ownerId: number) => {
+    try {
+      loading.index = true;
+      details.value = await $apiFetch<DetailsOwnerContract[]>(`api/contrats/${ownerId}/proprietaire`, { method: "get" });
       loading.index = false;
     } catch (error) {
       if (error instanceof FetchError && error.statusCode === 401) navigateTo("/login");
@@ -81,6 +93,7 @@ export const useContratStore = defineStore("contrat", () => {
     contrat,
     contrats,
     loading,
+    details,
     getAll,
     update,
     getOne,
@@ -88,5 +101,6 @@ export const useContratStore = defineStore("contrat", () => {
     getRentProcessing,
     getRentAvanceProcessing,
     validerContrat,
+    getContratsByOwner,
   };
 });
