@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
 import { useContratStore } from "~/store/contrat";
-import { NuxtLink } from "#components";
 import type { Variant } from "~/types/global";
 import { rolesNames, typeContrat, statusContrat, stateContrat } from "~/utils/constante";
 
@@ -17,7 +16,18 @@ const links = [
 const { getAll, trash } = useContratStore();
 const { contrats, loading } = storeToRefs(useContratStore());
 getAll();
-const { filterTableData, setPage, search, total, pageSize } = useContratFilterPagination(contrats);
+const {
+  filterTableData,
+  setPage,
+  search,
+  total,
+  pageSize,
+  filterStatus,
+  filterEtat,
+  filterDateRange,
+  resetFilters,
+  hasActiveFilters,
+} = useContratFilterPagination(contrats);
 const { handleDelete, handleEdit, modal } = useHandleCrudButtons(trash);
 const classTypeStatus = (status: string) => status === statusContrat.notuptodate ? "danger" : "success";
 const classTypeState = (state: string) => state === stateContrat.using ? "" : "danger";
@@ -49,13 +59,16 @@ const hasAdminRole = computed(() => roles.value.includes(rolesNames.admin));
           <div class="card">
             <div class="card-body">
               <StructurePageHeader :breadcrumbs="links" title="Contrats">
-                <el-input v-model="search" class="w-50 mt-1 mb-2" placeholder="Code, client, bien, statut, etat" />
+                <div class="d-flex justify-content-between align-items-center mt-1 mb-2">
+                  <el-input v-model="search" class="contrat-search-input" placeholder="Code, client, bien" />
+                  <ContratFilterPopover v-model:date-range="filterDateRange" v-model:status="filterStatus"
+                    v-model:etat="filterEtat" :has-active-filters="hasActiveFilters ?? false" @reset="resetFilters" />
+                </div>
                 <el-table v-loading="loading.index" :data="filterTableData" class="w-100" empty-text="aucun contrat">
                   <el-table-column prop="code" label="Code" width="150" align="left">
                     <template #default="scope">
-                      <el-link @click="
-                        activateDescriptionModal(scope.row.operation_id, scope.row.operation_type)
-                        " type="primary">{{ scope.row.code }}</el-link>
+                      <el-link @click="activateDescriptionModal(scope.row.operation_id, scope.row.operation_type)"
+                        type="primary">{{ scope.row.code }}</el-link>
                     </template>
                   </el-table-column>
                   <el-table-column show-overflow-tooltip prop="client" label="Client" align="center" />
@@ -109,4 +122,9 @@ const hasAdminRole = computed(() => roles.value.includes(rolesNames.admin));
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.contrat-search-input {
+  min-width: 280px;
+  max-width: 400px;
+}
+</style>

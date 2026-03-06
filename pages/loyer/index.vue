@@ -23,6 +23,15 @@ const { getPaginate, getSearch, trash, fetchStats } = loyerStore;
 const { stats, liste, loading } = storeToRefs(loyerStore);
 getPaginate();
 if (hasAdminRole.value) fetchStats();
+
+const filterParams = ref<{ range: [string, string] | null; status: string | null }>({
+  range: null,
+  status: null,
+});
+const hasActiveFilters = computed(
+  () => filterParams.value.range != null || filterParams.value.status != null
+);
+
 const {
   setPage,
   setRefresh,
@@ -33,7 +42,7 @@ const {
   total,
   pageSize,
   toSearch,
-} = useServerPagination(liste, getPaginate, getSearch);
+} = useServerPagination(liste, getPaginate, getSearch, { filterParams });
 const { handleDelete, handleShow, modal } = useHandleCrudButtons(trash);
 const cashing = reactive({ active: false, id: 0 });
 const classStatus = (status: string) => {
@@ -97,10 +106,14 @@ const statsSafe = computed(() => {
                 <template #options>
                   <el-button @click="openAvanceModal = true" plain type="primary">Avance sur loyer</el-button>
                 </template>
-                <StructureSearchServer :loaded-search="loadedSearch" :search-exists="searchExists" @on-search="search"
+                <StructureSearchServer :loaded-search="loadedSearch" :search-exists="searchExists!" @on-search="search"
                   @on-refresh="setRefresh">
                   <template #searching>
-                    <el-input v-model="toSearch" placeholder="Code, Client, Bien, Date et statut" />
+                    <el-input v-model="toSearch" placeholder="Code, Client, Bien" />
+                  </template>
+                  <template #filters>
+                    <LoyerFilterPopover v-model:date-range="filterParams.range" v-model:status="filterParams.status"
+                      :has-active-filters="hasActiveFilters ?? false" @search="search" />
                   </template>
                 </StructureSearchServer>
                 <el-table v-loading="loading.index" :data="liste?.data" class="w-100" empty-text="aucun Loyer">

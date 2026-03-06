@@ -19,9 +19,7 @@ const { visites, loading } = storeToRefs(useVisiteStore());
 getAll();
 const { filterTableData, setPage, search, total, pageSize } = useVisiteFilterPagination(visites);
 const { handleDelete, handleEdit, handleShow, modal } = useHandleCrudButtons(trash);
-const classType = (status: string) => {
-  return status === statusValidable.wait ? "warning" : "success";
-};
+const classType = (status: string) => status === statusValidable.wait ? "warning" : "success";
 const classStatus = (status: string) => {
   const classes = {
     [statusAvance.contratWithout as string]: "info",
@@ -74,7 +72,7 @@ const hasAdminRole = computed(() => roles.value.includes(rolesNames.admin));
                     <template #default="scope">
                       <el-tag class="text-truncated" :type="classType(scope.row.status)">{{
                         scope.row.status
-                        }}</el-tag>
+                      }}</el-tag>
                     </template>
                   </el-table-column>
                   <el-table-column prop="avanceStatus" label="Statut avance" width="150">

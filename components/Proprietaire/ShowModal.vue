@@ -14,7 +14,7 @@ getOne(props.id);
 <template>
   <el-dialog v-model="dialog" title="Détails du propriétaire" width="45%" destroy-on-close center>
     <div v-loading="loading.edit">
-      <ProprietaireDescriptionComponent :proprietaire="proprietaire" />
+      <ProprietaireDescriptionComponent :proprietaire="proprietaire" :id="props.id" :extend="true" />
     </div>
   </el-dialog>
 </template>

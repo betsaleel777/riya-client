@@ -1,6 +1,10 @@
 <script lang="ts" setup>
 import type { Proprietaire } from "~/types/proprietaire";
-const props = defineProps<{ proprietaire: Proprietaire | undefined }>();
+const props = withDefaults(
+  defineProps<{ proprietaire?: Proprietaire; extend?: boolean; id?: number }>(),
+  { extend: false },
+);
+const proprietaireId = computed(() => props.id ?? props.proprietaire?.id);
 </script>
 
 <template>
@@ -13,11 +17,13 @@ const props = defineProps<{ proprietaire: Proprietaire | undefined }>();
       {{ props.proprietaire?.email }}</el-descriptions-item>
     <el-descriptions-item v-if="props.proprietaire?.telephone" label="Telephone:">{{
       props.proprietaire?.telephone
-    }}</el-descriptions-item>
+      }}</el-descriptions-item>
     <el-descriptions-item v-if="props.proprietaire?.created_at" label="Date de creéation:">{{
       props.proprietaire?.created_at
-    }}</el-descriptions-item>
+      }}</el-descriptions-item>
   </el-descriptions>
+  <LazyProprietaireListeContrat v-if="props.extend && proprietaireId"
+    :proprietaire-name="props.proprietaire?.nom_complet" :id="proprietaireId" />
 </template>
 
 <style scoped></style>

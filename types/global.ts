@@ -78,7 +78,14 @@ interface StatContent {
   text: string;
   title: string;
 }
-type SearchData = { search: string; page: number };
+type SearchData = {
+  search?: string;
+  page?: number;
+  range?: [string, string];
+  status?: string;
+  date_from?: string;
+  date_to?: string;
+};
 type Variant = '' | 'success' | 'warning' | 'info' | 'danger'
 
 export type {

@@ -50,7 +50,7 @@ const { runShowModal, show } = useShowModal();
                     <el-tooltip :content="depense?.titre" placement="right">
                       <span class="text-muted text-truncate mb-0">{{ depense?.titre }}</span><br />
                     </el-tooltip>
-                    <p class="headline mb-0">{{ depense?.created_at }}</p>
+                    <p class="headline mb-0">{{ depense?.date_depense ? $dayjs(depense.date_depense).format('DD-MM-YYYY') : '' }}</p>
                     <el-tooltip :content="depense?.type" placement="right">
                       <el-text class="w-200px headline text-uppercase text-primary" truncated>{{
                         depense?.type

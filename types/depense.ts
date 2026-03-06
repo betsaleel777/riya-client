@@ -6,16 +6,18 @@ interface Depense extends Entity {
   titre: string;
   description: string;
   created_at: string;
+  date_depense: string;
   montant: number;
   status: string
 }
 
 interface DepenseValidation extends Entity {
-  titre: string,
+  titre: string;
   created_at: string;
+  date_depense: string;
   montant: number;
   type: string;
-  audit: Audit,
+  audit: Audit;
 }
 
 interface Stats {

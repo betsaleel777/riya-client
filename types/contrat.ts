@@ -19,6 +19,20 @@ interface Contrat extends Entity {
   cout_achat: number;
 }
 
+interface DetailsOwnerContract {
+  id: number;
+  bien: string;
+  code: string;
+  client: string;
+  debut: string;
+  fin: string;
+  montant: number;
+  status: string;
+  operation_type: string;
+  etat: string;
+  created_at: string;
+}
+
 type Contrats = Array<Contrat>;
 
-export type { Contrat, Contrats };
+export type { Contrat, Contrats, DetailsOwnerContract };

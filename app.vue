@@ -26,4 +26,12 @@ html.dark {
 html.dark .el-table__body tr:hover>td {
   background-color: #222736 !important;
 }
+
+html.dark .el-card {
+  background-color: #222736 !important;
+}
+
+html.dark .el-popover {
+  background-color: #222736 !important;
+}
 </style>

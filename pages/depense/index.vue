@@ -101,7 +101,11 @@ const statsSafe = computed(() => {
                       <el-tag :type="statusClass(scope.row.status)">{{ scope.row.status }}</el-tag>
                     </template>
                   </el-table-column>
-                  <el-table-column prop="created_at" label="Date" width="150" sortable />
+                  <el-table-column prop="date_depense" label="Date" width="150" sortable>
+                    <template #default="scope">
+                      {{ scope.row.date_depense ? $dayjs(scope.row.date_depense).format('DD-MM-YYYY') : '' }}
+                    </template>
+                  </el-table-column>
                   <el-table-column align="right" width="150">
                     <template #header>
                       <span>Option</span>
